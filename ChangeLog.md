@@ -3,7 +3,18 @@ ChangeLog
 
 Version 2.0
 -----------
-Write your changes in here
+- (B.4) Added ``IMagicalCharacter`` interface to manage magical character's behaviour.
+- (B.3) Turning of ``Weapon`` into an abstract class ``AbstractWeapon`` and split it into its
+        subtypes to ensure Single-Responsibility principle. (Current test coverage 0%).
+- (B.2) Turning of ``PlayerCharacter`` into an abstract class ``AbstractPlayerCharacter`` and split
+        it into its subclasses to ensure Single-Responsibility principle. Removal of the previous
+        implementation tests.
+- (B.2) Defining of ``CharacterDomain`` as set of characteristics and behaviours of the character
+        relative to the game mechanics, and restricted ``CharacterClass`` to only
+        ``PlayerCharacter``.
+- (B.1) Restricted the use of weapons enabling it only to ``PlayerCharacter``.
+        Added method to ``ICharacter``, ``turnWeight`` and fixed SOLID issues with
+        ``AbstractCharacter`` on method ``waitTurn``.
 
 Version 1.0
 -----------
