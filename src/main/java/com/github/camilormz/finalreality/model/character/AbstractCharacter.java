@@ -19,6 +19,17 @@ public abstract class AbstractCharacter implements ICharacter {
   private final CharacterDomain characterDomain;
   private ScheduledExecutorService scheduledExecutor;
 
+  /**
+   * Creates a new (abstract) character.
+   *
+   * @param name
+   *     the character's name
+   * @param turnsQueue
+   *     the queue with the characters waiting for their turn
+   * @param characterDomain
+   *     the domain of this character
+   *     @see CharacterDomain
+   */
   protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
                               @NotNull String name,
                               @NotNull CharacterDomain characterDomain) {

@@ -24,7 +24,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   private final CharacterClass characterClass;
 
   /**
-   * Creates a new character.
+   * Creates a new (abstract) playable character.
    *
    * @param name
    *     the character's name

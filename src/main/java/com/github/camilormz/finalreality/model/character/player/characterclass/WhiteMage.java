@@ -3,6 +3,7 @@ package com.github.camilormz.finalreality.model.character.player.characterclass;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.camilormz.finalreality.model.character.player.CharacterClass;
+import com.github.camilormz.finalreality.model.character.player.IMagicalCharacter;
 import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Camilo Ramírez Canales.
  */
-public class WhiteMage extends AbstractPlayerCharacter {
+public class WhiteMage extends AbstractPlayerCharacter implements IMagicalCharacter {
     /**
      * Creates a new white mage.
      *
