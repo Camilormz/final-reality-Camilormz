@@ -27,11 +27,11 @@ public class Weapon {
     this.type = type;
   }
 
-  private String getName() {
+  public String getName() {
     return name;
   }
 
-  private int getDamage() {
+  public int getDamage() {
     return damage;
   }
 
@@ -39,7 +39,7 @@ public class Weapon {
     return weight;
   }
 
-  private WeaponType getType() {
+  public WeaponType getType() {
     return type;
   }
 
@@ -53,9 +53,9 @@ public class Weapon {
     }
     final Weapon weapon = (Weapon) o;
     return getDamage() == weapon.getDamage() &&
-        getWeight() == weapon.getWeight() &&
-        getName().equals(weapon.getName()) &&
-        getType() == weapon.getType();
+           getWeight() == weapon.getWeight() &&
+           getName().equals(weapon.getName()) &&
+           getType() == weapon.getType();
   }
 
   @Override

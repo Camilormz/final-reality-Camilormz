@@ -10,14 +10,16 @@ import java.util.concurrent.BlockingQueue;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A class that holds all the information of a single character of the game controlled by a player.
+ * Abstract class that holds all the information of a single character of the game controlled by
+ * a player.
  *
  * @author Ignacio Slater Muñoz.
  * @author Camilo Ramírez Canales.
  */
-public class PlayerCharacter extends AbstractCharacter {
+public abstract class AbstractPlayerCharacter extends AbstractCharacter
+           implements IPlayerCharacter{
 
-  private Weapon equippedWeapon;
+  protected Weapon equippedWeapon;
   private final CharacterClass characterClass;
 
   /**
@@ -30,27 +32,22 @@ public class PlayerCharacter extends AbstractCharacter {
    * @param characterClass
    *     the class of this character
    */
-  public PlayerCharacter(@NotNull String name,
-                         @NotNull BlockingQueue<ICharacter> turnsQueue,
-                         @NotNull final CharacterClass characterClass) {
+  public AbstractPlayerCharacter(@NotNull String name,
+                                 @NotNull BlockingQueue<ICharacter> turnsQueue,
+                                 @NotNull final CharacterClass characterClass) {
     super(turnsQueue, name, CharacterDomain.PLAYABLE);
     this.equippedWeapon = null;
     this.characterClass = characterClass;
   }
 
-  /**
-   * Equips a weapon to the character.
-   * TODO: Restrict the weapon according to CharacterClass
-   */
-  public void equip(Weapon weapon) {
-    this.equippedWeapon = weapon;
-  }
+  public abstract void equip(Weapon weapon);
 
-  /**
-   * Return this character's equipped weapon.
-   */
   public Weapon getEquippedWeapon() {
     return this.equippedWeapon;
+  }
+
+  public CharacterClass getCharacterClass() {
+    return this.characterClass;
   }
 
   @Override
@@ -60,10 +57,6 @@ public class PlayerCharacter extends AbstractCharacter {
       return 0;
     }
     return weapon.getWeight();
-  }
-
-  public CharacterClass getCharacterClass() {
-    return this.characterClass;
   }
 
   @Override
@@ -76,10 +69,10 @@ public class PlayerCharacter extends AbstractCharacter {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof PlayerCharacter)) {
+    if (!(o instanceof AbstractPlayerCharacter)) {
       return false;
     }
-    final PlayerCharacter that = (PlayerCharacter) o;
+    final AbstractPlayerCharacter that = (AbstractPlayerCharacter) o;
     return getCharacterClass() == that.getCharacterClass()
         && getName().equals(that.getName());
   }
