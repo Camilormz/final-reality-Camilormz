@@ -1,7 +1,6 @@
 package com.github.camilormz.finalreality.model.character;
 
 import com.github.camilormz.finalreality.model.character.player.CharacterClass;
-import com.github.camilormz.finalreality.model.weapon.Weapon;
 
 /**
  * This represents a character from the game.
@@ -19,19 +18,15 @@ public interface ICharacter {
   void waitTurn();
 
   /**
+   * Gets the associated turn weight of the character in order to compute its enqueuing speed in
+   * the turns queue
+   */
+  int getTurnWeight();
+
+  /**
    * Returns this character's name.
    */
   String getName();
-
-  /**
-   * Equips a weapon to the character.
-   */
-  void equip(Weapon weapon);
-
-  /**
-   * Return this character's equipped weapon.
-   */
-  Weapon getEquippedWeapon();
 
   /**
    * Returns this character's class.

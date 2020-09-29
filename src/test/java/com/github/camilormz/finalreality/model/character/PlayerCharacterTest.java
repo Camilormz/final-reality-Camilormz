@@ -11,11 +11,13 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+// TODO: The design of this test must be reviewed and fixed ASAP
+
 /**
  * Set of tests for the {@code GameCharacter} class.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Camilo Ramírez Canales.
  * @see PlayerCharacter
  */
 class PlayerCharacterTest extends AbstractCharacterTest {
@@ -72,11 +74,13 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
   @Test
   void equipWeaponTest() {
-    for (var character :
-        testCharacters) {
-      assertNull(character.getEquippedWeapon());
-      character.equip(testWeapon);
-      assertEquals(testWeapon, character.getEquippedWeapon());
+    for (var character : testCharacters) {
+      if (character instanceof PlayerCharacter) {
+        PlayerCharacter pCharacter = (PlayerCharacter) character;
+        assertNull(pCharacter.getEquippedWeapon());
+        pCharacter.equip(testWeapon);
+        assertEquals(testWeapon, pCharacter.getEquippedWeapon());
+      }
     }
   }
 }

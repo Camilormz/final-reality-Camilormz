@@ -3,7 +3,9 @@ ChangeLog
 
 Version 2.0
 -----------
-Write your changes in here
+- (B.1)  Restricted the use of weapons enabling it only to ``PlayerCharacter``.
+         Added method to ``ICharacter``, ``turnWeight`` and fixed SOLID issues with
+         ``AbstractCharacter`` on method ``waitTurn``.
 
 Version 1.0
 -----------

@@ -2,17 +2,20 @@ package com.github.camilormz.finalreality.model.character.player;
 
 import com.github.camilormz.finalreality.model.character.AbstractCharacter;
 import com.github.camilormz.finalreality.model.character.ICharacter;
+import com.github.camilormz.finalreality.model.weapon.Weapon;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A class that holds all the information of a single character of the game.
+ * A class that holds all the information of a single character of the game controlled by a player.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Camilo Ramírez Canales.
  */
 public class PlayerCharacter extends AbstractCharacter {
+
+  private Weapon equippedWeapon;
 
   /**
    * Creates a new character.
@@ -25,9 +28,34 @@ public class PlayerCharacter extends AbstractCharacter {
    *     the class of this character
    */
   public PlayerCharacter(@NotNull String name,
-      @NotNull BlockingQueue<ICharacter> turnsQueue,
-      final CharacterClass characterClass) {
+                         @NotNull BlockingQueue<ICharacter> turnsQueue,
+                         @NotNull final CharacterClass characterClass) {
     super(turnsQueue, name, characterClass);
+    this.equippedWeapon = null;
+  }
+
+  /**
+   * Equips a weapon to the character.
+   * TODO: Restrict the weapon according to CharacterClass
+   */
+  public void equip(Weapon weapon) {
+    this.equippedWeapon = weapon;
+  }
+
+  /**
+   * Return this character's equipped weapon.
+   */
+  public Weapon getEquippedWeapon() {
+    return this.equippedWeapon;
+  }
+
+  @Override
+  public int getTurnWeight() {
+    Weapon weapon = this.getEquippedWeapon();
+    if (weapon == null) {
+      return 0;
+    }
+    return weapon.getWeight();
   }
 
   @Override
