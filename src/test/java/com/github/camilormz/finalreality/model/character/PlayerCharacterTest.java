@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-// TODO: The design of this test must be reviewed and fixed ASAP
+// TODO: The design of this test IS highly broken-designed and must be fixed ASAP
 
 /**
  * Set of tests for the {@code GameCharacter} class.
@@ -57,17 +57,19 @@ class PlayerCharacterTest extends AbstractCharacterTest {
   @Test
   void constructorTest() {
     var enemy = new Enemy("Enemy", 10, turns);
-    for (var character :
-        testCharacters) {
-      var characterClass = character.getCharacterClass();
-      var characterName = characterNames.get(characterClass);
-      checkConstruction(new PlayerCharacter(characterName, turns, characterClass),
-          character,
-          new PlayerCharacter("Test", turns, characterClass),
-          new PlayerCharacter(characterName, turns,
-              characterClass == CharacterClass.THIEF ? CharacterClass.BLACK_MAGE
-                  : CharacterClass.THIEF));
-      assertNotEquals(character, enemy);
+    for (var character : testCharacters) {
+      var characterDomain = character.getCharacterDomain();
+      if (characterDomain == CharacterDomain.PLAYABLE) {
+        var characterClass = ((PlayerCharacter) character).getCharacterClass();
+        var characterName = characterNames.get(characterClass);
+        checkConstruction(new PlayerCharacter(characterName, turns, characterClass),
+                character,
+                new PlayerCharacter("Test", turns, characterClass),
+                new PlayerCharacter(characterName, turns,
+                        characterClass == CharacterClass.THIEF ? CharacterClass.BLACK_MAGE
+                                : CharacterClass.THIEF));
+        assertNotEquals(character, enemy);
+      }
     }
 
   }

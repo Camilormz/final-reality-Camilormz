@@ -5,6 +5,8 @@ import com.github.camilormz.finalreality.model.character.player.PlayerCharacter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+// TODO: The design of this test is probably broken and must be reviewed and fixed ASAP
+
 class EnemyTest extends AbstractCharacterTest {
 
   private static final String ENEMY_NAME = "Goblin";

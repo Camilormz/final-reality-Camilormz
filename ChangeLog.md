@@ -3,9 +3,12 @@ ChangeLog
 
 Version 2.0
 -----------
-- (B.1)  Restricted the use of weapons enabling it only to ``PlayerCharacter``.
-         Added method to ``ICharacter``, ``turnWeight`` and fixed SOLID issues with
-         ``AbstractCharacter`` on method ``waitTurn``.
+- (B.2) Defining of ``CharacterDomain`` as set of characteristics and behaviours of the character
+        relative to the game mechanics, and restricted ``CharacterClass`` to only
+        ``PlayerCharacter``.
+- (B.1) Restricted the use of weapons enabling it only to ``PlayerCharacter``.
+        Added method to ``ICharacter``, ``turnWeight`` and fixed SOLID issues with
+        ``AbstractCharacter`` on method ``waitTurn``.
 
 Version 1.0
 -----------

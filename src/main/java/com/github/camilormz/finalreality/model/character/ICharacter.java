@@ -1,7 +1,5 @@
 package com.github.camilormz.finalreality.model.character;
 
-import com.github.camilormz.finalreality.model.character.player.CharacterClass;
-
 /**
  * This represents a character from the game.
  * A character can be controlled by the player or by the CPU (an enemy).
@@ -29,7 +27,8 @@ public interface ICharacter {
   String getName();
 
   /**
-   * Returns this character's class.
+   * Returns this character's domain
+   * @see CharacterDomain
    */
-  CharacterClass getCharacterClass();
+  CharacterDomain getCharacterDomain();
 }

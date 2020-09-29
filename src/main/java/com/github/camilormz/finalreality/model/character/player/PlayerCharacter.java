@@ -1,8 +1,10 @@
 package com.github.camilormz.finalreality.model.character.player;
 
 import com.github.camilormz.finalreality.model.character.AbstractCharacter;
+import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 import com.github.camilormz.finalreality.model.weapon.Weapon;
+
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerCharacter extends AbstractCharacter {
 
   private Weapon equippedWeapon;
+  private final CharacterClass characterClass;
 
   /**
    * Creates a new character.
@@ -30,8 +33,9 @@ public class PlayerCharacter extends AbstractCharacter {
   public PlayerCharacter(@NotNull String name,
                          @NotNull BlockingQueue<ICharacter> turnsQueue,
                          @NotNull final CharacterClass characterClass) {
-    super(turnsQueue, name, characterClass);
+    super(turnsQueue, name, CharacterDomain.PLAYABLE);
     this.equippedWeapon = null;
+    this.characterClass = characterClass;
   }
 
   /**
@@ -56,6 +60,10 @@ public class PlayerCharacter extends AbstractCharacter {
       return 0;
     }
     return weapon.getWeight();
+  }
+
+  public CharacterClass getCharacterClass() {
+    return this.characterClass;
   }
 
   @Override

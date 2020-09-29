@@ -1,6 +1,5 @@
 package com.github.camilormz.finalreality.model.character;
 
-import com.github.camilormz.finalreality.model.character.player.CharacterClass;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,15 +16,15 @@ public abstract class AbstractCharacter implements ICharacter {
 
   protected final BlockingQueue<ICharacter> turnsQueue;
   protected final String name;
-  private final CharacterClass characterClass;
+  private final CharacterDomain characterDomain;
   private ScheduledExecutorService scheduledExecutor;
 
   protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
                               @NotNull String name,
-                              @NotNull CharacterClass characterClass) {
+                              @NotNull CharacterDomain characterDomain) {
     this.turnsQueue = turnsQueue;
     this.name = name;
-    this.characterClass = characterClass;
+    this.characterDomain = characterDomain;
   }
 
   @Override
@@ -52,7 +51,7 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   @Override
-  public CharacterClass getCharacterClass() {
-    return characterClass;
+  public CharacterDomain getCharacterDomain() {
+    return this.characterDomain;
   }
 }

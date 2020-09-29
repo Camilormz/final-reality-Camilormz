@@ -3,7 +3,6 @@ package com.github.camilormz.finalreality.model.character;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.github.camilormz.finalreality.model.character.player.CharacterClass;
 import com.github.camilormz.finalreality.model.character.player.PlayerCharacter;
 import com.github.camilormz.finalreality.model.weapon.Weapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
@@ -14,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-// TODO: The design of this test must be reviewed and fixed ASAP
+// TODO: The design of this test is probably broken and must be reviewed and fixed ASAP
 
 /**
  * Abstract class containing the common tests for all the types of characters.
@@ -35,7 +34,7 @@ public abstract class AbstractCharacterTest {
   @Test
   void waitTurnTest() {
     Assertions.assertTrue(turns.isEmpty());
-    if (testCharacters.get(0).getCharacterClass() != CharacterClass.ENEMY) {
+    if (testCharacters.get(0).getCharacterDomain() != CharacterDomain.ENEMY) {
       tryToEquip(testCharacters.get(0));
     }
     testCharacters.get(0).waitTurn();
