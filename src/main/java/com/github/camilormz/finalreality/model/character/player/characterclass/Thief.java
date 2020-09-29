@@ -3,7 +3,7 @@ package com.github.camilormz.finalreality.model.character.player.characterclass;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.camilormz.finalreality.model.character.player.CharacterClass;
-import com.github.camilormz.finalreality.model.weapon.Weapon;
+import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +28,7 @@ public class Thief extends AbstractPlayerCharacter {
     }
 
     @Override
-    public void equip(Weapon weapon) {
+    public void equip(IWeapon weapon) {
         WeaponType weaponType = weapon.getType();
         if (weaponType == WeaponType.SWORD
          || weaponType == WeaponType.STAFF

@@ -4,14 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
-import com.github.camilormz.finalreality.model.weapon.Weapon;
+import com.github.camilormz.finalreality.model.weapon.AbstractWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 // TODO: This test is totally broken and must be fixed or re-done ASAP
 
@@ -26,7 +24,7 @@ public abstract class AbstractCharacterTest {
 
   protected BlockingQueue<ICharacter> turns;
   protected List<ICharacter> testCharacters;
-  protected Weapon testWeapon;
+  protected AbstractWeapon testWeapon;
 
   private void tryToEquip(ICharacter character) {
     if (character instanceof AbstractPlayerCharacter) {
@@ -43,11 +41,5 @@ public abstract class AbstractCharacterTest {
     assertNotEquals(sameClassDifferentCharacter, testEqualCharacter);
     assertNotEquals(testEqualCharacter, differentClassCharacter);
     assertEquals(expectedCharacter.hashCode(), testEqualCharacter.hashCode());
-  }
-
-  protected void basicSetUp() {
-    turns = new LinkedBlockingQueue<>();
-    testWeapon = new Weapon("Test", 15, 10, WeaponType.AXE);
-    testCharacters = new ArrayList<>();
   }
 }

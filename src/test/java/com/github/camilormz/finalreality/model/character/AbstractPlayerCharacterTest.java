@@ -4,7 +4,7 @@ import com.github.camilormz.finalreality.model.character.player.CharacterClass;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
 import java.util.Map;
 
-// TODO: The design of this test IS totally broken and a new one must be done ASAP
+// TODO: The design of this test IS totally broken and a new one must be re-done ASAP
 
 /**
  * Set of tests for the {@code GameCharacter} class.

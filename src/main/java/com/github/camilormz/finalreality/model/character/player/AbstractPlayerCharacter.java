@@ -3,10 +3,11 @@ package com.github.camilormz.finalreality.model.character.player;
 import com.github.camilormz.finalreality.model.character.AbstractCharacter;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.ICharacter;
-import com.github.camilormz.finalreality.model.weapon.Weapon;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+
+import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractPlayerCharacter extends AbstractCharacter
            implements IPlayerCharacter{
 
-  protected Weapon equippedWeapon;
+  protected IWeapon equippedWeapon;
   private final CharacterClass characterClass;
 
   /**
@@ -40,9 +41,9 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     this.characterClass = characterClass;
   }
 
-  public abstract void equip(Weapon weapon);
+  public abstract void equip(IWeapon weapon);
 
-  public Weapon getEquippedWeapon() {
+  public IWeapon getEquippedWeapon() {
     return this.equippedWeapon;
   }
 
@@ -52,7 +53,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
 
   @Override
   public int getTurnWeight() {
-    Weapon weapon = this.getEquippedWeapon();
+    IWeapon weapon = this.getEquippedWeapon();
     if (weapon == null) {
       return 0;
     }

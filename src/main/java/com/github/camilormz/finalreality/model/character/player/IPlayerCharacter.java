@@ -1,7 +1,7 @@
 package com.github.camilormz.finalreality.model.character.player;
 
 import com.github.camilormz.finalreality.model.character.ICharacter;
-import com.github.camilormz.finalreality.model.weapon.Weapon;
+import com.github.camilormz.finalreality.model.weapon.IWeapon;
 
 /**
  * This represents a playable character (character controlled by the player) from the game.
@@ -13,12 +13,12 @@ public interface IPlayerCharacter extends ICharacter {
     /**
      * Equips a weapon to the character.
      */
-    void equip(Weapon weapon);
+    void equip(IWeapon weapon);
 
     /**
      * Returns this character's equipped weapon.
      */
-    Weapon getEquippedWeapon();
+    IWeapon getEquippedWeapon();
 
     /**
      * Returns this character's class.

@@ -3,8 +3,11 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.3) Turning of ``Weapon`` into an abstract class ``AbstractWeapon`` and split it into its
+        subtypes to ensure Single-Responsibility principle. (Current test coverage 0%).
 - (B.2) Turning of ``PlayerCharacter`` into an abstract class ``AbstractPlayerCharacter`` and split
-        it into its subclasses, removal of the previous implementation tests.
+        it into its subclasses to ensure Single-Responsibility principle. Removal of the previous
+        implementation tests.
 - (B.2) Defining of ``CharacterDomain`` as set of characteristics and behaviours of the character
         relative to the game mechanics, and restricted ``CharacterClass`` to only
         ``PlayerCharacter``.
