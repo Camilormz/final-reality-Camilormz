@@ -7,6 +7,7 @@ import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -24,14 +25,9 @@ public class Engineer extends AbstractPlayerCharacter {
      *     the queue with the characters waiting for their turn
      */
     public Engineer(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue) {
-        super(name, turnsQueue, CharacterClass.ENGINEER);
-    }
-
-    @Override
-    public void equip(IWeapon weapon) {
-        WeaponType weaponType = weapon.getType();
-        if (weaponType == WeaponType.AXE || weaponType == WeaponType.BOW) {
-            this.equippedWeapon = weapon;
-        }
+        super(name,
+              turnsQueue,
+              CharacterClass.ENGINEER,
+              EnumSet.of(WeaponType.AXE, WeaponType.BOW));
     }
 }

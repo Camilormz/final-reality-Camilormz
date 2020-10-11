@@ -8,6 +8,7 @@ import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -25,14 +26,9 @@ public class WhiteMage extends AbstractPlayerCharacter implements IMagicalCharac
      *     the queue with the characters waiting for their turn
      */
     public WhiteMage(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue) {
-        super(name, turnsQueue, CharacterClass.WHITE_MAGE);
-    }
-
-    @Override
-    public void equip(IWeapon weapon) {
-        WeaponType weaponType = weapon.getType();
-        if (weaponType == WeaponType.STAFF) {
-            this.equippedWeapon = weapon;
-        }
+        super(name,
+              turnsQueue,
+              CharacterClass.WHITE_MAGE,
+              EnumSet.of(WeaponType.STAFF));
     }
 }

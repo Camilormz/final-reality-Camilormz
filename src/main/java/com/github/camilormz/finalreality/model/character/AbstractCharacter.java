@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractCharacter implements ICharacter {
 
-  protected final BlockingQueue<ICharacter> turnsQueue;
-  protected final String name;
+  private final BlockingQueue<ICharacter> turnsQueue;
+  private final String name;
   private final CharacterDomain characterDomain;
   private ScheduledExecutorService scheduledExecutor;
 

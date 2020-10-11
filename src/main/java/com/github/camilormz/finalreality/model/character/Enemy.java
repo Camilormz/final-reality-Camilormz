@@ -37,7 +37,7 @@ public class Enemy extends AbstractCharacter {
     return weight;
   }
 
-  public int getTurnWeight() {
+  protected int getTurnWeight() {
     return this.getWeight();
   }
 

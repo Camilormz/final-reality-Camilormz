@@ -4,10 +4,12 @@ import com.github.camilormz.finalreality.model.character.AbstractCharacter;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 import com.github.camilormz.finalreality.model.weapon.IWeapon;
+import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,8 +22,9 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractPlayerCharacter extends AbstractCharacter
            implements IPlayerCharacter{
 
-  protected IWeapon equippedWeapon;
+  private IWeapon equippedWeapon;
   private final CharacterClass characterClass;
+  private final EnumSet<WeaponType> allowedWeapons;
 
   /**
    * Creates a new (abstract) playable character.
@@ -35,13 +38,20 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    */
   public AbstractPlayerCharacter(@NotNull String name,
                                  @NotNull BlockingQueue<ICharacter> turnsQueue,
-                                 @NotNull final CharacterClass characterClass) {
+                                 @NotNull final CharacterClass characterClass,
+                                 @NotNull final EnumSet<WeaponType> allowedWeapons) {
     super(turnsQueue, name, CharacterDomain.PLAYABLE);
     this.equippedWeapon = null;
     this.characterClass = characterClass;
+    this.allowedWeapons = allowedWeapons;
   }
 
-  public abstract void equip(IWeapon weapon);
+  public void equip(IWeapon weapon) {
+    WeaponType weaponType = weapon.getType();
+    if (this.allowedWeapons.contains(weaponType)) {
+      this.equippedWeapon = weapon;
+    }
+  }
 
   public IWeapon getEquippedWeapon() {
     return this.equippedWeapon;
@@ -52,7 +62,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   }
 
   @Override
-  public int getTurnWeight() {
+  protected int getTurnWeight() {
     IWeapon weapon = this.getEquippedWeapon();
     if (weapon == null) {
       return 0;

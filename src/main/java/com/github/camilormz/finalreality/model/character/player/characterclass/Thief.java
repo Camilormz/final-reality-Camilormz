@@ -7,6 +7,7 @@ import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -24,16 +25,9 @@ public class Thief extends AbstractPlayerCharacter {
      *     the queue with the characters waiting for their turn
      */
     public Thief(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue) {
-        super(name, turnsQueue, CharacterClass.THIEF);
-    }
-
-    @Override
-    public void equip(IWeapon weapon) {
-        WeaponType weaponType = weapon.getType();
-        if (weaponType == WeaponType.SWORD
-         || weaponType == WeaponType.STAFF
-         || weaponType == WeaponType.BOW) {
-            this.equippedWeapon = weapon;
-        }
+        super(name,
+                turnsQueue,
+                CharacterClass.THIEF,
+                EnumSet.of(WeaponType.SWORD, WeaponType.STAFF, WeaponType.BOW));
     }
 }

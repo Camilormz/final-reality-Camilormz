@@ -3,6 +3,11 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.6) Usage of ``EnumSet<WeaponType>`` to move ``equip`` method directly to
+        ``AbstractPlayerCharacter``, this implies that the character classes have an ``EnumSet`` in
+        their constructors of the weapons they are allowed to use.
+- (B.5) Removed method ``getTurnWeight`` from ``ICharacter`` interface, there is only ``waitTurn``
+        needed.
 - (B.4) Added ``IMagicalCharacter`` interface to manage magical character's behaviour.
 - (B.3) Turning of ``Weapon`` into an abstract class ``AbstractWeapon`` and split it into its
         subtypes to ensure Single-Responsibility principle. (Current test coverage 0%).
