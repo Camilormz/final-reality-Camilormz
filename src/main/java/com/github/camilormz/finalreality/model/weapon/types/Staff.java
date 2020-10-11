@@ -5,6 +5,8 @@ import com.github.camilormz.finalreality.model.weapon.IMagicalWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * A class that holds all the information of a staff.
  *
@@ -25,5 +27,10 @@ public class Staff extends AbstractWeapon implements IMagicalWeapon {
     @Override
     public int getMagicDamage() {
         return this.magicDamage;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getDamage(), getWeight(), getType(), getMagicDamage());
     }
 }
