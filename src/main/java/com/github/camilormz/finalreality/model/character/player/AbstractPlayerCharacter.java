@@ -35,6 +35,10 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    *     the queue with the characters waiting for their turn
    * @param characterClass
    *     the class of this character
+   *     @see CharacterClass
+   * @param allowedWeapons
+   *     the set of weapon types that the character is allowed to equip
+   *     @see WeaponType
    */
   public AbstractPlayerCharacter(@NotNull String name,
                                  @NotNull BlockingQueue<ICharacter> turnsQueue,
@@ -75,12 +79,12 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AbstractPlayerCharacter)) {
+    if (!(o instanceof IPlayerCharacter)) {
       return false;
     }
-    final AbstractPlayerCharacter that = (AbstractPlayerCharacter) o;
-    return getCharacterClass() == that.getCharacterClass()
-        && getName().equals(that.getName());
+    final IPlayerCharacter otherPCharacter = (IPlayerCharacter) o;
+    return this.getName().equals(otherPCharacter.getName()) &&
+           this.getCharacterClass() == otherPCharacter.getCharacterClass();
   }
 
   @Override

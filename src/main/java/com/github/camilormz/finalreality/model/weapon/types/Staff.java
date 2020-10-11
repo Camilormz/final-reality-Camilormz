@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.weapon.types;
 
 import com.github.camilormz.finalreality.model.weapon.AbstractWeapon;
 import com.github.camilormz.finalreality.model.weapon.IMagicalWeapon;
+import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,24 @@ public class Staff extends AbstractWeapon implements IMagicalWeapon {
     }
 
     @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof IMagicalWeapon)) {
+            return false;
+        }
+        final IMagicalWeapon weapon = (IMagicalWeapon) o;
+        return this.getName().equals(weapon.getName()) &&
+               this.getDamage() == weapon.getDamage() &&
+               this.getWeight() == weapon.getWeight() &&
+               this.getType() == weapon.getType() &&
+               this.getMagicDamage() == this.getMagicDamage();
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDamage(), getWeight(), getType(), getMagicDamage());
+        return Objects.hash(this.getName(), this.getDamage(), this.getWeight(), this.getType(),
+                            this.getMagicDamage());
     }
 }

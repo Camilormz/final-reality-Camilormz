@@ -51,7 +51,8 @@ public class Enemy extends AbstractCharacter {
       return false;
     }
     final Enemy enemy = (Enemy) o;
-    return getWeight() == enemy.getWeight();
+    return this.getName().equals(enemy.getName()) &&
+           this.getWeight() == enemy.getWeight();
   }
 
   @Override

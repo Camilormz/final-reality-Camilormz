@@ -3,6 +3,7 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.7) Fix of ``equals`` and ``hashCode`` methods.
 - (B.6) Usage of ``EnumSet<WeaponType>`` to move ``equip`` method directly to
         ``AbstractPlayerCharacter``, this implies that the character classes have an ``EnumSet`` in
         their constructors of the weapons they are allowed to use.
