@@ -3,6 +3,7 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.9) Created tests for the equipment of weapons.
 - (B.8) Created tests for constructors, equals and hashcode in playable character subclasses
 - (B.7) Fix of ``equals`` and ``hashCode`` methods.
 - (B.6) Usage of ``EnumSet<WeaponType>`` to move ``equip`` method directly to

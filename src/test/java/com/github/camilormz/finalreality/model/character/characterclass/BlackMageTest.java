@@ -13,21 +13,32 @@ import org.junit.jupiter.api.Test;
  */
 public class BlackMageTest extends AbstractPlayerCharacterTest {
 
+    private final String BLACK_MAGE_NAME = "Nix";
+    private final String BLACK_MAGE_ALT_NAME = "Chaos";
+
     private BlackMage blackMage;
     private BlackMage blackMageAltName;
+    private BlackMage unarmedBlackMage;
     private WhiteMage notBlackMageAltClass;
 
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        blackMage = new BlackMage("Nix", turns);
-        blackMageAltName = new BlackMage("Chaos", turns);
-        notBlackMageAltClass = new WhiteMage("Nix", turns);
+        blackMage = new BlackMage(BLACK_MAGE_NAME, turns);
+        blackMageAltName = new BlackMage(BLACK_MAGE_ALT_NAME, turns);
+        unarmedBlackMage = new BlackMage(BLACK_MAGE_NAME, turns);
+        notBlackMageAltClass = new WhiteMage(BLACK_MAGE_NAME, turns);
+
     }
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(blackMage, new BlackMage("Nix", turns),
+        this.constructionTest(blackMage, new BlackMage(BLACK_MAGE_NAME, turns),
                               blackMageAltName, notBlackMageAltClass);
+    }
+    @Override
+    @Test
+    protected void subClassWeaponTest() {
+        this.weaponEquipmentTest(blackMage, unarmedBlackMage, testStaff, testBow);
     }
 }

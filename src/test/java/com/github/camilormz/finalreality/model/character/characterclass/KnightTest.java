@@ -13,21 +13,31 @@ import org.junit.jupiter.api.Test;
  */
 public class KnightTest extends AbstractPlayerCharacterTest {
 
+    private final String KNIGHT_NAME = "Steel";
+    private final String KNIGHT_ALT_NAME = "Iron";
+
     private Knight knight;
     private Knight knightAltName;
+    private Knight unarmedKnight;
     private Engineer notKnightAltClass;
 
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        knight = new Knight("Steel", turns);
-        knightAltName = new Knight("Iron", turns);
-        notKnightAltClass = new Engineer("Steel", turns);
+        knight = new Knight(KNIGHT_NAME, turns);
+        knightAltName = new Knight(KNIGHT_ALT_NAME, turns);
+        unarmedKnight = new Knight(KNIGHT_NAME, turns);
+        notKnightAltClass = new Engineer(KNIGHT_NAME, turns);
     }
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(knight, new Knight("Steel", turns),
+        this.constructionTest(knight, new Knight(KNIGHT_NAME, turns),
                               knightAltName, notKnightAltClass);
+    }
+    @Override
+    @Test
+    protected void subClassWeaponTest() {
+        this.weaponEquipmentTest(knight, unarmedKnight, testSword, testBow);
     }
 }
