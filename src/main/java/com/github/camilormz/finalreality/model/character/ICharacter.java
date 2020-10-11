@@ -16,12 +16,6 @@ public interface ICharacter {
   void waitTurn();
 
   /**
-   * Gets the associated turn weight of the character in order to compute its enqueuing speed in
-   * the turns queue
-   */
-  int getTurnWeight();
-
-  /**
    * Returns this character's name.
    */
   String getName();

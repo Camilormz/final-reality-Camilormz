@@ -53,8 +53,11 @@ public abstract class AbstractCharacter implements ICharacter {
     scheduledExecutor.shutdown();
   }
 
-  @Override
-  public abstract int getTurnWeight();
+  /**
+   * Gets the associated turn weight of the character in order to compute its enqueuing speed in
+   * the turns queue
+   */
+  protected abstract int getTurnWeight();
 
   @Override
   public String getName() {
