@@ -2,7 +2,7 @@ package com.github.camilormz.finalreality.model.character;
 
 // TODO: This test IS totally broken and must be re-done ASAP
 
-class EnemyTest extends AbstractCharacterTest {
+class EnemyTestBK extends AbstractCharacterTestBK {
 
   private static final String ENEMY_NAME = "Goblin";
 

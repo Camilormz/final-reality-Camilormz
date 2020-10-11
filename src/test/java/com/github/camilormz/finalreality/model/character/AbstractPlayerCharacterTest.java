@@ -1,25 +1,68 @@
 package com.github.camilormz.finalreality.model.character;
 
-import com.github.camilormz.finalreality.model.character.player.CharacterClass;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
-import java.util.Map;
+import com.github.camilormz.finalreality.model.character.player.characterclass.*;
+import com.github.camilormz.finalreality.model.weapon.IWeapon;
+import com.github.camilormz.finalreality.model.weapon.types.Axe;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-// TODO: The design of this test IS totally broken and a new one must be re-done ASAP
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Set of tests for the {@code GameCharacter} class.
+ * Abstract class that holds the tests for all the playable character subclasses
  *
- * @author Ignacio Slater Muñoz.
- * @author Camilo Ramírez Canales.
- * @see AbstractPlayerCharacter
+ * @author Camilo Ramírez Canales
  */
-class AbstractPlayerCharacterTest extends AbstractCharacterTest {
+public abstract class AbstractPlayerCharacterTest {
 
-  private static final String BLACK_MAGE_NAME = "Vivi";
-  private static final String KNIGHT_NAME = "Adelbert";
-  private static final String WHITE_MAGE_NAME = "Eiko";
-  private static final String ENGINEER_NAME = "Cid";
-  private static final String THIEF_NAME = "Zidane";
-  private Map<CharacterClass, String> characterNames;
+    protected BlockingQueue<ICharacter> turns;
+    private IWeapon testWeapon;
 
+    /**
+     * Executes a setup for every test involving Playable Characters
+     */
+    @BeforeEach
+    void setUp() {
+        turns = new LinkedBlockingQueue<>();
+        // blackMage = new BlackMage("Nix", turns);
+        // engineer = new Engineer("Tesla", turns);
+        // knight = new Knight("Steel", turns);
+        // thief = new Thief("Bonnie", turns);
+        // whiteMage = new WhiteMage("Lux", turns);
+        testWeapon = new Axe("Wood Slayer", 10, 10);
+    }
+
+    /**
+     * General test of construction for all playable characters
+     */
+    protected void constructionTest(AbstractPlayerCharacter standard,
+                          AbstractPlayerCharacter same,
+                          AbstractPlayerCharacter anotherName,
+                          AbstractPlayerCharacter anotherClass) {
+        assertEquals(standard, standard);
+        assertEquals(standard, same);
+        assertEquals(standard.hashCode(), same.hashCode());
+        assertNotEquals(standard, anotherName);
+        assertNotEquals(standard, anotherClass);
+        assertNotEquals(standard, testWeapon);
+    }
+
+    /**
+     * Does the setup related to the playable character subclass
+     */
+    @BeforeEach
+    protected abstract void subClassSetUp();
+
+    /**
+     * Executes the construction test for the subclasses
+     */
+    @Test
+    protected abstract void subClassConstructorTest();
 }

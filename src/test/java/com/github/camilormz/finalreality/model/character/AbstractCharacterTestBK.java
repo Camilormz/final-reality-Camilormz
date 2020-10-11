@@ -20,7 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author Camilo Ramírez Canales.
  * @see ICharacter
  */
-public abstract class AbstractCharacterTest {
+public abstract class AbstractCharacterTestBK {
 
   protected BlockingQueue<ICharacter> turns;
   protected List<ICharacter> testCharacters;
