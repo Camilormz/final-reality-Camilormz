@@ -1,8 +1,7 @@
-package com.github.camilormz.finalreality.model.character.characterclass;
+package com.github.camilormz.finalreality.model.character.player.characterclass;
 
-import com.github.camilormz.finalreality.model.character.AbstractPlayerCharacterTest;
-import com.github.camilormz.finalreality.model.character.player.characterclass.BlackMage;
-import com.github.camilormz.finalreality.model.character.player.characterclass.WhiteMage;
+import com.github.camilormz.finalreality.model.character.CharacterDomain;
+import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +39,18 @@ public class BlackMageTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassWeaponTest() {
         this.weaponEquipmentTest(blackMage, unarmedBlackMage, testStaff, testBow);
+    }
+    @Override
+    @Test
+    protected void subClassWaitTurnTest() {
+        this.waitTurnTest(blackMage, 0, waitTurnTestErrorMargin);
+        blackMage.equip(testStaff);
+        long expectedTime = testStaff.getWeight()/10;
+        this.waitTurnTest(blackMage, expectedTime, waitTurnTestErrorMargin);
+    }
+    @Override
+    @Test
+    protected void subClassCharacterDomainTest() {
+        this.getCharacterDomainTest(blackMage, CharacterDomain.PLAYABLE);
     }
 }

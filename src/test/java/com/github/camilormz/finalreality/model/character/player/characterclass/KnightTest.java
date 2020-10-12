@@ -1,8 +1,7 @@
-package com.github.camilormz.finalreality.model.character.characterclass;
+package com.github.camilormz.finalreality.model.character.player.characterclass;
 
-import com.github.camilormz.finalreality.model.character.AbstractPlayerCharacterTest;
-import com.github.camilormz.finalreality.model.character.player.characterclass.Engineer;
-import com.github.camilormz.finalreality.model.character.player.characterclass.Knight;
+import com.github.camilormz.finalreality.model.character.CharacterDomain;
+import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,5 +38,18 @@ public class KnightTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassWeaponTest() {
         this.weaponEquipmentTest(knight, unarmedKnight, testSword, testBow);
+    }
+    @Override
+    @Test
+    protected void subClassWaitTurnTest() {
+        this.waitTurnTest(knight, 0, waitTurnTestErrorMargin);
+        knight.equip(testSword);
+        long expectedTime = testSword.getWeight()/10;
+        this.waitTurnTest(knight, expectedTime, waitTurnTestErrorMargin);
+    }
+    @Override
+    @Test
+    protected void subClassCharacterDomainTest() {
+        this.getCharacterDomainTest(knight, CharacterDomain.PLAYABLE);
     }
 }

@@ -1,8 +1,7 @@
-package com.github.camilormz.finalreality.model.character.characterclass;
+package com.github.camilormz.finalreality.model.character.player.characterclass;
 
-import com.github.camilormz.finalreality.model.character.AbstractPlayerCharacterTest;
-import com.github.camilormz.finalreality.model.character.player.characterclass.BlackMage;
-import com.github.camilormz.finalreality.model.character.player.characterclass.Thief;
+import com.github.camilormz.finalreality.model.character.CharacterDomain;
+import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,5 +38,18 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassWeaponTest() {
         this.weaponEquipmentTest(thief, unarmedThief, testSword, testAxe);
+    }
+    @Override
+    @Test
+    protected void subClassWaitTurnTest() {
+        this.waitTurnTest(thief, 0, waitTurnTestErrorMargin);
+        thief.equip(testSword);
+        long expectedTime = testSword.getWeight()/10;
+        this.waitTurnTest(thief, expectedTime, waitTurnTestErrorMargin);
+    }
+    @Override
+    @Test
+    protected void subClassCharacterDomainTest() {
+        this.getCharacterDomainTest(thief, CharacterDomain.PLAYABLE);
     }
 }

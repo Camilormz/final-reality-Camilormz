@@ -3,6 +3,8 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.10) Reached 100% ``AbstractCharacter`` coverage after implementing tests for ``waitTurn`` and
+         ``getCharacterDomain`` methods.
 - (B.9) Created tests for the equipment of weapons.
 - (B.8) Created tests for constructors, equals and hashcode in playable character subclasses
 - (B.7) Fix of ``equals`` and ``hashCode`` methods.
