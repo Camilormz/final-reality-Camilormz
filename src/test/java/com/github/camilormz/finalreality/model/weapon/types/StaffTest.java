@@ -4,6 +4,11 @@ import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class that holds everything related to staffs
+ *
+ * @author Camilo Ramírez Canales
+ */
 public class StaffTest extends AbstractWeaponTest {
 
     private final String STAFF_NAME = "Shadowmaker";
@@ -15,6 +20,7 @@ public class StaffTest extends AbstractWeaponTest {
     private Staff staffAltWeight;
     private Staff staffAltMagicDamage;
 
+    @Override
     @BeforeEach
     protected void subClassSetUp() {
         staff = new Staff(STAFF_NAME, 10, 10, 10);

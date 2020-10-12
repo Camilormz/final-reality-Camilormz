@@ -1,10 +1,14 @@
 package com.github.camilormz.finalreality.model.weapon.types;
 
 import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
-import javafx.scene.input.SwipeEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class that holds everything related to swords
+ *
+ * @author Camilo Ramírez Canales
+ */
 public class SwordTest extends AbstractWeaponTest {
 
     private final String SWORD_NAME = "Infidel Redentor";
@@ -16,6 +20,7 @@ public class SwordTest extends AbstractWeaponTest {
     private Sword swordAltWeight;
     private Axe notSwordAltType;
 
+    @Override
     @BeforeEach
     protected void subClassSetUp() {
         sword = new Sword(SWORD_NAME, 10, 10);

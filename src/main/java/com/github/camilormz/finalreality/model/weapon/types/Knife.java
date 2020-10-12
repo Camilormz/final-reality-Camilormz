@@ -11,7 +11,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Knife extends AbstractWeapon {
     /**
-     * Creates a knife with a name, a base damage and weight
+     * Creates a knife.
+     *
+     * @param name
+     *     the knife's name
+     * @param damage
+     *     the damage done by the knife
+     * @param weight
+     *     the weight of the knife
      */
     public Knife(@NotNull String name, final int damage, final int weight) {
         super(name, damage, weight, WeaponType.KNIFE);

@@ -11,7 +11,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Bow extends AbstractWeapon {
     /**
-     * Creates a bow with a name, a base damage and weight
+     * Creates a bow.
+     *
+     * @param name
+     *     the bow's name
+     * @param damage
+     *     the damage done by the bow
+     * @param weight
+     *     the weight of the bow
      */
     public Bow(@NotNull String name, final int damage, final int weight) {
         super(name, damage, weight, WeaponType.BOW);

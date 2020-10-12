@@ -4,6 +4,11 @@ import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class that holds everything related to axes
+ *
+ * @author Camilo Ramírez Canales
+ */
 public class AxeTest extends AbstractWeaponTest {
 
     private final String AXE_NAME = "Wood Slayer";
@@ -15,6 +20,7 @@ public class AxeTest extends AbstractWeaponTest {
     private Axe axeAltWeight;
     private Sword notAxeAltType;
 
+    @Override
     @BeforeEach
     protected void subClassSetUp() {
         axe = new Axe(AXE_NAME, 10, 10);

@@ -4,6 +4,11 @@ import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class that holds everything related to bows
+ *
+ * @author Camilo Ramírez Canales
+ */
 public class BowTest extends AbstractWeaponTest {
 
     private final String BOW_NAME = "The Trebuchet";
@@ -15,6 +20,7 @@ public class BowTest extends AbstractWeaponTest {
     private Bow bowAltWeight;
     private Knife notBowAltType;
 
+    @Override
     @BeforeEach
     protected void subClassSetUp() {
         bow = new Bow(BOW_NAME, 10, 10);

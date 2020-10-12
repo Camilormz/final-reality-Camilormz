@@ -57,10 +57,12 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     }
   }
 
+  @Override
   public IWeapon getEquippedWeapon() {
     return this.equippedWeapon;
   }
 
+  @Override
   public CharacterClass getCharacterClass() {
     return this.characterClass;
   }

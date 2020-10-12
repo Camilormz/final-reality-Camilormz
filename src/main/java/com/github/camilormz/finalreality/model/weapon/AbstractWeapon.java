@@ -18,9 +18,17 @@ public abstract class AbstractWeapon implements IWeapon {
   private final WeaponType type;
 
   /**
-   * Creates a weapon with a name, a base damage, weight and it's type.
+   * Creates a weapon.
    *
-   * @see WeaponType
+   * @param name
+   *     the weapon's name
+   * @param damage
+   *     the damage the weapon is allowed to do
+   * @param weight
+   *     the weight of the weapon
+   * @param type
+   *     the type of the weapon
+   *     @see WeaponType
    */
   public AbstractWeapon(@NotNull final String name, final int damage, final int weight,
                         @NotNull final WeaponType type) {

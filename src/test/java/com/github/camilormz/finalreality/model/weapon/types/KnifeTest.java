@@ -4,6 +4,11 @@ import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class that holds everything related to knifes
+ *
+ * @author Camilo Ramírez Canales
+ */
 public class KnifeTest extends AbstractWeaponTest {
 
     private final String KNIFE_NAME = "Stealthy";
@@ -15,6 +20,7 @@ public class KnifeTest extends AbstractWeaponTest {
     private Knife knifeAltWeight;
     private Bow notKnifeAltType;
 
+    @Override
     @BeforeEach
     protected void subClassSetUp() {
         knife = new Knife(KNIFE_NAME, 10, 10);
