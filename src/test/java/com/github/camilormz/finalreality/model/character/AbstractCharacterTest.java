@@ -1,5 +1,6 @@
 package com.github.camilormz.finalreality.model.character;
 
+import com.github.camilormz.finalreality.model.character.player.characterclass.Knight;
 import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,9 +11,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Abstract class that holds the tests available for any character of the game
+ *
+ * @author Camilo Ramírez Canales
+ */
 public abstract class AbstractCharacterTest {
 
-    private final String ENEMY_NAME = "Kronos";
+    protected final String ENEMY_TEST_NAME = "Kronos";
+    protected final String PLAYABLE_TEST_NAME = "Steel";
     private final String AXE_NAME = "Wood Slayer";
     private final String BOW_NAME = "The Trebuchet";
     private final String KNIFE_NAME = "Stealthy";
@@ -26,6 +33,7 @@ public abstract class AbstractCharacterTest {
     protected Staff testStaff;
     protected Sword testSword;
     protected Enemy testEnemy;
+    protected Knight testPlayable;
 
     protected final float waitTurnTestErrorMargin = 10;
     private final long epsilonWaitTurnTest = 50;  // milliseconds to wait at 0 expected time
@@ -36,7 +44,8 @@ public abstract class AbstractCharacterTest {
     @BeforeEach
     void setUp() {
         turns = new LinkedBlockingQueue<>();
-        testEnemy = new Enemy(ENEMY_NAME, 10, turns);
+        testEnemy = new Enemy(ENEMY_TEST_NAME, 10, turns);
+        testPlayable = new Knight(PLAYABLE_TEST_NAME, turns);
         testAxe = new Axe(AXE_NAME, 10, 10);
         testBow = new Bow(BOW_NAME, 10, 10);
         testKnife = new Knife(KNIFE_NAME, 10, 10);

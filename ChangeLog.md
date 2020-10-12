@@ -3,6 +3,7 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.11) Ensured 100% ``character`` package coverage.
 - (B.10) Reached 100% ``AbstractCharacter`` coverage after implementing tests for ``waitTurn`` and
          ``getCharacterDomain`` methods.
 - (B.9) Created tests for the equipment of weapons.

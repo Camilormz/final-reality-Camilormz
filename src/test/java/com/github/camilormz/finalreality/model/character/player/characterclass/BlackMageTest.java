@@ -27,7 +27,6 @@ public class BlackMageTest extends AbstractPlayerCharacterTest {
         blackMageAltName = new BlackMage(BLACK_MAGE_ALT_NAME, turns);
         unarmedBlackMage = new BlackMage(BLACK_MAGE_NAME, turns);
         notBlackMageAltClass = new WhiteMage(BLACK_MAGE_NAME, turns);
-
     }
     @Override
     @Test
