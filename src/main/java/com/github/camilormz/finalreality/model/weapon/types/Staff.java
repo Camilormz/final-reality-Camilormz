@@ -42,8 +42,7 @@ public class Staff extends AbstractWeapon implements IMagicalWeapon {
         return this.getName().equals(weapon.getName()) &&
                this.getDamage() == weapon.getDamage() &&
                this.getWeight() == weapon.getWeight() &&
-               this.getType() == weapon.getType() &&
-               this.getMagicDamage() == this.getMagicDamage();
+               this.getMagicDamage() == weapon.getMagicDamage();
     }
 
     @Override

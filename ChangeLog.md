@@ -3,6 +3,7 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.12) Ensured 100% total coverage
 - (B.11) Ensured 100% ``character`` package coverage.
 - (B.10) Reached 100% ``AbstractCharacter`` coverage after implementing tests for ``waitTurn`` and
          ``getCharacterDomain`` methods.
