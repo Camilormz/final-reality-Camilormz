@@ -14,7 +14,6 @@ public class StaffTest extends AbstractWeaponTest {
     private Staff staffAltDamage;
     private Staff staffAltWeight;
     private Staff staffAltMagicDamage;
-    private Sword notStaffAltType;
 
     @BeforeEach
     protected void subClassSetUp() {
