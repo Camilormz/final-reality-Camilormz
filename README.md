@@ -18,8 +18,6 @@ enemies controlled by the computer.
 
 The project is part of the course CC3002 Design and Programming Methodologies at Universidad de Chile
 
----
-
 **_Brief_ project description**
 -------------------------------
 As it's said, this project it's a simplified clone of _Final Fantasy_. A turn based combat game where
@@ -36,15 +34,11 @@ be avialable for the player to attack an enemy.
 Whithin the playable character classes, there are magical classes, they can throw spells if they have
 an staff as the equipped weapon.
 
----
-
 **Current implementation status**
 ---------------------------------
 The current implementation status of the project is that only the backbone of the models of characters
 and weapons are implemented, this following the model-view-controller architectural pattern. More
 detailed information is available at the [changelog](ChangeLog.md).
-
----
 
 **Installation and execution**
 ------------------------------
