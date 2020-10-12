@@ -55,18 +55,18 @@ public abstract class AbstractWeapon implements IWeapon {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AbstractWeapon)) {
+    if (!(o instanceof IWeapon)) {
       return false;
     }
-    final AbstractWeapon weapon = (AbstractWeapon) o;
-    return getDamage() == weapon.getDamage() &&
-           getWeight() == weapon.getWeight() &&
-           getName().equals(weapon.getName()) &&
-           getType() == weapon.getType();
+    final IWeapon weapon = (IWeapon) o;
+    return this.getName().equals(weapon.getName()) &&
+           this.getDamage() == weapon.getDamage() &&
+           this.getWeight() == weapon.getWeight() &&
+           this.getType() == weapon.getType();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getDamage(), getWeight(), getType());
+    return Objects.hash(this.getName(), this.getDamage(), this.getWeight(), this.getType());
   }
 }

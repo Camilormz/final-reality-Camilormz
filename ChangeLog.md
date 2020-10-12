@@ -3,6 +3,13 @@ ChangeLog
 
 Version 2.0
 -----------
+- (B.12) Ensured 100% total coverage
+- (B.11) Ensured 100% ``character`` package coverage.
+- (B.10) Reached 100% ``AbstractCharacter`` coverage after implementing tests for ``waitTurn`` and
+         ``getCharacterDomain`` methods.
+- (B.9) Created tests for the equipment of weapons.
+- (B.8) Created tests for constructors, equals and hashcode in playable character subclasses
+- (B.7) Fix of ``equals`` and ``hashCode`` methods.
 - (B.6) Usage of ``EnumSet<WeaponType>`` to move ``equip`` method directly to
         ``AbstractPlayerCharacter``, this implies that the character classes have an ``EnumSet`` in
         their constructors of the weapons they are allowed to use.

@@ -24,7 +24,8 @@ public class Enemy extends AbstractCharacter {
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    */
-  public Enemy(@NotNull final String name, final int weight,
+  public Enemy(@NotNull final String name,
+               final int weight,
                @NotNull final BlockingQueue<ICharacter> turnsQueue) {
     super(turnsQueue, name, CharacterDomain.ENEMY);
     this.weight = weight;
@@ -50,11 +51,12 @@ public class Enemy extends AbstractCharacter {
       return false;
     }
     final Enemy enemy = (Enemy) o;
-    return getWeight() == enemy.getWeight();
+    return this.getName().equals(enemy.getName()) &&
+           this.getWeight() == enemy.getWeight();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getWeight());
+    return Objects.hash(getName(), getWeight());
   }
 }
