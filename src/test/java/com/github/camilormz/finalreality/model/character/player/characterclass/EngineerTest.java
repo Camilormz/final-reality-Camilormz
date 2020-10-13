@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class that holds everything relative to engineers
+ * Test class that holds everything related to engineers
+ *
+ * @author Camilo Ramírez Canales
  */
 public class EngineerTest extends AbstractPlayerCharacterTest {
 

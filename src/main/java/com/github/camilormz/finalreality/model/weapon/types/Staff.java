@@ -2,7 +2,6 @@ package com.github.camilormz.finalreality.model.weapon.types;
 
 import com.github.camilormz.finalreality.model.weapon.AbstractWeapon;
 import com.github.camilormz.finalreality.model.weapon.IMagicalWeapon;
-import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +17,16 @@ public class Staff extends AbstractWeapon implements IMagicalWeapon {
     private final int magicDamage;
 
     /**
-     * Creates a staff with a name, a base damage, a weight and a magical damage
+     * Creates a staff.
+     *
+     * @param name
+     *     the staff's name
+     * @param damage
+     *     the damage done by the staff used as a melee weapon
+     * @param weight
+     *     the weight of the staff
+     * @param magicDamage
+     *     the magical damage (spell power) of the staff
      */
     public Staff(@NotNull String name, final int damage, final int weight, final int magicDamage) {
         super(name, damage, weight, WeaponType.STAFF);

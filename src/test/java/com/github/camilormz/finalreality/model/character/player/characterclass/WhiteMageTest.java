@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test class that holds everything related to white mages
+ *
+ * @author Camilo Ramírez Canales.
  */
 public class WhiteMageTest extends AbstractPlayerCharacterTest {
 

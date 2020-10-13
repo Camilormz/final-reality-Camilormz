@@ -11,7 +11,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Sword extends AbstractWeapon {
     /**
-     * Creates a sword with a name, a base damage and weight
+     * Creates a sword.
+     *
+     * @param name
+     *     the sword's name
+     * @param damage
+     *     the damage done by the sword
+     * @param weight
+     *     the weight of the sword
      */
     public Sword(@NotNull String name, final int damage, final int weight) {
         super(name, damage, weight, WeaponType.SWORD);

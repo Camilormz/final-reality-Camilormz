@@ -3,8 +3,9 @@ ChangeLog
 
 Version 2.0
 -----------
-- (B.12) Ensured 100% total coverage
-- (B.11) Ensured 100% ``character`` package coverage.
+- (RC.2) Ensured javadoc for all public classes, interfaces, enums, methods and tests
+- (B.12) Ensured 100% total test coverage
+- (B.11) Ensured 100% ``character`` package test coverage.
 - (B.10) Reached 100% ``AbstractCharacter`` coverage after implementing tests for ``waitTurn`` and
          ``getCharacterDomain`` methods.
 - (B.9) Created tests for the equipment of weapons.

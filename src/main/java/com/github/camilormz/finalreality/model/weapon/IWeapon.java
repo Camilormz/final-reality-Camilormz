@@ -1,5 +1,10 @@
 package com.github.camilormz.finalreality.model.weapon;
 
+/**
+ * This represents a weapon of the game of any type.
+ *
+ * @author Camilo Ramírez Canales.
+ */
 public interface IWeapon {
     /**
      * Gets the weapons name

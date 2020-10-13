@@ -70,6 +70,12 @@ public abstract class AbstractWeaponTest {
     }
 
     /**
+     * Executes the setup for every subclass test
+     */
+    @BeforeEach
+    protected abstract void subClassSetUp();
+
+    /**
      * Executes the construction test for the subclasses
      */
     @Test
