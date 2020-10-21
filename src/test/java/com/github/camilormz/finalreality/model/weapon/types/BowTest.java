@@ -35,9 +35,9 @@ public class BowTest extends AbstractWeaponTest {
         bowAltWeight = new Bow(BOW_NAME, 10, 20);
         notBowAltType = new Knife(BOW_NAME, 10, 10);
 
-        validHolder = new Engineer(CHARACTER_TEST_NAME, turns);
-        secondValidHolder = new Engineer(CHARACTER_TEST_NAME, turns);
-        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, turns);
+        validHolder = new Engineer(CHARACTER_TEST_NAME, 100, turns);
+        secondValidHolder = new Engineer(CHARACTER_TEST_NAME, 100, turns);
+        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, turns);
     }
     @Override
     @Test

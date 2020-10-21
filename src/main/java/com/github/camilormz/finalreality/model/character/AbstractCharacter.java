@@ -17,6 +17,7 @@ public abstract class AbstractCharacter implements ICharacter {
   private final BlockingQueue<ICharacter> turnsQueue;
   private final String name;
   private final CharacterDomain characterDomain;
+  private int healthPoints;
   private ScheduledExecutorService scheduledExecutor;
 
   /**
@@ -30,12 +31,14 @@ public abstract class AbstractCharacter implements ICharacter {
    *     the domain of this character
    *     @see CharacterDomain
    */
-  protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-                              @NotNull String name,
-                              @NotNull CharacterDomain characterDomain) {
+  protected AbstractCharacter(@NotNull final BlockingQueue<ICharacter> turnsQueue,
+                              @NotNull final String name,
+                              int healthPoints,
+                              @NotNull final CharacterDomain characterDomain) {
     this.turnsQueue = turnsQueue;
     this.name = name;
     this.characterDomain = characterDomain;
+    this.healthPoints = healthPoints;
   }
 
   @Override
@@ -69,9 +72,10 @@ public abstract class AbstractCharacter implements ICharacter {
     return this.characterDomain;
   }
 
-  // TODO: implement method
   @Override
-  public int getHealthPoints() { return 0; }
+  public int getHealthPoints() {
+    return this.healthPoints;
+  }
 
   // TODO: implement method
   @Override

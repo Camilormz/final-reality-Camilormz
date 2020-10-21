@@ -38,9 +38,9 @@ public class KnifeTest extends AbstractWeaponTest {
         knifeAltWeight = new Knife(KNIFE_NAME, 10, 20);
         notKnifeAltType = new Bow(KNIFE_NAME, 10, 10);
 
-        validHolder = new Knight(CHARACTER_TEST_NAME, turns);
-        secondValidHolder = new Knight(CHARACTER_TEST_NAME, turns);
-        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, turns);
+        validHolder = new Knight(CHARACTER_TEST_NAME, 100, turns);
+        secondValidHolder = new Knight(CHARACTER_TEST_NAME, 100, turns);
+        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, turns);
     }
     @Override
     @Test

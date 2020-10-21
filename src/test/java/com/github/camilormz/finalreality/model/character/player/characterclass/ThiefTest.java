@@ -29,13 +29,13 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        thief = new Thief(THIEF_NAME, turns);
-        thiefAltName = new Thief(THIEF_ALT_NAME, turns);
-        unarmedThief = new Thief(THIEF_NAME, turns);
-        notThiefAltClass = new BlackMage(THIEF_NAME, turns);
+        thief = new Thief(THIEF_NAME, 100, turns);
+        thiefAltName = new Thief(THIEF_ALT_NAME, 100, turns);
+        unarmedThief = new Thief(THIEF_NAME, 100, turns);
+        notThiefAltClass = new BlackMage(THIEF_NAME, 100, turns);
 
-        combatThief = new Thief(THIEF_NAME, turns);
-        anotherCombatThief = new Thief(THIEF_NAME, turns);
+        combatThief = new Thief(THIEF_NAME, 100, turns);
+        anotherCombatThief = new Thief(THIEF_NAME, 100, turns);
         combatStaff = new Staff(STAFF_NAME, 10, 10, 10);
         anotherStaff = new Staff(STAFF_NAME, 10, 10, 10);
         combatThief.tryToEquip(combatStaff);
@@ -44,7 +44,7 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(thief, new Thief(THIEF_ALT_NAME, turns),
+        this.constructionTest(thief, new Thief(THIEF_ALT_NAME, 100, turns),
                               thiefAltName, notThiefAltClass);
     }
     @Override

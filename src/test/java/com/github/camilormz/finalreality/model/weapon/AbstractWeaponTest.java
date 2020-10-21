@@ -30,7 +30,7 @@ public abstract class AbstractWeaponTest {
     @BeforeEach
     void setUp() {
         turns = new LinkedBlockingQueue<>();
-        testCharacter = new BlackMage(CHARACTER_TEST_NAME, turns);
+        testCharacter = new BlackMage(CHARACTER_TEST_NAME, 100, turns);
     }
     /**
      * General test of construction for all non magical weapons

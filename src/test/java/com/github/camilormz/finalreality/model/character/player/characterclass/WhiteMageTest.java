@@ -29,13 +29,13 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        whiteMage = new WhiteMage(WHITE_MAGE_NAME, turns);
-        whiteMageAltName = new WhiteMage(WHITE_MAGE_ALT_NAME, turns);
-        unarmedWhiteMage = new WhiteMage(WHITE_MAGE_NAME, turns);
-        notWhiteMageAltClass = new BlackMage(WHITE_MAGE_NAME, turns);
+        whiteMage = new WhiteMage(WHITE_MAGE_NAME, 100, turns);
+        whiteMageAltName = new WhiteMage(WHITE_MAGE_ALT_NAME, 100, turns);
+        unarmedWhiteMage = new WhiteMage(WHITE_MAGE_NAME, 100, turns);
+        notWhiteMageAltClass = new BlackMage(WHITE_MAGE_NAME, 100, turns);
 
-        combatWhiteMage = new WhiteMage(WHITE_MAGE_NAME, turns);
-        anotherCombatWhiteMage = new WhiteMage(WHITE_MAGE_ALT_NAME, turns);
+        combatWhiteMage = new WhiteMage(WHITE_MAGE_NAME, 100, turns);
+        anotherCombatWhiteMage = new WhiteMage(WHITE_MAGE_ALT_NAME, 100, turns);
         combatStaff = new Staff(STAFF_NAME, 10, 10, 10);
         anotherStaff = new Staff(STAFF_NAME, 10, 10, 10);
         combatWhiteMage.tryToEquip(combatStaff);
@@ -44,7 +44,7 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(whiteMage, new WhiteMage(WHITE_MAGE_NAME, turns),
+        this.constructionTest(whiteMage, new WhiteMage(WHITE_MAGE_NAME, 100, turns),
                               whiteMageAltName, notWhiteMageAltClass);
     }
     @Override

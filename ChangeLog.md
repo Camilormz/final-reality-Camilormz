@@ -1,6 +1,10 @@
 ChangeLog
 =========
 
+Version 3.0
+-----------
+- (B.1) Health Points (HP) implementation.
+
 Version 2.0
 -----------
 - (RC.1) Ensured javadoc for all public classes, interfaces, enums, methods and tests

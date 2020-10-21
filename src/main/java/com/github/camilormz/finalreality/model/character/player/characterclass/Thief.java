@@ -23,8 +23,11 @@ public class Thief extends AbstractPlayerCharacter {
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */
-    public Thief(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue) {
+    public Thief(@NotNull final String name,
+                 int healthPoints,
+                 @NotNull final BlockingQueue<ICharacter> turnsQueue) {
         super(name,
+              healthPoints,
               turnsQueue,
               CharacterClass.THIEF,
               EnumSet.of(WeaponType.SWORD, WeaponType.STAFF, WeaponType.BOW));

@@ -24,9 +24,9 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
      */
     @BeforeEach
     void setUpEnemies() {
-        strongEnemy = new Enemy(ENEMY_TEST_NAME, 10, turns);
-        weakEnemy = new Enemy(ENEMY_TEST_NAME, 10, turns);
-        killerEnemy = new Enemy(ENEMY_TEST_NAME, 10, turns);
+        strongEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, turns);
+        weakEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, turns);
+        killerEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, turns);
     }
     /**
      * General test of construction for all playable characters

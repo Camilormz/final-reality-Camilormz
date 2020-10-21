@@ -29,13 +29,13 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        engineer = new Engineer(ENGINEER_NAME, turns);
-        engineerAltName = new Engineer(ENGINEER_ALT_NAME, turns);
-        unarmedEngineer = new Engineer(ENGINEER_NAME, turns);
-        notEngineerAltClass = new Knight(ENGINEER_NAME, turns);
+        engineer = new Engineer(ENGINEER_NAME, 100, turns);
+        engineerAltName = new Engineer(ENGINEER_ALT_NAME, 100, turns);
+        unarmedEngineer = new Engineer(ENGINEER_NAME, 100, turns);
+        notEngineerAltClass = new Knight(ENGINEER_NAME, 100, turns);
 
-        combatEngineer = new Engineer(ENGINEER_NAME, turns);
-        anotherCombatEngineer = new Engineer(ENGINEER_ALT_NAME, turns);
+        combatEngineer = new Engineer(ENGINEER_NAME, 100, turns);
+        anotherCombatEngineer = new Engineer(ENGINEER_ALT_NAME, 100, turns);
         combatAxe = new Axe(AXE_NAME, 10, 10);
         anotherAxe = new Axe(AXE_NAME, 10, 10);
         combatEngineer.tryToEquip(combatAxe);
@@ -44,7 +44,7 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(engineer, new Engineer(ENGINEER_NAME, turns),
+        this.constructionTest(engineer, new Engineer(ENGINEER_NAME, 100, turns),
                               engineerAltName, notEngineerAltClass);
     }
     @Override

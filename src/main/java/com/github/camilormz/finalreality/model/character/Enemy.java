@@ -26,8 +26,9 @@ public class Enemy extends AbstractCharacter {
    */
   public Enemy(@NotNull final String name,
                final int weight,
+               int healthPoints,
                @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name, CharacterDomain.ENEMY);
+    super(turnsQueue, name, healthPoints, CharacterDomain.ENEMY);
     this.weight = weight;
   }
 

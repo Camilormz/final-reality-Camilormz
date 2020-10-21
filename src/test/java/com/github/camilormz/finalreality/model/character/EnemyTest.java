@@ -35,13 +35,13 @@ public class EnemyTest extends AbstractCharacterTest {
      */
     @BeforeEach
     void setUpEnemies() {
-        enemy = new Enemy(ENEMY_NAME, 10, turns);
-        enemySame = new Enemy(ENEMY_NAME, 10, turns);
-        enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, turns);
-        enemyAltWeight = new Enemy(ENEMY_NAME, 20, turns);
+        enemy = new Enemy(ENEMY_NAME, 10,100, turns);
+        enemySame = new Enemy(ENEMY_NAME, 10, 50, turns);
+        enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, 100, turns);
+        enemyAltWeight = new Enemy(ENEMY_NAME, 20, 100, turns);
 
-        strongAdversary = new Knight(PLAYABLE_TEST_NAME, turns);
-        weakAdversary = new Knight(PLAYABLE_TEST_NAME, turns);
+        strongAdversary = new Knight(PLAYABLE_TEST_NAME, 100, turns);
+        weakAdversary = new Knight(PLAYABLE_TEST_NAME, 100, turns);
 
         strongWeapon = new Sword(SWORD_NAME, 10, 10);
         weakWeapon = new Sword(SWORD_NAME, 1, 10);

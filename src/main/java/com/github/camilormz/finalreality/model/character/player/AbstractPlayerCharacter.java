@@ -40,11 +40,12 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    *     the set of weapon types that the character is allowed to equip
    *     @see WeaponType
    */
-  public AbstractPlayerCharacter(@NotNull String name,
-                                 @NotNull BlockingQueue<ICharacter> turnsQueue,
+  public AbstractPlayerCharacter(@NotNull final String name,
+                                 int healthPoints,
+                                 @NotNull final BlockingQueue<ICharacter> turnsQueue,
                                  @NotNull final CharacterClass characterClass,
                                  @NotNull final EnumSet<WeaponType> allowedWeapons) {
-    super(turnsQueue, name, CharacterDomain.PLAYABLE);
+    super(turnsQueue, name, healthPoints, CharacterDomain.PLAYABLE);
     this.equippedWeapon = null;
     this.characterClass = characterClass;
     this.allowedWeapons = allowedWeapons;

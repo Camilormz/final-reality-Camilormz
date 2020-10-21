@@ -23,8 +23,11 @@ public class Knight extends AbstractPlayerCharacter {
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */
-    public Knight(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue) {
+    public Knight(@NotNull final String name,
+                  int healthPoints,
+                  @NotNull final BlockingQueue<ICharacter> turnsQueue) {
         super(name,
+              healthPoints,
               turnsQueue,
               CharacterClass.KNIGHT,
               EnumSet.of(WeaponType.SWORD, WeaponType.AXE, WeaponType.KNIFE));
