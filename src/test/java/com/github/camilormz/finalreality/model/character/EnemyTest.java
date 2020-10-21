@@ -1,6 +1,8 @@
 package com.github.camilormz.finalreality.model.character;
 
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
+import com.github.camilormz.finalreality.model.character.player.characterclass.Knight;
+import com.github.camilormz.finalreality.model.weapon.types.Sword;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,12 @@ public class EnemyTest extends AbstractCharacterTest {
     private Enemy enemySame;
     private Enemy enemyAltName;
     private Enemy enemyAltWeight;
-    private AbstractPlayerCharacter notEnemy;
+
+    private Knight strongAdversary;
+    private Knight weakAdversary;
+
+    private Sword strongWeapon;
+    private Sword weakWeapon;
 
     /**
      * SetUp for the tests
@@ -32,6 +39,15 @@ public class EnemyTest extends AbstractCharacterTest {
         enemySame = new Enemy(ENEMY_NAME, 10, turns);
         enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, turns);
         enemyAltWeight = new Enemy(ENEMY_NAME, 20, turns);
+
+        strongAdversary = new Knight(PLAYABLE_TEST_NAME, turns);
+        weakAdversary = new Knight(PLAYABLE_TEST_NAME, turns);
+
+        strongWeapon = new Sword(SWORD_NAME, 10, 10);
+        weakWeapon = new Sword(SWORD_NAME, 1, 10);
+
+        strongAdversary.tryToEquip(strongWeapon);
+        weakAdversary.tryToEquip(weakWeapon);
     }
 
     /**
@@ -57,5 +73,15 @@ public class EnemyTest extends AbstractCharacterTest {
     @Test
     protected void subClassCharacterDomainTest() {
         this.getCharacterDomainTest(enemy, CharacterDomain.ENEMY);
+    }
+    @Override
+    @Test
+    // TODO: Modify constructors to make this test compilable
+    // Issues with: enemies with no HP, damage and defense, and adversaries with no HP and defense
+    protected void subClassCombatTest() {
+        this.combatTest(enemy, enemySame, strongAdversary, weakAdversary,
+                        100, 10, 2,
+                        10, 1,
+                        100, 2);
     }
 }

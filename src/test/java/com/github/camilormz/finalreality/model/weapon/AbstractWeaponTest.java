@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.weapon;
 
 import com.github.camilormz.finalreality.model.character.AbstractCharacter;
 import com.github.camilormz.finalreality.model.character.ICharacter;
+import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.camilormz.finalreality.model.character.player.characterclass.BlackMage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Abstract class that contain tests suitable for all weapons
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  */
 public abstract class AbstractWeaponTest {
 
-    private final String CHARACTER_TEST_NAME = "Nix";
+    protected final String CHARACTER_TEST_NAME = "Nix";
 
     protected BlockingQueue<ICharacter> turns;
     private AbstractCharacter testCharacter;
@@ -68,6 +68,36 @@ public abstract class AbstractWeaponTest {
         assertNotEquals(standard, anotherMagicDamage);
         assertNotEquals(standard, testCharacter);
     }
+    /**
+     * General test for equipment states
+     */
+    protected void equipmentTest(AbstractWeapon weapon,
+                                 AbstractPlayerCharacter validHolder,
+                                 AbstractPlayerCharacter secondValidHolder,
+                                 AbstractPlayerCharacter unValidHolder) {
+        // Checks that the weapon inits available
+        assertTrue(weapon.isAvailable());
+        assertNull(weapon.getHolder());
+        // Checks that an invalid class can't equip the weapon
+        unValidHolder.tryToEquip(weapon);
+        assertTrue(weapon.isAvailable());
+        assertNull(weapon.getHolder());
+        // Checks that a valid class character can successfully equip the weapon
+        validHolder.tryToEquip(weapon);
+        assertFalse(weapon.isAvailable());
+        assertEquals(weapon.getHolder(), validHolder);
+        // Checks that a second character can't equip an already equipped weapon
+        secondValidHolder.tryToEquip(weapon);
+        assertEquals(weapon.getHolder(), validHolder);
+        // Checks the correct un-equipment of the weapon
+        validHolder.unEquip();
+        assertTrue(weapon.isAvailable);
+        assertNull(weapon.getHolder());
+        // Checks that the second character can actually equip the previous un-equipped weapon
+        secondValidHolder.tryToEquip(weapon);
+        assertFalse(weapon.isAvailable);
+        assertEquals(weapon.getHolder(), secondValidHolder);
+    }
 
     /**
      * Executes the setup for every subclass test
@@ -80,4 +110,10 @@ public abstract class AbstractWeaponTest {
      */
     @Test
     protected abstract void subClassConstructorTest();
+
+    /**
+     * Executes the equipment test for the subclasses
+     */
+    @Test
+    protected abstract void subClassEquipmentTest();
 }

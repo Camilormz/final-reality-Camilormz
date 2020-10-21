@@ -1,5 +1,7 @@
 package com.github.camilormz.finalreality.model.weapon.types;
 
+import com.github.camilormz.finalreality.model.character.player.characterclass.Knight;
+import com.github.camilormz.finalreality.model.character.player.characterclass.WhiteMage;
 import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,10 @@ public class AxeTest extends AbstractWeaponTest {
     private Axe axeAltWeight;
     private Sword notAxeAltType;
 
+    private Knight validHolder;
+    private Knight secondValidHolder;
+    private WhiteMage unValidHolder;
+
     @Override
     @BeforeEach
     protected void subClassSetUp() {
@@ -28,11 +34,20 @@ public class AxeTest extends AbstractWeaponTest {
         axeAltDamage = new Axe(AXE_NAME, 20, 10);
         axeAltWeight = new Axe(AXE_NAME, 10, 20);
         notAxeAltType = new Sword(AXE_NAME, 10, 10);
+
+        validHolder = new Knight(CHARACTER_TEST_NAME, turns);
+        secondValidHolder = new Knight(CHARACTER_TEST_NAME, turns);
+        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, turns);
     }
     @Override
     @Test
     protected void subClassConstructorTest() {
         this.constructionTest(axe, new Axe(AXE_NAME, 10, 10), axeAltName,
                               axeAltDamage, axeAltWeight, notAxeAltType);
+    }
+    @Override
+    @Test
+    protected void subClassEquipmentTest() {
+        this.equipmentTest(axe, validHolder, secondValidHolder, unValidHolder);
     }
 }

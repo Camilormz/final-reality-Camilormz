@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.character.player.characterclass;
 
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
+import com.github.camilormz.finalreality.model.weapon.types.Staff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,11 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     private Thief unarmedThief;
     private BlackMage notThiefAltClass;
 
+    private Thief combatThief;
+    private Thief anotherCombatThief;
+    private Staff combatStaff;
+    private Staff anotherStaff;
+
     @Override
     @BeforeEach
     protected void subClassSetUp() {
@@ -27,23 +33,31 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
         thiefAltName = new Thief(THIEF_ALT_NAME, turns);
         unarmedThief = new Thief(THIEF_NAME, turns);
         notThiefAltClass = new BlackMage(THIEF_NAME, turns);
+
+        combatThief = new Thief(THIEF_NAME, turns);
+        anotherCombatThief = new Thief(THIEF_NAME, turns);
+        combatStaff = new Staff(STAFF_NAME, 10, 10, 10);
+        anotherStaff = new Staff(STAFF_NAME, 10, 10, 10);
+        combatThief.tryToEquip(combatStaff);
+        anotherCombatThief .tryToEquip(anotherStaff);
     }
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(thief, new Thief(THIEF_NAME, turns),
+        this.constructionTest(thief, new Thief(THIEF_ALT_NAME, turns),
                               thiefAltName, notThiefAltClass);
     }
     @Override
     @Test
     protected void subClassWeaponTest() {
-        this.weaponEquipmentTest(thief, unarmedThief, testSword, testAxe);
+        this.weaponEquipmentTest(thief, unarmedThief,
+                                 testSword, anotherTestSword, combatStaff, testAxe);
     }
     @Override
     @Test
     protected void subClassWaitTurnTest() {
         this.waitTurnTest(thief, 0, waitTurnTestErrorMargin);
-        thief.equip(testSword);
+        thief.tryToEquip(testSword);
         long expectedTime = testSword.getWeight()/10;
         this.waitTurnTest(thief, expectedTime, waitTurnTestErrorMargin);
     }
@@ -51,5 +65,15 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassCharacterDomainTest() {
         this.getCharacterDomainTest(thief, CharacterDomain.PLAYABLE);
+    }
+    @Override
+    @Test
+    protected void subClassCombatTest() {
+        this.subClassCombatTestExecution(combatThief, anotherCombatThief);
+    }
+    @Override
+    @Test
+    protected void subClassWeaponDroppingTest() {
+        this.deathWeaponDropTest(thief, testStaff);
     }
 }

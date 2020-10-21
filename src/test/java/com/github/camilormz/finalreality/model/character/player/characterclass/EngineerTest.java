@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.character.player.characterclass;
 
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
+import com.github.camilormz.finalreality.model.weapon.types.Axe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,11 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     private Engineer unarmedEngineer;
     private Knight notEngineerAltClass;
 
+    private Engineer combatEngineer;
+    private Engineer anotherCombatEngineer;
+    private Axe combatAxe;
+    private Axe anotherAxe;
+
     @Override
     @BeforeEach
     protected void subClassSetUp() {
@@ -27,6 +33,13 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
         engineerAltName = new Engineer(ENGINEER_ALT_NAME, turns);
         unarmedEngineer = new Engineer(ENGINEER_NAME, turns);
         notEngineerAltClass = new Knight(ENGINEER_NAME, turns);
+
+        combatEngineer = new Engineer(ENGINEER_NAME, turns);
+        anotherCombatEngineer = new Engineer(ENGINEER_ALT_NAME, turns);
+        combatAxe = new Axe(AXE_NAME, 10, 10);
+        anotherAxe = new Axe(AXE_NAME, 10, 10);
+        combatEngineer.tryToEquip(combatAxe);
+        anotherCombatEngineer.tryToEquip(anotherAxe);
     }
     @Override
     @Test
@@ -37,13 +50,14 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassWeaponTest() {
-        this.weaponEquipmentTest(engineer, unarmedEngineer, testBow, testStaff);
+        this.weaponEquipmentTest(engineer, unarmedEngineer,
+                                 testBow, anotherTestBow, combatAxe, testStaff);
     }
     @Override
     @Test
     protected void subClassWaitTurnTest() {
         this.waitTurnTest(engineer, 0, waitTurnTestErrorMargin);
-        engineer.equip(testBow);
+        engineer.tryToEquip(testBow);
         long expectedTime = testBow.getWeight()/10;
         this.waitTurnTest(engineer, expectedTime, waitTurnTestErrorMargin);
     }
@@ -51,5 +65,15 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassCharacterDomainTest() {
         this.getCharacterDomainTest(engineer, CharacterDomain.PLAYABLE);
+    }
+    @Override
+    @Test
+    protected void subClassCombatTest() {
+        this.subClassCombatTestExecution(combatEngineer, anotherCombatEngineer);
+    }
+    @Override
+    @Test
+    protected void subClassWeaponDroppingTest() {
+        this.deathWeaponDropTest(engineer, testBow);
     }
 }

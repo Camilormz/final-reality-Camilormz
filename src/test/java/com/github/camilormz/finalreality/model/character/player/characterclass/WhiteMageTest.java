@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.character.player.characterclass;
 
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
+import com.github.camilormz.finalreality.model.weapon.types.Staff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,11 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     private WhiteMage unarmedWhiteMage;
     private BlackMage notWhiteMageAltClass;
 
+    private WhiteMage combatWhiteMage;
+    private WhiteMage anotherCombatWhiteMage;
+    private Staff combatStaff;
+    private Staff anotherStaff;
+
     @Override
     @BeforeEach
     protected void subClassSetUp() {
@@ -27,6 +33,13 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
         whiteMageAltName = new WhiteMage(WHITE_MAGE_ALT_NAME, turns);
         unarmedWhiteMage = new WhiteMage(WHITE_MAGE_NAME, turns);
         notWhiteMageAltClass = new BlackMage(WHITE_MAGE_NAME, turns);
+
+        combatWhiteMage = new WhiteMage(WHITE_MAGE_NAME, turns);
+        anotherCombatWhiteMage = new WhiteMage(WHITE_MAGE_ALT_NAME, turns);
+        combatStaff = new Staff(STAFF_NAME, 10, 10, 10);
+        anotherStaff = new Staff(STAFF_NAME, 10, 10, 10);
+        combatWhiteMage.tryToEquip(combatStaff);
+        anotherCombatWhiteMage.tryToEquip(anotherStaff);
     }
     @Override
     @Test
@@ -37,13 +50,14 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassWeaponTest() {
-        this.weaponEquipmentTest(whiteMage, unarmedWhiteMage, testStaff, testKnife);
+        this.weaponEquipmentTest(whiteMage, unarmedWhiteMage,
+                                 testStaff, anotherStaff, combatStaff, testKnife);
     }
     @Override
     @Test
     protected void subClassWaitTurnTest() {
         this.waitTurnTest(whiteMage, 0, waitTurnTestErrorMargin);
-        whiteMage.equip(testStaff);
+        whiteMage.tryToEquip(testStaff);
         long expectedTime = testStaff.getWeight()/10;
         this.waitTurnTest(whiteMage, expectedTime, waitTurnTestErrorMargin);
     }
@@ -51,5 +65,15 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassCharacterDomainTest() {
         this.getCharacterDomainTest(whiteMage, CharacterDomain.PLAYABLE);
+    }
+    @Override
+    @Test
+    protected void subClassCombatTest() {
+        this.subClassCombatTestExecution(combatWhiteMage, anotherCombatWhiteMage);
+    }
+    @Override
+    @Test
+    protected void subClassWeaponDroppingTest() {
+        this.deathWeaponDropTest(whiteMage, testStaff);
     }
 }

@@ -50,7 +50,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     this.allowedWeapons = allowedWeapons;
   }
 
-  public void equip(IWeapon weapon) {
+  public void tryToEquip(IWeapon weapon) {
     WeaponType weaponType = weapon.getType();
     if (this.allowedWeapons.contains(weaponType)) {
       this.equippedWeapon = weapon;
