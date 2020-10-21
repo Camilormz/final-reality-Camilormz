@@ -91,11 +91,11 @@ public abstract class AbstractWeaponTest {
         assertEquals(weapon.getHolder(), validHolder);
         // Checks the correct un-equipment of the weapon
         validHolder.unEquip();
-        assertTrue(weapon.isAvailable);
+        assertTrue(weapon.isAvailable());
         assertNull(weapon.getHolder());
         // Checks that the second character can actually equip the previous un-equipped weapon
         secondValidHolder.tryToEquip(weapon);
-        assertFalse(weapon.isAvailable);
+        assertFalse(weapon.isAvailable());
         assertEquals(weapon.getHolder(), secondValidHolder);
     }
 

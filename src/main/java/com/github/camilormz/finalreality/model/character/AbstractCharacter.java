@@ -68,4 +68,23 @@ public abstract class AbstractCharacter implements ICharacter {
   public CharacterDomain getCharacterDomain() {
     return this.characterDomain;
   }
+
+  // TODO: implement method
+  @Override
+  public int getHealthPoints() { return 0; }
+
+  // TODO: implement method
+  @Override
+  public int getDamage() { return 0; }
+
+  // TODO: implement method
+  @Override
+  public int getDefense() { return 0; }
+
+  // TODO: implement method
+  @Override
+  public boolean isAlive() { return true; }
+
+  // TODO: implement method
+  public void attack(ICharacter character) {}
 }

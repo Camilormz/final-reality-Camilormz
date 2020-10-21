@@ -50,12 +50,17 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     this.allowedWeapons = allowedWeapons;
   }
 
+  @Override
   public void tryToEquip(IWeapon weapon) {
     WeaponType weaponType = weapon.getType();
     if (this.allowedWeapons.contains(weaponType)) {
       this.equippedWeapon = weapon;
     }
   }
+
+  // TODO: implement method
+  @Override
+  public void unEquip() {}
 
   @Override
   public IWeapon getEquippedWeapon() {

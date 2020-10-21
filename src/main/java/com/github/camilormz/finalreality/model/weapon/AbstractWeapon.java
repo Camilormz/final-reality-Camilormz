@@ -1,5 +1,6 @@
 package com.github.camilormz.finalreality.model.weapon;
 
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -57,6 +58,14 @@ public abstract class AbstractWeapon implements IWeapon {
   public WeaponType getType() {
     return type;
   }
+
+  // TODO: Implement method
+  @Override
+  public IPlayerCharacter getHolder() { return null; }
+
+  // TODO: Implement method
+  @Override
+  public boolean isAvailable() { return true; }
 
   @Override
   public boolean equals(final Object o) {

@@ -114,7 +114,7 @@ public abstract class AbstractCharacterTest {
         assert strongAdversaryDefense < characterDamage && characterDamage < strongAdversaryHP;
         // Checks that the character's and adversary's HP starts as desired
         assertEquals(character.getHealthPoints(), characterHP);
-        assertEquals(strongAdversaryHP.getHealthPoints(), strongAdversaryHP);
+        assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
         // Tests that an same domain character attack trial has no effect on character
         sameDomainCharacter.attack(character);
         assertEquals(character.getHealthPoints(), characterHP);
@@ -124,7 +124,7 @@ public abstract class AbstractCharacterTest {
         // Tests that the character can actually attack its adversary
         character.attack(strongAdversary);
         strongAdversaryHP -= characterDamage - strongAdversaryDefense;
-        assertEquals(strongAdversaryHP.getHealthPoints(), strongAdversaryHP);
+        assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
         // Tests loop in where the character receive attacks from the strong adversary until it dies
         while (characterHP > 0) {
             assertEquals(character.getHealthPoints(), characterHP);

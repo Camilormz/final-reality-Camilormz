@@ -21,8 +21,34 @@ public interface ICharacter {
   String getName();
 
   /**
-   * Returns this character's domain
+   * Returns this character's domain.
    * @see CharacterDomain
    */
   CharacterDomain getCharacterDomain();
+
+  /**
+   * Returns the character Health Points (HP).
+   */
+  int getHealthPoints();
+
+  /**
+   * Returns the current non-magical damage the character is able to do
+   */
+  int getDamage();
+
+  /**
+   * Returns the character defense points
+   */
+  int getDefense();
+
+  /**
+   * Returns if the character is alive.
+   */
+  boolean isAlive();
+
+  /**
+   * Attacks another character
+   * This generic method allows friendly fire implementations.
+   */
+  void attack(ICharacter adversary);
 }
