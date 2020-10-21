@@ -38,4 +38,14 @@ public interface IWeapon {
      * Returns if the weapon is available for equipping.
      */
     boolean isAvailable();
+
+    /**
+     * Sets the weapon status as held by the IPlayerCharacter
+     */
+    void beHeld(IPlayerCharacter playerCharacter);
+
+    /**
+     * Sets the weapon status as no held by any IPlayerCharacter
+     */
+    void beUnHeld();
 }

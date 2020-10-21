@@ -92,9 +92,10 @@ public abstract class AbstractCharacter implements ICharacter {
     return this.defense;
   }
 
-  // TODO: implement method
   @Override
-  public boolean isAlive() { return true; }
+  public boolean isAlive() {
+    return this.getHealthPoints() == 0;
+  }
 
   // TODO: implement method
   public void attack(ICharacter character) {}

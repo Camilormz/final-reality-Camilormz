@@ -17,6 +17,7 @@ public abstract class AbstractWeapon implements IWeapon {
   private final int damage;
   private final int weight;
   private final WeaponType type;
+  private IPlayerCharacter holder;
 
   /**
    * Creates a weapon.
@@ -37,6 +38,7 @@ public abstract class AbstractWeapon implements IWeapon {
     this.damage = damage;
     this.weight = weight;
     this.type = type;
+    this.holder = null;
   }
 
   @Override
@@ -59,13 +61,26 @@ public abstract class AbstractWeapon implements IWeapon {
     return type;
   }
 
-  // TODO: Implement method
   @Override
-  public IPlayerCharacter getHolder() { return null; }
+  public IPlayerCharacter getHolder() {
+    return this.holder;
+  }
 
-  // TODO: Implement method
   @Override
-  public boolean isAvailable() { return true; }
+  public boolean isAvailable() {
+    return this.holder != null;
+  }
+
+  @Override
+  public void beHeld(@NotNull IPlayerCharacter playerCharacter) {
+    this.holder = playerCharacter;
+    assert playerCharacter.getEquippedWeapon() == this;
+  }
+
+  @Override
+  public void beUnHeld() {
+    this.holder = null;
+  }
 
   @Override
   public boolean equals(final Object o) {

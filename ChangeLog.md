@@ -3,6 +3,7 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.4) Preliminary improved weapon equipment implementation.
 - (B.3) Defense points implementation.
 - (B.2) Character Damage points implementation.
 - (B.1) Health Points (HP) implementation.
