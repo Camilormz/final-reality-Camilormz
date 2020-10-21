@@ -2,6 +2,8 @@ package com.github.camilormz.finalreality.model.character;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -55,6 +57,33 @@ public class Enemy extends AbstractCharacter {
   @Override
   public int getDamagePoints() {
     return this.damage;
+  }
+
+  @Override
+  public void attack(ICharacter character) {
+    character.beAttackedByEnemy(this);
+  }
+
+  @Override
+  public void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter) {
+    int HPLoss = playerCharacter.getDamagePoints() - this.getDefensePoints();
+    this.beDamaged(HPLoss);
+  }
+
+  @Override
+  public void beAttackedByEnemy(Enemy enemy) {
+    // No action as friendly fire is not a current feature of this game
+    // TODO: raise a flag or exception for the controller
+  }
+
+  @Override
+  protected void beDamaged(int damage) {
+    int priorHealthPoints = this.getHealthPoints();
+    if (damage > priorHealthPoints) {
+      this.setHealthPoints(0);
+    } else {
+      this.setHealthPoints(damage - priorHealthPoints);
+    }
   }
 
   @Override

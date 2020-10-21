@@ -68,7 +68,7 @@ public abstract class AbstractWeapon implements IWeapon {
 
   @Override
   public boolean isAvailable() {
-    return this.holder != null;
+    return this.holder == null;
   }
 
   @Override

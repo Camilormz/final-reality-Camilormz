@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -94,9 +96,28 @@ public abstract class AbstractCharacter implements ICharacter {
 
   @Override
   public boolean isAlive() {
-    return this.getHealthPoints() == 0;
+    return this.getHealthPoints() <= 0;
   }
 
-  // TODO: implement method
-  public void attack(ICharacter character) {}
+  @Override
+  public abstract void attack(ICharacter character);
+
+  @Override
+  public abstract void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter);
+
+  @Override
+  public abstract void beAttackedByEnemy(Enemy enemy);
+
+  /**
+   * Manages an amount of damage done to the character
+   */
+  protected abstract void beDamaged(int damage);
+
+  /**
+   * Sets the character health points to a fixed value
+   */
+  protected void setHealthPoints(int healthPoints) {
+    this.healthPoints = healthPoints;
+  }
+
 }

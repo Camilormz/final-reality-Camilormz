@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.character.player;
 
 import com.github.camilormz.finalreality.model.character.AbstractCharacter;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
+import com.github.camilormz.finalreality.model.character.Enemy;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 
 import java.util.EnumSet;
@@ -89,6 +90,34 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
       return 0;
     } else {
       return this.equippedWeapon.getDamage();
+    }
+  }
+
+  @Override
+  public void attack(ICharacter character) {
+    character.beAttackedByPlayableCharacter(this);
+  }
+
+  @Override
+  public void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter) {
+    // No action as friendly fire is not a current feature of this game
+    // TODO: raise a flag or exception for the controller
+  }
+
+  @Override
+  public void beAttackedByEnemy(Enemy enemy) {
+    int HPLoss = enemy.getDamagePoints() - this.getDefensePoints();
+    this.beDamaged(HPLoss);
+  }
+
+  @Override
+  protected void beDamaged(int damage) {
+    int priorHealthPoints = this.getHealthPoints();
+    if (damage > priorHealthPoints) {
+      this.setHealthPoints(0);
+      this.unEquip();
+    } else {
+      this.setHealthPoints(damage - priorHealthPoints);
     }
   }
 
