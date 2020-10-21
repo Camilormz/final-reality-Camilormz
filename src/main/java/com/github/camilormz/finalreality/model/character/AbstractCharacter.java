@@ -25,6 +25,8 @@ public abstract class AbstractCharacter implements ICharacter {
    *
    * @param name
    *     the character's name
+   * @param healthPoints
+   *     the character's health points
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    * @param characterDomain
@@ -77,13 +79,12 @@ public abstract class AbstractCharacter implements ICharacter {
     return this.healthPoints;
   }
 
-  // TODO: implement method
   @Override
-  public int getDamage() { return 0; }
+  public abstract int getDamagePoints();
 
   // TODO: implement method
   @Override
-  public int getDefense() { return 0; }
+  public int getDefensePoints() { return 0; }
 
   // TODO: implement method
   @Override

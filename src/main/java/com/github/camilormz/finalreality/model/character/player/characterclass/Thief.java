@@ -20,6 +20,8 @@ public class Thief extends AbstractPlayerCharacter {
      *
      * @param name
      *     the thief's name
+     * @param healthPoints
+     *     the thief's health points
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */

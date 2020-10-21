@@ -24,9 +24,9 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
      */
     @BeforeEach
     void setUpEnemies() {
-        strongEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, turns);
-        weakEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, turns);
-        killerEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, turns);
+        strongEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, 10, turns);
+        weakEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, 1, turns);
+        killerEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100, 1000, turns);
     }
     /**
      * General test of construction for all playable characters
@@ -105,8 +105,8 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
      */
     protected void subClassCombatTestExecution(AbstractPlayerCharacter character,
                                       AbstractPlayerCharacter sameDomainCharacter) {
-        assert character.getHealthPoints() == 100 && character.getDamage() == 10
-                                                  && character.getDefense() == 2;
+        assert character.getHealthPoints() == 100 && character.getDamagePoints() == 10
+                                                  && character.getDefensePoints() == 2;
         this.combatTest(character, sameDomainCharacter, strongEnemy, weakEnemy,
                        100,10, 2,
                        10, 1,

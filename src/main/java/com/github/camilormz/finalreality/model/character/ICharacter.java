@@ -34,12 +34,12 @@ public interface ICharacter {
   /**
    * Returns the current non-magical damage the character is able to do
    */
-  int getDamage();
+  int getDamagePoints();
 
   /**
    * Returns the character defense points
    */
-  int getDefense();
+  int getDefensePoints();
 
   /**
    * Returns if the character is alive.

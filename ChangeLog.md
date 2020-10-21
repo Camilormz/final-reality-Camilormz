@@ -3,6 +3,7 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.2) Character Damage points implementation.
 - (B.1) Health Points (HP) implementation.
 
 Version 2.0

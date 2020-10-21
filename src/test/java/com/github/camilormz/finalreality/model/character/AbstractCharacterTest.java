@@ -49,7 +49,7 @@ public abstract class AbstractCharacterTest {
     @BeforeEach
     void setUp() {
         turns = new LinkedBlockingQueue<>();
-        testEnemy = new Enemy(ENEMY_TEST_NAME, 100, 10, turns);
+        testEnemy = new Enemy(ENEMY_TEST_NAME, 100, 10, 10, turns);
         testPlayable = new Knight(PLAYABLE_TEST_NAME, 100, turns);
         testAxe = new Axe(AXE_NAME, 10, 10);
         testBow = new Bow(BOW_NAME, 10, 10);

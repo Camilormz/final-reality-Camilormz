@@ -21,6 +21,8 @@ public class WhiteMage extends AbstractPlayerCharacter implements IMagicalCharac
      *
      * @param name
      *     the white mage's name
+     * @param healthPoints
+     *     the white mage's health points
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */

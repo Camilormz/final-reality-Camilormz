@@ -23,6 +23,7 @@ public class EnemyTest extends AbstractCharacterTest {
     private Enemy enemySame;
     private Enemy enemyAltName;
     private Enemy enemyAltWeight;
+    private Enemy enemyAltDamage;
 
     private Knight strongAdversary;
     private Knight weakAdversary;
@@ -35,10 +36,11 @@ public class EnemyTest extends AbstractCharacterTest {
      */
     @BeforeEach
     void setUpEnemies() {
-        enemy = new Enemy(ENEMY_NAME, 10,100, turns);
-        enemySame = new Enemy(ENEMY_NAME, 10, 50, turns);
-        enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, 100, turns);
-        enemyAltWeight = new Enemy(ENEMY_NAME, 20, 100, turns);
+        enemy = new Enemy(ENEMY_NAME, 10,100, 10, turns);
+        enemySame = new Enemy(ENEMY_NAME, 10, 50, 10, turns);
+        enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, 100, 10, turns);
+        enemyAltWeight = new Enemy(ENEMY_NAME, 20, 100, 10, turns);
+        enemyAltDamage = new Enemy(ENEMY_NAME, 10, 100, 20, turns);
 
         strongAdversary = new Knight(PLAYABLE_TEST_NAME, 100, turns);
         weakAdversary = new Knight(PLAYABLE_TEST_NAME, 100, turns);
@@ -60,6 +62,7 @@ public class EnemyTest extends AbstractCharacterTest {
         assertEquals(enemy.hashCode(), enemySame.hashCode());
         assertNotEquals(enemy, enemyAltName);
         assertNotEquals(enemy, enemyAltWeight);
+        assertNotEquals(enemy, enemyAltDamage);
         assertNotEquals(enemy, testPlayable);
     }
     @Override

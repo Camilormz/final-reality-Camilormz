@@ -20,6 +20,8 @@ public class Engineer extends AbstractPlayerCharacter {
      *
      * @param name
      *     the engineer's name
+     * @param healthPoints
+     *     the engineer's health points
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */

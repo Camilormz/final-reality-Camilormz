@@ -31,6 +31,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    *
    * @param name
    *     the character's name
+   * @param healthPoints
+   *     the character's health points
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    * @param characterClass
@@ -71,6 +73,15 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   @Override
   public CharacterClass getCharacterClass() {
     return this.characterClass;
+  }
+
+  @Override
+  public int getDamagePoints() {
+    if (this.equippedWeapon == null) {
+      return 0;
+    } else {
+      return this.equippedWeapon.getDamage();
+    }
   }
 
   @Override

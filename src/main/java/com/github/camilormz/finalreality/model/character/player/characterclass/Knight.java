@@ -20,6 +20,8 @@ public class Knight extends AbstractPlayerCharacter {
      *
      * @param name
      *     the knight's name
+     * @param healthPoints
+     *     the knight's health points
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */
