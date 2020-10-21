@@ -28,9 +28,11 @@ public class WhiteMage extends AbstractPlayerCharacter implements IMagicalCharac
      */
     public WhiteMage(@NotNull final String name,
                      int healthPoints,
+                     final int defense,
                      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
         super(name,
               healthPoints,
+              defense,
               turnsQueue,
               CharacterClass.WHITE_MAGE,
               EnumSet.of(WeaponType.STAFF));

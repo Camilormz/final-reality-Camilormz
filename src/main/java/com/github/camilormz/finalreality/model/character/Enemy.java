@@ -32,9 +32,10 @@ public class Enemy extends AbstractCharacter {
   public Enemy(@NotNull final String name,
                final int weight,
                int healthPoints,
+               final int defense,
                final int damage,
                @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name, healthPoints, CharacterDomain.ENEMY);
+    super(turnsQueue, name, healthPoints, defense, CharacterDomain.ENEMY);
     this.weight = weight;
     this.damage = damage;
   }
@@ -67,11 +68,12 @@ public class Enemy extends AbstractCharacter {
     final Enemy enemy = (Enemy) o;
     return this.getName().equals(enemy.getName()) &&
            this.getWeight() == enemy.getWeight() &&
-           this.getDamagePoints() == enemy.getDamagePoints();
+           this.getDamagePoints() == enemy.getDamagePoints() &&
+           this.getDefensePoints() == enemy.getDefensePoints();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getWeight());
+    return Objects.hash(getName(), getWeight(), getDamagePoints(), getDefensePoints());
   }
 }

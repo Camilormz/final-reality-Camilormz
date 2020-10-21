@@ -3,13 +3,14 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.3) Defense points implementation.
 - (B.2) Character Damage points implementation.
 - (B.1) Health Points (HP) implementation.
 
 Version 2.0
 -----------
-- (RC.1) Ensured javadoc for all public classes, interfaces, enums, methods and tests
-- (B.12) Ensured 100% total test coverage
+- (RC.1) Ensured javadoc for all public classes, interfaces, enums, methods and tests.
+- (B.12) Ensured 100% total test coverage.
 - (B.11) Ensured 100% ``character`` package test coverage.
 - (B.10) Reached 100% ``AbstractCharacter`` coverage after implementing tests for ``waitTurn`` and
          ``getCharacterDomain`` methods.

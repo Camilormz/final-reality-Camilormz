@@ -27,9 +27,11 @@ public class Engineer extends AbstractPlayerCharacter {
      */
     public Engineer(@NotNull final String name,
                     int healthPoints,
+                    final int defense,
                     @NotNull final BlockingQueue<ICharacter> turnsQueue) {
         super(name,
               healthPoints,
+              defense,
               turnsQueue,
               CharacterClass.ENGINEER,
               EnumSet.of(WeaponType.AXE, WeaponType.BOW));

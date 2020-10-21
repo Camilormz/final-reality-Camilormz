@@ -44,10 +44,11 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    */
   public AbstractPlayerCharacter(@NotNull final String name,
                                  int healthPoints,
+                                 final int defense,
                                  @NotNull final BlockingQueue<ICharacter> turnsQueue,
                                  @NotNull final CharacterClass characterClass,
                                  @NotNull final EnumSet<WeaponType> allowedWeapons) {
-    super(turnsQueue, name, healthPoints, CharacterDomain.PLAYABLE);
+    super(turnsQueue, name, healthPoints, defense, CharacterDomain.PLAYABLE);
     this.equippedWeapon = null;
     this.characterClass = characterClass;
     this.allowedWeapons = allowedWeapons;
@@ -103,11 +104,12 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     }
     final IPlayerCharacter otherPCharacter = (IPlayerCharacter) o;
     return this.getName().equals(otherPCharacter.getName()) &&
-           this.getCharacterClass() == otherPCharacter.getCharacterClass();
+           this.getCharacterClass() == otherPCharacter.getCharacterClass() &&
+           this.getDefensePoints() == otherPCharacter.getDefensePoints();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getCharacterClass());
+    return Objects.hash(getName(), getCharacterClass(), getDefensePoints());
   }
 }

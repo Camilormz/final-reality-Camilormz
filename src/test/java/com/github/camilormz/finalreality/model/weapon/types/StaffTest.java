@@ -35,9 +35,9 @@ public class StaffTest extends AbstractWeaponTest {
         staffAltWeight = new Staff(STAFF_NAME, 10, 20, 10);
         staffAltMagicDamage = new Staff(STAFF_NAME, 10, 10, 20);
 
-        validHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, turns);
-        secondValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, turns);
-        unValidHolder = new Knight(CHARACTER_TEST_NAME, 100, turns);
+        validHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, 2, turns);
+        secondValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, 2, turns);
+        unValidHolder = new Knight(CHARACTER_TEST_NAME, 100, 2, turns);
     }
     @Override
     @Test

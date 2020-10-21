@@ -35,9 +35,9 @@ public class AxeTest extends AbstractWeaponTest {
         axeAltWeight = new Axe(AXE_NAME, 10, 20);
         notAxeAltType = new Sword(AXE_NAME, 10, 10);
 
-        validHolder = new Knight(CHARACTER_TEST_NAME, 100, turns);
-        secondValidHolder = new Knight(CHARACTER_TEST_NAME, 100, turns);
-        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, turns);
+        validHolder = new Knight(CHARACTER_TEST_NAME, 100, 2, turns);
+        secondValidHolder = new Knight(CHARACTER_TEST_NAME, 100, 2, turns);
+        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, 2, turns);
     }
     @Override
     @Test

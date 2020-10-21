@@ -36,14 +36,19 @@ public class EnemyTest extends AbstractCharacterTest {
      */
     @BeforeEach
     void setUpEnemies() {
-        enemy = new Enemy(ENEMY_NAME, 10,100, 10, turns);
-        enemySame = new Enemy(ENEMY_NAME, 10, 50, 10, turns);
-        enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, 100, 10, turns);
-        enemyAltWeight = new Enemy(ENEMY_NAME, 20, 100, 10, turns);
-        enemyAltDamage = new Enemy(ENEMY_NAME, 10, 100, 20, turns);
+        enemy = new Enemy(ENEMY_NAME, 10,100,
+                         2, 10, turns);
+        enemySame = new Enemy(ENEMY_NAME, 10, 50,
+                             2, 10, turns);
+        enemyAltName = new Enemy(ENEMY_ALT_NAME, 10, 100,
+                                2, 10, turns);
+        enemyAltWeight = new Enemy(ENEMY_NAME, 20, 100,
+                                  2, 10, turns);
+        enemyAltDamage = new Enemy(ENEMY_NAME, 10, 100,
+                                  2, 20, turns);
 
-        strongAdversary = new Knight(PLAYABLE_TEST_NAME, 100, turns);
-        weakAdversary = new Knight(PLAYABLE_TEST_NAME, 100, turns);
+        strongAdversary = new Knight(PLAYABLE_TEST_NAME, 100, 2, turns);
+        weakAdversary = new Knight(PLAYABLE_TEST_NAME, 100, 2, turns);
 
         strongWeapon = new Sword(SWORD_NAME, 10, 10);
         weakWeapon = new Sword(SWORD_NAME, 1, 10);
@@ -79,8 +84,6 @@ public class EnemyTest extends AbstractCharacterTest {
     }
     @Override
     @Test
-    // TODO: Modify constructors to make this test compilable
-    // Issues with: enemies with no HP, damage and defense, and adversaries with no HP and defense
     protected void subClassCombatTest() {
         this.combatTest(enemy, enemySame, strongAdversary, weakAdversary,
                         100, 10, 2,

@@ -29,13 +29,13 @@ public class KnightTest extends AbstractPlayerCharacterTest {
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        knight = new Knight(KNIGHT_NAME, 100, turns);
-        knightAltName = new Knight(KNIGHT_ALT_NAME, 100, turns);
-        unarmedKnight = new Knight(KNIGHT_NAME, 100, turns);
-        notKnightAltClass = new Engineer(KNIGHT_NAME, 100, turns);
+        knight = new Knight(KNIGHT_NAME, 100, 2, turns);
+        knightAltName = new Knight(KNIGHT_ALT_NAME, 100, 2, turns);
+        unarmedKnight = new Knight(KNIGHT_NAME, 100, 2, turns);
+        notKnightAltClass = new Engineer(KNIGHT_NAME, 100, 2, turns);
 
-        combatKnight = new Knight(KNIGHT_NAME, 100, turns);
-        anotherCombatKnight = new Knight(KNIGHT_ALT_NAME, 100, turns);
+        combatKnight = new Knight(KNIGHT_NAME, 100, 2, turns);
+        anotherCombatKnight = new Knight(KNIGHT_ALT_NAME, 100, 2, turns);
         combatSword = new Sword(SWORD_NAME, 10, 10);
         anotherSword = new Sword(SWORD_NAME, 10, 10);
         combatKnight.tryToEquip(combatSword);
@@ -44,7 +44,7 @@ public class KnightTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(knight, new Knight(KNIGHT_NAME, 100, turns),
+        this.constructionTest(knight, new Knight(KNIGHT_NAME, 100, 2, turns),
                               knightAltName, notKnightAltClass);
     }
     @Override
