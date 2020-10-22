@@ -73,13 +73,22 @@ public abstract class AbstractWeapon implements IWeapon {
 
   @Override
   public void beHeld(@NotNull IPlayerCharacter playerCharacter) {
-    this.holder = playerCharacter;
-    // TODO: Make an equivalent to assert playerCharacter.getEquippedWeapon() == this;
+    if (playerCharacter.getEquippedWeapon() == this) {
+      this.holder = playerCharacter;
+    }
+    // TODO: Raise a flag or exception to the controller if the weapon tries to equip to an
+    //  unassigned character
   }
 
   @Override
   public void beUnHeld() {
-    this.holder = null;
+    IPlayerCharacter currentHolder = this.getHolder();
+    if (currentHolder != null) {
+      if (currentHolder.getEquippedWeapon() != this) {
+        this.holder = null;
+      }
+      // TODO: Raise a flag or exception to the controller if the weapon tries to un-equip itself
+    }
   }
 
   @Override

@@ -97,6 +97,20 @@ public abstract class AbstractWeaponTest {
         secondValidHolder.tryToEquip(weapon);
         assertFalse(weapon.isAvailable());
         assertEquals(weapon.getHolder(), secondValidHolder);
+        // Checks that the weapon cannot equip itself to a character
+        weapon.beHeld(validHolder);
+        assertNull(validHolder.getEquippedWeapon());
+        assertEquals(secondValidHolder.getEquippedWeapon(), weapon);
+        assertEquals(weapon.getHolder(), secondValidHolder);
+        // Checks that a weapon cannot un-equip itself
+        weapon.beUnHeld();
+        assertEquals(secondValidHolder.getEquippedWeapon(), weapon);
+        assertEquals(weapon.getHolder(), secondValidHolder);
+        // Checks that there is no change if a weapon tries to un-equip itself having no holder
+        secondValidHolder.unEquip();
+        assertNull(weapon.getHolder());
+        weapon.beUnHeld();
+        assertNull(weapon.getHolder());
     }
 
     /**

@@ -71,6 +71,30 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   protected abstract int getTurnWeight();
 
+  /**
+   * Manages the character when its killed
+   */
+  protected abstract void beKilled();
+
+  /**
+   * Manages an amount of damage done to the character
+   */
+  protected void beDamaged(int damage) {
+    int priorHealthPoints = this.getHealthPoints();
+    if (damage > priorHealthPoints) {
+      this.beKilled();
+    } else {
+      this.setHealthPoints(priorHealthPoints - damage);
+    }
+  }
+
+  /**
+   * Sets the character health points to a fixed value
+   */
+  protected void setHealthPoints(int healthPoints) {
+    this.healthPoints = healthPoints;
+  }
+
   @Override
   public String getName() {
     return name;
@@ -107,17 +131,5 @@ public abstract class AbstractCharacter implements ICharacter {
 
   @Override
   public abstract void beAttackedByEnemy(Enemy enemy);
-
-  /**
-   * Manages an amount of damage done to the character
-   */
-  protected abstract void beDamaged(int damage);
-
-  /**
-   * Sets the character health points to a fixed value
-   */
-  protected void setHealthPoints(int healthPoints) {
-    this.healthPoints = healthPoints;
-  }
 
 }

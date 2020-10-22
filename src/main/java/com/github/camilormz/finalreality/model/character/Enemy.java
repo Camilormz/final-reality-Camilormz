@@ -82,13 +82,8 @@ public class Enemy extends AbstractCharacter {
   }
 
   @Override
-  protected void beDamaged(int damage) {
-    int priorHealthPoints = this.getHealthPoints();
-    if (damage > priorHealthPoints) {
-      this.setHealthPoints(0);
-    } else {
-      this.setHealthPoints(priorHealthPoints - damage);
-    }
+  protected void beKilled() {
+    this.setHealthPoints(0);
   }
 
   @Override

@@ -60,11 +60,11 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     WeaponType weaponType = weapon.getType();
     IWeapon priorWeapon = this.getEquippedWeapon();
     if (this.allowedWeapons.contains(weaponType) && weapon.isAvailable() && this.isAlive()) {
+      this.equippedWeapon = weapon;
+      weapon.beHeld(this);
       if (priorWeapon != null) {
         priorWeapon.beUnHeld();
       }
-      this.equippedWeapon = weapon;
-      weapon.beHeld(this);
       // TODO: make an equivalent to assert weapon.getHolder() == this;
     }
   }
@@ -72,8 +72,9 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   @Override
   public void unEquip() {
     if (this.getEquippedWeapon() != null) {
-      this.getEquippedWeapon().beUnHeld();
+      IWeapon currentWeapon = this.equippedWeapon;
       this.equippedWeapon = null;
+      currentWeapon.beUnHeld();
     }
   }
 
@@ -119,14 +120,9 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   }
 
   @Override
-  protected void beDamaged(int damage) {
-    int priorHealthPoints = this.getHealthPoints();
-    if (damage > priorHealthPoints) {
-      this.setHealthPoints(0);
-      this.unEquip();
-    } else {
-      this.setHealthPoints(priorHealthPoints - damage);
-    }
+  protected void beKilled() {
+    this.unEquip();
+    this.setHealthPoints(0);
   }
 
   @Override

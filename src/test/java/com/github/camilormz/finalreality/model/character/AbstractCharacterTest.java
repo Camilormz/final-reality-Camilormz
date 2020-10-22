@@ -116,7 +116,7 @@ public abstract class AbstractCharacterTest {
         // Checks that the character's and adversary's HP starts as desired
         assertEquals(character.getHealthPoints(), characterHP);
         assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
-        // Tests that an same domain character attack trial has no effect on character
+        // Tests that an same domain character attack trial has no effect (no friendly fire)
         sameDomainCharacter.attack(character);
         assertEquals(character.getHealthPoints(), characterHP);
         // Tests that the weak adversary has not effect on character HP

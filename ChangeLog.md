@@ -3,6 +3,7 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.8) Improved bond playable character - weapon and improved heritage
 - (B.7) Ensured 100% coverage
 - (B.6) Code fixed in order to pass all tests (99% line and 85% branch coverage)
 - (B.5) Preliminary unfixed non-magical combat implementation
