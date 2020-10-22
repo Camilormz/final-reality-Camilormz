@@ -74,7 +74,7 @@ public abstract class AbstractWeapon implements IWeapon {
   @Override
   public void beHeld(@NotNull IPlayerCharacter playerCharacter) {
     this.holder = playerCharacter;
-    assert playerCharacter.getEquippedWeapon() == this;
+    // TODO: Make an equivalent to assert playerCharacter.getEquippedWeapon() == this;
   }
 
   @Override

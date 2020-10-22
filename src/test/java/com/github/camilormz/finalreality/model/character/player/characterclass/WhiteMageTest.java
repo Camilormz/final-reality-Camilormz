@@ -18,6 +18,7 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
 
     private WhiteMage whiteMage;
     private WhiteMage whiteMageAltName;
+    private WhiteMage whiteMageAltDefense;
     private WhiteMage unarmedWhiteMage;
     private BlackMage notWhiteMageAltClass;
 
@@ -31,6 +32,7 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     protected void subClassSetUp() {
         whiteMage = new WhiteMage(WHITE_MAGE_NAME, 100, 2, turns);
         whiteMageAltName = new WhiteMage(WHITE_MAGE_ALT_NAME, 100, 2, turns);
+        whiteMageAltDefense = new WhiteMage(WHITE_MAGE_NAME, 100, 1, turns);
         unarmedWhiteMage = new WhiteMage(WHITE_MAGE_NAME, 100, 2, turns);
         notWhiteMageAltClass = new BlackMage(WHITE_MAGE_NAME, 100, 2, turns);
 
@@ -48,7 +50,7 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     protected void subClassConstructorTest() {
         this.constructionTest(whiteMage,
                               new WhiteMage(WHITE_MAGE_NAME, 100, 2, turns),
-                              whiteMageAltName, notWhiteMageAltClass);
+                              whiteMageAltName, whiteMageAltDefense, notWhiteMageAltClass);
     }
     @Override
     @Test

@@ -61,13 +61,18 @@ public class Enemy extends AbstractCharacter {
 
   @Override
   public void attack(ICharacter character) {
-    character.beAttackedByEnemy(this);
+    if (this.isAlive()) {
+      character.beAttackedByEnemy(this);
+    }
+    // TODO: Raise flag or exception to controller if a dead enemy is trying to attack
   }
 
   @Override
   public void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter) {
     int HPLoss = playerCharacter.getDamagePoints() - this.getDefensePoints();
-    this.beDamaged(HPLoss);
+    if (HPLoss > 0) {
+      this.beDamaged(HPLoss);
+    }
   }
 
   @Override
@@ -82,7 +87,7 @@ public class Enemy extends AbstractCharacter {
     if (damage > priorHealthPoints) {
       this.setHealthPoints(0);
     } else {
-      this.setHealthPoints(damage - priorHealthPoints);
+      this.setHealthPoints(priorHealthPoints - damage);
     }
   }
 

@@ -96,7 +96,7 @@ public abstract class AbstractCharacter implements ICharacter {
 
   @Override
   public boolean isAlive() {
-    return this.getHealthPoints() <= 0;
+    return this.getHealthPoints() > 0;
   }
 
   @Override

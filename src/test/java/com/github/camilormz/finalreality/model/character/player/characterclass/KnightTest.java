@@ -18,6 +18,7 @@ public class KnightTest extends AbstractPlayerCharacterTest {
 
     private Knight knight;
     private Knight knightAltName;
+    private Knight knightAltDefense;
     private Knight unarmedKnight;
     private Engineer notKnightAltClass;
 
@@ -31,6 +32,7 @@ public class KnightTest extends AbstractPlayerCharacterTest {
     protected void subClassSetUp() {
         knight = new Knight(KNIGHT_NAME, 100, 2, turns);
         knightAltName = new Knight(KNIGHT_ALT_NAME, 100, 2, turns);
+        knightAltDefense = new Knight(KNIGHT_NAME, 100, 1, turns);
         unarmedKnight = new Knight(KNIGHT_NAME, 100, 2, turns);
         notKnightAltClass = new Engineer(KNIGHT_NAME, 100, 2, turns);
 
@@ -45,7 +47,7 @@ public class KnightTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassConstructorTest() {
         this.constructionTest(knight, new Knight(KNIGHT_NAME, 100, 2, turns),
-                              knightAltName, notKnightAltClass);
+                              knightAltName, knightAltDefense, notKnightAltClass);
     }
     @Override
     @Test

@@ -37,12 +37,14 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
     protected void constructionTest(AbstractPlayerCharacter standard,
                                     AbstractPlayerCharacter same,
                                     AbstractPlayerCharacter anotherName,
+                                    AbstractPlayerCharacter anotherDefense,
                                     AbstractPlayerCharacter anotherClass) {
         assertEquals(standard, standard);
         assertEquals(standard, same);
         assertEquals(standard.hashCode(), same.hashCode());
         assertNotEquals(standard, anotherName);
         assertNotEquals(standard, anotherClass);
+        assertNotEquals(standard, anotherDefense);
         assertNotEquals(standard, testEnemy);
     }
     /**
@@ -69,7 +71,11 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
         // Tests that the character can equip another valid weapon
         character.tryToEquip(anotherValidAvailableWeapon);
         assertEquals(character.getEquippedWeapon(), anotherValidAvailableWeapon);
-        // Tests that a character can un-equip its weapons
+        // Tests that a character can un-equip its weapons and in this state it can't do damage
+        character.unEquip();
+        assertNull(character.getEquippedWeapon());
+        assertEquals(character.getDamagePoints(), 0);
+        // Tests if an already un-equipped character un-equips, it stays un-equipped
         character.unEquip();
         assertNull(character.getEquippedWeapon());
         // Tests that a character can re-equip an old weapon
@@ -90,7 +96,7 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
         character.tryToEquip(validAvailableWeapon);
         assertEquals(character.getEquippedWeapon(), validAvailableWeapon);
         assertFalse(validAvailableWeapon.isAvailable());
-        assertNull(validAvailableWeapon.getHolder());
+        assertEquals(validAvailableWeapon.getHolder(), character);
         // Kills the character
         killerEnemy.attack(character);
         assertFalse(character.isAlive());
@@ -98,6 +104,9 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
         assertNull(character.getEquippedWeapon());
         assertTrue(validAvailableWeapon.isAvailable());
         assertNull(validAvailableWeapon.getHolder());
+        // Tests that a dead character can't equip a weapon
+        character.tryToEquip(validAvailableWeapon);
+        assertNull(character.getEquippedWeapon());
     }
 
     /**
@@ -107,7 +116,7 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
      * Issues with: character with no HP and defense, and enemies with no HP, damage and defense
      */
     protected void subClassCombatTestExecution(AbstractPlayerCharacter character,
-                                      AbstractPlayerCharacter sameDomainCharacter) {
+                                               AbstractPlayerCharacter sameDomainCharacter) {
         assert character.getHealthPoints() == 100 && character.getDamagePoints() == 10
                                                   && character.getDefensePoints() == 2;
         this.combatTest(character, sameDomainCharacter, strongEnemy, weakEnemy,

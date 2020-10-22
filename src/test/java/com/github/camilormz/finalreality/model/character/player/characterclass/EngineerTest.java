@@ -18,6 +18,7 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
 
     private Engineer engineer;
     private Engineer engineerAltName;
+    private Engineer engineerAltDefense;
     private Engineer unarmedEngineer;
     private Knight notEngineerAltClass;
 
@@ -31,6 +32,7 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     protected void subClassSetUp() {
         engineer = new Engineer(ENGINEER_NAME, 100, 2, turns);
         engineerAltName = new Engineer(ENGINEER_ALT_NAME, 100, 2, turns);
+        engineerAltDefense = new Engineer(ENGINEER_NAME, 100, 1 , turns);
         unarmedEngineer = new Engineer(ENGINEER_NAME, 100, 2, turns);
         notEngineerAltClass = new Knight(ENGINEER_NAME, 100, 2, turns);
 
@@ -46,7 +48,7 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     protected void subClassConstructorTest() {
         this.constructionTest(engineer,
                               new Engineer(ENGINEER_NAME, 100, 2, turns),
-                              engineerAltName, notEngineerAltClass);
+                              engineerAltName, engineerAltDefense, notEngineerAltClass);
     }
     @Override
     @Test
@@ -75,6 +77,7 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassWeaponDroppingTest() {
+        System.out.println(engineer.isAlive());
         this.deathWeaponDropTest(engineer, testBow);
     }
 }

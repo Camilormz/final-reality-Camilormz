@@ -3,6 +3,8 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.7) Ensured 100% coverage
+- (B.6) Code fixed in order to pass all tests (99% line and 85% branch coverage)
 - (B.5) Preliminary unfixed non-magical combat implementation
 - (B.4) Preliminary improved weapon equipment implementation.
 - (B.3) Defense points implementation.

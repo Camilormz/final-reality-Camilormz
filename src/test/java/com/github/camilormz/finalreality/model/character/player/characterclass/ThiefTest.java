@@ -18,6 +18,7 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
 
     private Thief thief;
     private Thief thiefAltName;
+    private Thief thiefAltDefense;
     private Thief unarmedThief;
     private BlackMage notThiefAltClass;
 
@@ -31,6 +32,7 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     protected void subClassSetUp() {
         thief = new Thief(THIEF_NAME, 100, 2, turns);
         thiefAltName = new Thief(THIEF_ALT_NAME, 100, 2, turns);
+        thiefAltDefense = new Thief(THIEF_NAME, 100, 1, turns);
         unarmedThief = new Thief(THIEF_NAME, 100, 2, turns);
         notThiefAltClass = new BlackMage(THIEF_NAME, 100, 2, turns);
 
@@ -44,8 +46,8 @@ public class ThiefTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(thief, new Thief(THIEF_ALT_NAME, 100, 2, turns),
-                              thiefAltName, notThiefAltClass);
+        this.constructionTest(thief, new Thief(THIEF_NAME, 100, 2, turns),
+                              thiefAltName, thiefAltDefense, notThiefAltClass);
     }
     @Override
     @Test

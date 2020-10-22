@@ -58,11 +58,14 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   @Override
   public void tryToEquip(IWeapon weapon) {
     WeaponType weaponType = weapon.getType();
-    if (this.allowedWeapons.contains(weaponType) && weapon.isAvailable()) {
-      this.getEquippedWeapon().beUnHeld();
+    IWeapon priorWeapon = this.getEquippedWeapon();
+    if (this.allowedWeapons.contains(weaponType) && weapon.isAvailable() && this.isAlive()) {
+      if (priorWeapon != null) {
+        priorWeapon.beUnHeld();
+      }
       this.equippedWeapon = weapon;
       weapon.beHeld(this);
-      assert weapon.getHolder() == this;
+      // TODO: make an equivalent to assert weapon.getHolder() == this;
     }
   }
 
@@ -95,7 +98,10 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
 
   @Override
   public void attack(ICharacter character) {
-    character.beAttackedByPlayableCharacter(this);
+    if (this.isAlive()) {
+      character.beAttackedByPlayableCharacter(this);
+    }
+    // TODO: Raise flag or exception to controller if a dead playable character is trying to attack
   }
 
   @Override
@@ -107,7 +113,9 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   @Override
   public void beAttackedByEnemy(Enemy enemy) {
     int HPLoss = enemy.getDamagePoints() - this.getDefensePoints();
-    this.beDamaged(HPLoss);
+    if (HPLoss > 0) {
+      this.beDamaged(HPLoss);
+    }
   }
 
   @Override
@@ -117,7 +125,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
       this.setHealthPoints(0);
       this.unEquip();
     } else {
-      this.setHealthPoints(damage - priorHealthPoints);
+      this.setHealthPoints(priorHealthPoints - damage);
     }
   }
 
