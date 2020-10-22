@@ -34,6 +34,18 @@ be available for the player to attack an enemy.
 Within the playable character classes, there are magical classes, they can throw spells if they have
 an staff as the equipped weapon.
 
+**Project Asumptions**
+
+Among the asumptions made in the project there are:
+- A playable character can equip zero or only one weapons.
+- A playable character can't equip a weapon that another playable character has equipped.
+- A weapon can be equipped by zero or only one playable characters.
+- There is a bond in the pair playable character - weapon; if a character equips a weapon, the weapon has the character as its _holder_.
+- When a playable character dies, his weapon is dropped and available for another character.
+- There is no friendly fire, i.e., a playable character can't attack other playable chearacters and idem for enemies.
+- There is no damage for a character if its attacked by some other character with less damage capability than the attacked character defense points.
+- There is no action involved in the intent of equipping weapons or attacking from a dead character.
+
 **Current implementation status**
 ---------------------------------
 The current implementation status of the project is that only the backbone of the models of characters
