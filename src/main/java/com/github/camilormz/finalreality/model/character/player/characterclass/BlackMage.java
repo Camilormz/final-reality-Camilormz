@@ -21,7 +21,7 @@ public class BlackMage extends AbstractPlayerCharacter implements IMagicalCharac
      *
      * @param name
      *     the black mage's name
-     * @para healthPoints
+     * @param healthPoints
      *     the black mage's health points
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
