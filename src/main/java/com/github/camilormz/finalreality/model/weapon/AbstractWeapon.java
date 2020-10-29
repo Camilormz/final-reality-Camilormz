@@ -1,5 +1,6 @@
 package com.github.camilormz.finalreality.model.weapon;
 
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -16,6 +17,7 @@ public abstract class AbstractWeapon implements IWeapon {
   private final int damage;
   private final int weight;
   private final WeaponType type;
+  private IPlayerCharacter holder;
 
   /**
    * Creates a weapon.
@@ -36,6 +38,7 @@ public abstract class AbstractWeapon implements IWeapon {
     this.damage = damage;
     this.weight = weight;
     this.type = type;
+    this.holder = null;
   }
 
   @Override
@@ -56,6 +59,36 @@ public abstract class AbstractWeapon implements IWeapon {
   @Override
   public WeaponType getType() {
     return type;
+  }
+
+  @Override
+  public IPlayerCharacter getHolder() {
+    return this.holder;
+  }
+
+  @Override
+  public boolean isAvailable() {
+    return this.holder == null;
+  }
+
+  @Override
+  public void beHeld(@NotNull IPlayerCharacter playerCharacter) {
+    if (playerCharacter.getEquippedWeapon() == this) {
+      this.holder = playerCharacter;
+    }
+    // TODO: Raise a flag or exception to the controller if the weapon tries to equip to an
+    //  unassigned character
+  }
+
+  @Override
+  public void beUnHeld() {
+    IPlayerCharacter currentHolder = this.getHolder();
+    if (currentHolder != null) {
+      if (currentHolder.getEquippedWeapon() != this) {
+        this.holder = null;
+      }
+      // TODO: Raise a flag or exception to the controller if the weapon tries to un-equip itself
+    }
   }
 
   @Override

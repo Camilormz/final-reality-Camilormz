@@ -21,11 +21,18 @@ public class BlackMage extends AbstractPlayerCharacter implements IMagicalCharac
      *
      * @param name
      *     the black mage's name
+     * @param healthPoints
+     *     the black mage's health points
      * @param turnsQueue
      *     the queue with the characters waiting for their turn
      */
-    public BlackMage(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue) {
+    public BlackMage(@NotNull final String name,
+                     int healthPoints,
+                     final int defense,
+                     @NotNull final BlockingQueue<ICharacter> turnsQueue) {
         super(name,
+              healthPoints,
+              defense,
               turnsQueue,
               CharacterClass.BLACK_MAGE,
               EnumSet.of(WeaponType.KNIFE, WeaponType.STAFF));

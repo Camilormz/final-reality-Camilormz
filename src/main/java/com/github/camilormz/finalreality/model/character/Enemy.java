@@ -2,6 +2,8 @@ package com.github.camilormz.finalreality.model.character;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class Enemy extends AbstractCharacter {
 
   private final int weight;
+  private final int damage;
 
   /**
    * Creates a new enemy.
@@ -21,14 +24,22 @@ public class Enemy extends AbstractCharacter {
    *     the enemy's name
    * @param weight
    *     the enemy's weight, variable relevant for time enqueuing
+   * @param healthPoints
+   *     the enemy's health points
+   * @param damage
+   *     the damage the enemy is able to do in a single attack
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    */
   public Enemy(@NotNull final String name,
                final int weight,
+               int healthPoints,
+               final int defense,
+               final int damage,
                @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name, CharacterDomain.ENEMY);
+    super(turnsQueue, name, healthPoints, defense, CharacterDomain.ENEMY);
     this.weight = weight;
+    this.damage = damage;
   }
 
   /**
@@ -44,6 +55,38 @@ public class Enemy extends AbstractCharacter {
   }
 
   @Override
+  public int getDamagePoints() {
+    return this.damage;
+  }
+
+  @Override
+  public void attack(ICharacter character) {
+    if (this.isAlive()) {
+      character.beAttackedByEnemy(this);
+    }
+    // TODO: Raise flag or exception to controller if a dead enemy is trying to attack
+  }
+
+  @Override
+  public void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter) {
+    int HPLoss = playerCharacter.getDamagePoints() - this.getDefensePoints();
+    if (HPLoss > 0) {
+      this.beDamaged(HPLoss);
+    }
+  }
+
+  @Override
+  public void beAttackedByEnemy(Enemy enemy) {
+    // No action as friendly fire is not a current feature of this game
+    // TODO: raise a flag or exception for the controller
+  }
+
+  @Override
+  protected void beKilled() {
+    this.setHealthPoints(0);
+  }
+
+  @Override
   public boolean equals(final Object o) {
     if (this == o) {
       return true;
@@ -53,11 +96,13 @@ public class Enemy extends AbstractCharacter {
     }
     final Enemy enemy = (Enemy) o;
     return this.getName().equals(enemy.getName()) &&
-           this.getWeight() == enemy.getWeight();
+           this.getWeight() == enemy.getWeight() &&
+           this.getDamagePoints() == enemy.getDamagePoints() &&
+           this.getDefensePoints() == enemy.getDefensePoints();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getWeight());
+    return Objects.hash(getName(), getWeight(), getDamagePoints(), getDefensePoints());
   }
 }

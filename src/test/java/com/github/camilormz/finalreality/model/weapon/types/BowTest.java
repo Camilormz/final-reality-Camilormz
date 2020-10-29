@@ -1,5 +1,7 @@
 package com.github.camilormz.finalreality.model.weapon.types;
 
+import com.github.camilormz.finalreality.model.character.player.characterclass.Engineer;
+import com.github.camilormz.finalreality.model.character.player.characterclass.WhiteMage;
 import com.github.camilormz.finalreality.model.weapon.AbstractWeaponTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,10 @@ public class BowTest extends AbstractWeaponTest {
     private Bow bowAltWeight;
     private Knife notBowAltType;
 
+    private Engineer validHolder;
+    private Engineer secondValidHolder;
+    private WhiteMage unValidHolder;
+
     @Override
     @BeforeEach
     protected void subClassSetUp() {
@@ -28,11 +34,20 @@ public class BowTest extends AbstractWeaponTest {
         bowAltDamage = new Bow(BOW_NAME, 20, 10);
         bowAltWeight = new Bow(BOW_NAME, 10, 20);
         notBowAltType = new Knife(BOW_NAME, 10, 10);
+
+        validHolder = new Engineer(CHARACTER_TEST_NAME, 100, 2, turns);
+        secondValidHolder = new Engineer(CHARACTER_TEST_NAME, 100, 2, turns);
+        unValidHolder = new WhiteMage(CHARACTER_TEST_NAME, 100, 2, turns);
     }
     @Override
     @Test
     protected void subClassConstructorTest() {
         this.constructionTest(bow, new Bow(BOW_NAME, 10, 10), bowAltName,
                               bowAltDamage, bowAltWeight, notBowAltType);
+    }
+    @Override
+    @Test
+    protected void subClassEquipmentTest() {
+        this.equipmentTest(bow, validHolder, secondValidHolder, unValidHolder);
     }
 }

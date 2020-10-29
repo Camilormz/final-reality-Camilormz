@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Abstract class that holds the tests available for any character of the game
@@ -20,11 +19,11 @@ public abstract class AbstractCharacterTest {
 
     protected final String ENEMY_TEST_NAME = "Kronos";
     protected final String PLAYABLE_TEST_NAME = "Steel";
-    private final String AXE_NAME = "Wood Slayer";
-    private final String BOW_NAME = "The Trebuchet";
-    private final String KNIFE_NAME = "Stealthy";
-    private final String STAFF_NAME = "Shadowmaker";
-    private final String SWORD_NAME = "Infidel Redentor";
+    protected final String AXE_NAME = "Wood Slayer";
+    protected final String BOW_NAME = "The Trebuchet";
+    protected final String KNIFE_NAME = "Stealthy";
+    protected final String STAFF_NAME = "Shadowmaker";
+    protected final String SWORD_NAME = "Infidel Redentor";
 
     protected BlockingQueue<ICharacter> turns;
     protected Axe testAxe;
@@ -35,6 +34,12 @@ public abstract class AbstractCharacterTest {
     protected Enemy testEnemy;
     protected Knight testPlayable;
 
+    protected Axe anotherTestAxe;
+    protected Bow anotherTestBow;
+    protected Knife anotherTestKnife;
+    protected Staff anotherTestStaff;
+    protected Sword anotherTestSword;
+
     protected final float waitTurnTestErrorMargin = 10;
     private final long epsilonWaitTurnTest = 50;  // milliseconds to wait at 0 expected time
 
@@ -44,13 +49,19 @@ public abstract class AbstractCharacterTest {
     @BeforeEach
     void setUp() {
         turns = new LinkedBlockingQueue<>();
-        testEnemy = new Enemy(ENEMY_TEST_NAME, 10, turns);
-        testPlayable = new Knight(PLAYABLE_TEST_NAME, turns);
+        testEnemy = new Enemy(ENEMY_TEST_NAME, 100, 10,
+                             10, 2, turns);
+        testPlayable = new Knight(PLAYABLE_TEST_NAME, 100, 2, turns);
         testAxe = new Axe(AXE_NAME, 10, 10);
         testBow = new Bow(BOW_NAME, 10, 10);
         testKnife = new Knife(KNIFE_NAME, 10, 10);
         testStaff = new Staff(STAFF_NAME, 10, 10, 10);
         testSword = new Sword(SWORD_NAME, 10, 10);
+        anotherTestAxe = new Axe(AXE_NAME, 10, 10);
+        anotherTestBow = new Bow(BOW_NAME, 10, 10);
+        anotherTestKnife = new Knife(KNIFE_NAME, 10, 10);
+        anotherTestStaff = new Staff(STAFF_NAME, 10, 10, 10);
+        anotherTestSword = new Sword(SWORD_NAME, 10, 10);
     }
 
     /**
@@ -85,9 +96,55 @@ public abstract class AbstractCharacterTest {
         }
     }
     /**
+     * Test for combat dynamics
+     * @param characterDamage corresponds to character damage and must be less than
+     *                        strongAdversaryHP and greater to strongAdversaryDefense
+     * @param strongAdversaryDamage corresponds to strongAdversary damage
+     * @param weakAdversaryDamage corresponds to weakAdversary damage and must be less than
+     *                            characterDefense
+     */
+    protected void combatTest(AbstractCharacter character,
+                              AbstractCharacter sameDomainCharacter,
+                              AbstractCharacter strongAdversary,
+                              AbstractCharacter weakAdversary,
+                              int characterHP, int characterDamage, int characterDefense,
+                              int strongAdversaryDamage, int weakAdversaryDamage,
+                              int strongAdversaryHP, int strongAdversaryDefense) {
+        // Assert the parameters conditions
+        assert weakAdversaryDamage < characterDefense;
+        assert strongAdversaryDefense < characterDamage && characterDamage < strongAdversaryHP;
+        // Checks that the character's and adversary's HP starts as desired
+        assertEquals(character.getHealthPoints(), characterHP);
+        assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
+        // Tests that an same domain character attack trial has no effect (no friendly fire)
+        sameDomainCharacter.attack(character);
+        assertEquals(character.getHealthPoints(), characterHP);
+        // Tests that the weak adversary has not effect on character HP
+        weakAdversary.attack(character);
+        assertEquals(character.getHealthPoints(), characterHP);
+        // Tests that the character can actually attack its adversary
+        character.attack(strongAdversary);
+        strongAdversaryHP -= characterDamage - strongAdversaryDefense;
+        assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
+        // Tests loop in where the character receive attacks from the strong adversary until it dies
+        while (characterHP > 0) {
+            assertEquals(character.getHealthPoints(), characterHP);
+            assertTrue(character.isAlive());
+            strongAdversary.attack(character);
+            characterHP -= strongAdversaryDamage - characterDefense;
+        }
+        // Tests if the character is actually dead
+        assertEquals(character.getHealthPoints(), 0);
+        assertFalse(character.isAlive());
+        // Tests that a dead character has no effect
+        character.attack(strongAdversary);
+        assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
+    }
+    /**
      * Test for character domain
      */
-    protected void getCharacterDomainTest(AbstractCharacter character, CharacterDomain expectedDomain) {
+    protected void getCharacterDomainTest(AbstractCharacter character,
+                                          CharacterDomain expectedDomain) {
         assertEquals(expectedDomain, character.getCharacterDomain());
     }
     /**
@@ -100,4 +157,9 @@ public abstract class AbstractCharacterTest {
      */
     @Test
     protected abstract void subClassWaitTurnTest();
+    /**
+     * Abstract method for the subclasses to execute the combat test
+     */
+    @Test
+    protected abstract void subClassCombatTest();
 }

@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.character.player;
 
 import com.github.camilormz.finalreality.model.character.AbstractCharacter;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
+import com.github.camilormz.finalreality.model.character.Enemy;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 
 import java.util.EnumSet;
@@ -31,6 +32,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    *
    * @param name
    *     the character's name
+   * @param healthPoints
+   *     the character's health points
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    * @param characterClass
@@ -40,20 +43,38 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    *     the set of weapon types that the character is allowed to equip
    *     @see WeaponType
    */
-  public AbstractPlayerCharacter(@NotNull String name,
-                                 @NotNull BlockingQueue<ICharacter> turnsQueue,
+  public AbstractPlayerCharacter(@NotNull final String name,
+                                 int healthPoints,
+                                 final int defense,
+                                 @NotNull final BlockingQueue<ICharacter> turnsQueue,
                                  @NotNull final CharacterClass characterClass,
                                  @NotNull final EnumSet<WeaponType> allowedWeapons) {
-    super(turnsQueue, name, CharacterDomain.PLAYABLE);
+    super(turnsQueue, name, healthPoints, defense, CharacterDomain.PLAYABLE);
     this.equippedWeapon = null;
     this.characterClass = characterClass;
     this.allowedWeapons = allowedWeapons;
   }
 
-  public void equip(IWeapon weapon) {
+  @Override
+  public void tryToEquip(IWeapon weapon) {
     WeaponType weaponType = weapon.getType();
-    if (this.allowedWeapons.contains(weaponType)) {
+    IWeapon priorWeapon = this.getEquippedWeapon();
+    if (this.allowedWeapons.contains(weaponType) && weapon.isAvailable() && this.isAlive()) {
       this.equippedWeapon = weapon;
+      weapon.beHeld(this);
+      if (priorWeapon != null) {
+        priorWeapon.beUnHeld();
+      }
+      // TODO: make an equivalent to assert weapon.getHolder() == this;
+    }
+  }
+
+  @Override
+  public void unEquip() {
+    if (this.getEquippedWeapon() != null) {
+      IWeapon currentWeapon = this.equippedWeapon;
+      this.equippedWeapon = null;
+      currentWeapon.beUnHeld();
     }
   }
 
@@ -65,6 +86,43 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   @Override
   public CharacterClass getCharacterClass() {
     return this.characterClass;
+  }
+
+  @Override
+  public int getDamagePoints() {
+    if (this.equippedWeapon == null) {
+      return 0;
+    } else {
+      return this.equippedWeapon.getDamage();
+    }
+  }
+
+  @Override
+  public void attack(ICharacter character) {
+    if (this.isAlive()) {
+      character.beAttackedByPlayableCharacter(this);
+    }
+    // TODO: Raise flag or exception to controller if a dead playable character is trying to attack
+  }
+
+  @Override
+  public void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter) {
+    // No action as friendly fire is not a current feature of this game
+    // TODO: raise a flag or exception for the controller
+  }
+
+  @Override
+  public void beAttackedByEnemy(Enemy enemy) {
+    int HPLoss = enemy.getDamagePoints() - this.getDefensePoints();
+    if (HPLoss > 0) {
+      this.beDamaged(HPLoss);
+    }
+  }
+
+  @Override
+  protected void beKilled() {
+    this.unEquip();
+    this.setHealthPoints(0);
   }
 
   @Override
@@ -86,11 +144,12 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     }
     final IPlayerCharacter otherPCharacter = (IPlayerCharacter) o;
     return this.getName().equals(otherPCharacter.getName()) &&
-           this.getCharacterClass() == otherPCharacter.getCharacterClass();
+           this.getCharacterClass() == otherPCharacter.getCharacterClass() &&
+           this.getDefensePoints() == otherPCharacter.getDefensePoints();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getCharacterClass());
+    return Objects.hash(getName(), getCharacterClass(), getDefensePoints());
   }
 }

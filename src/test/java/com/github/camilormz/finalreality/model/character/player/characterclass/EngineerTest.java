@@ -2,6 +2,7 @@ package com.github.camilormz.finalreality.model.character.player.characterclass;
 
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest;
+import com.github.camilormz.finalreality.model.weapon.types.Axe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,33 +18,49 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
 
     private Engineer engineer;
     private Engineer engineerAltName;
+    private Engineer engineerAltDefense;
     private Engineer unarmedEngineer;
     private Knight notEngineerAltClass;
+
+    private Engineer combatEngineer;
+    private Engineer anotherCombatEngineer;
+    private Axe combatAxe;
+    private Axe anotherAxe;
 
     @Override
     @BeforeEach
     protected void subClassSetUp() {
-        engineer = new Engineer(ENGINEER_NAME, turns);
-        engineerAltName = new Engineer(ENGINEER_ALT_NAME, turns);
-        unarmedEngineer = new Engineer(ENGINEER_NAME, turns);
-        notEngineerAltClass = new Knight(ENGINEER_NAME, turns);
+        engineer = new Engineer(ENGINEER_NAME, 100, 2, turns);
+        engineerAltName = new Engineer(ENGINEER_ALT_NAME, 100, 2, turns);
+        engineerAltDefense = new Engineer(ENGINEER_NAME, 100, 1 , turns);
+        unarmedEngineer = new Engineer(ENGINEER_NAME, 100, 2, turns);
+        notEngineerAltClass = new Knight(ENGINEER_NAME, 100, 2, turns);
+
+        combatEngineer = new Engineer(ENGINEER_NAME, 100, 2, turns);
+        anotherCombatEngineer = new Engineer(ENGINEER_ALT_NAME, 100, 2, turns);
+        combatAxe = new Axe(AXE_NAME, 10, 10);
+        anotherAxe = new Axe(AXE_NAME, 10, 10);
+        combatEngineer.tryToEquip(combatAxe);
+        anotherCombatEngineer.tryToEquip(anotherAxe);
     }
     @Override
     @Test
     protected void subClassConstructorTest() {
-        this.constructionTest(engineer, new Engineer(ENGINEER_NAME, turns),
-                              engineerAltName, notEngineerAltClass);
+        this.constructionTest(engineer,
+                              new Engineer(ENGINEER_NAME, 100, 2, turns),
+                              engineerAltName, engineerAltDefense, notEngineerAltClass);
     }
     @Override
     @Test
     protected void subClassWeaponTest() {
-        this.weaponEquipmentTest(engineer, unarmedEngineer, testBow, testStaff);
+        this.weaponEquipmentTest(engineer, unarmedEngineer,
+                                 testBow, anotherTestBow, combatAxe, testStaff);
     }
     @Override
     @Test
     protected void subClassWaitTurnTest() {
         this.waitTurnTest(engineer, 0, waitTurnTestErrorMargin);
-        engineer.equip(testBow);
+        engineer.tryToEquip(testBow);
         long expectedTime = testBow.getWeight()/10;
         this.waitTurnTest(engineer, expectedTime, waitTurnTestErrorMargin);
     }
@@ -51,5 +68,16 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Test
     protected void subClassCharacterDomainTest() {
         this.getCharacterDomainTest(engineer, CharacterDomain.PLAYABLE);
+    }
+    @Override
+    @Test
+    protected void subClassCombatTest() {
+        this.subClassCombatTestExecution(combatEngineer, anotherCombatEngineer);
+    }
+    @Override
+    @Test
+    protected void subClassWeaponDroppingTest() {
+        System.out.println(engineer.isAlive());
+        this.deathWeaponDropTest(engineer, testBow);
     }
 }

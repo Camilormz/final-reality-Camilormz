@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,6 +19,8 @@ public abstract class AbstractCharacter implements ICharacter {
   private final BlockingQueue<ICharacter> turnsQueue;
   private final String name;
   private final CharacterDomain characterDomain;
+  private int healthPoints;
+  private final int defense;
   private ScheduledExecutorService scheduledExecutor;
 
   /**
@@ -24,18 +28,26 @@ public abstract class AbstractCharacter implements ICharacter {
    *
    * @param name
    *     the character's name
+   * @param healthPoints
+   *     the character's health points
+   * @param defense
+   *     the character's defense points, it corresponds to its resistance to attacks
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    * @param characterDomain
    *     the domain of this character
    *     @see CharacterDomain
    */
-  protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-                              @NotNull String name,
-                              @NotNull CharacterDomain characterDomain) {
+  protected AbstractCharacter(@NotNull final BlockingQueue<ICharacter> turnsQueue,
+                              @NotNull final String name,
+                              int healthPoints,
+                              final int defense,
+                              @NotNull final CharacterDomain characterDomain) {
     this.turnsQueue = turnsQueue;
     this.name = name;
     this.characterDomain = characterDomain;
+    this.healthPoints = healthPoints;
+    this.defense = defense;
   }
 
   @Override
@@ -59,6 +71,30 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   protected abstract int getTurnWeight();
 
+  /**
+   * Manages the character when its killed
+   */
+  protected abstract void beKilled();
+
+  /**
+   * Manages an amount of damage done to the character
+   */
+  protected void beDamaged(int damage) {
+    int priorHealthPoints = this.getHealthPoints();
+    if (damage > priorHealthPoints) {
+      this.beKilled();
+    } else {
+      this.setHealthPoints(priorHealthPoints - damage);
+    }
+  }
+
+  /**
+   * Sets the character health points to a fixed value
+   */
+  protected void setHealthPoints(int healthPoints) {
+    this.healthPoints = healthPoints;
+  }
+
   @Override
   public String getName() {
     return name;
@@ -68,4 +104,32 @@ public abstract class AbstractCharacter implements ICharacter {
   public CharacterDomain getCharacterDomain() {
     return this.characterDomain;
   }
+
+  @Override
+  public int getHealthPoints() {
+    return this.healthPoints;
+  }
+
+  @Override
+  public abstract int getDamagePoints();
+
+  @Override
+  public int getDefensePoints() {
+    return this.defense;
+  }
+
+  @Override
+  public boolean isAlive() {
+    return this.getHealthPoints() > 0;
+  }
+
+  @Override
+  public abstract void attack(ICharacter character);
+
+  @Override
+  public abstract void beAttackedByPlayableCharacter(IPlayerCharacter playerCharacter);
+
+  @Override
+  public abstract void beAttackedByEnemy(Enemy enemy);
+
 }
