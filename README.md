@@ -21,12 +21,14 @@ The project is part of the course CC3002 Design and Programming Methodologies at
 **_Brief_ project description**
 -------------------------------
 As it's said, this project it's a simplified clone of _Final Fantasy_. A turn based combat game where
+
 Final Reality
 =============
 ![http://creativecommons.org/licenses/by/4.0/](https://i.creativecommons.org/l/by/4.0/88x31.png)
 This work is licensed under a 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 **Author:** Camilo Ramírez Canales (@CamiloRMZ)
+
 Context
 -------
 This project's goal is to create a (simplified) clone of _Final Fantasy_'s combat, a game developed
@@ -34,6 +36,7 @@ by [_Square Enix_](https://www.square-enix.com)
 Broadly speaking for the combat the player has a group of characters to control, and a group of 
 enemies controlled by the computer.
 The project is part of the course CC3002 Design and Programming Methodologies at Universidad de Chile
+
 **_Brief_ project description**
 -------------------------------
 As it's said, this project it's a simplified clone of _Final Fantasy_. A turn based combat game where
@@ -65,6 +68,7 @@ Among the asumptions made in the project there are:
 The current implementation status of the project is that only the backbone of the models of characters
 and weapons are implemented, this following the model-view-controller architectural pattern. More
 detailed information is available at the [changelog](ChangeLog.md).
+
 **Installation and execution**
 ------------------------------
 In the current state, there are no executables. To install the source code and its tests, this project
