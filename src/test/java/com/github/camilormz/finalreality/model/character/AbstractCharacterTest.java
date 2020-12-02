@@ -129,14 +129,14 @@ public abstract class AbstractCharacterTest {
         // Tests loop in where the character receive attacks from the strong adversary until it dies
         while (characterHP > 0) {
             assertEquals(character.getHealthPoints(), characterHP);
-            assertTrue(character.isAlive());
+            assertTrue(character.isAvailableForCombat());
             strongAdversary.attack(character);
             characterHP -= strongAdversaryDamage - characterDefense;
         }
-        // Tests if the character is actually dead
+        // Tests if the character is actually knock out
         assertEquals(character.getHealthPoints(), 0);
-        assertFalse(character.isAlive());
-        // Tests that a dead character has no effect
+        assertFalse(character.isAvailableForCombat());
+        // Tests that a knocked out character has no effect
         character.attack(strongAdversary);
         assertEquals(strongAdversary.getHealthPoints(), strongAdversaryHP);
     }

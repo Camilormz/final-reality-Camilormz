@@ -79,6 +79,6 @@ public class WhiteMageTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassWeaponDroppingTest() {
-        this.deathWeaponDropTest(whiteMage, testStaff);
+        this.knockOutWeaponDropTest(whiteMage, testStaff);
     }
 }

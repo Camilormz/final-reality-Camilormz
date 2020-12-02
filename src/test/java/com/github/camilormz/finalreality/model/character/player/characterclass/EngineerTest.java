@@ -77,7 +77,7 @@ public class EngineerTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassWeaponDroppingTest() {
-        System.out.println(engineer.isAlive());
-        this.deathWeaponDropTest(engineer, testBow);
+        System.out.println(engineer.isAvailableForCombat());
+        this.knockOutWeaponDropTest(engineer, testBow);
     }
 }

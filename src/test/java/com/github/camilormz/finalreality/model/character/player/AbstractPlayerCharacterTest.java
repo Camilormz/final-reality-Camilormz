@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest {
 
-    private Enemy killerEnemy;
+    private Enemy knockingEnemy;
     private Enemy strongEnemy;
     private Enemy weakEnemy;
 
@@ -28,7 +28,7 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
                                2, 10, turns);
         weakEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100,
                              2, 1, turns);
-        killerEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100,
+        knockingEnemy = new Enemy(ENEMY_TEST_NAME, 10, 100,
                                2, 1000, turns);
     }
     /**
@@ -83,13 +83,13 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
         assertEquals(character.getEquippedWeapon(), validAvailableWeapon);
     }
     /**
-     * Test for weapon dropping at death
-     * @param character HP and defense must be enough to be killed in one attack by the enemy
+     * Test for weapon dropping at knock out
+     * @param character HP and defense must be enough to be knocked out in one attack by the enemy
      */
-    protected void deathWeaponDropTest(AbstractPlayerCharacter character,
-                                       IWeapon validAvailableWeapon) {
-        // Tests that the character starts with no weapon and alive
-        assertTrue(character.isAlive());
+    protected void knockOutWeaponDropTest(AbstractPlayerCharacter character,
+                                          IWeapon validAvailableWeapon) {
+        // Tests that the character starts with no weapon and available for combat
+        assertTrue(character.isAvailableForCombat());
         assertNull(character.getEquippedWeapon());
         assertTrue(validAvailableWeapon.isAvailable());
         // Tests that the character can equip a weapon and is its holder
@@ -97,14 +97,14 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
         assertEquals(character.getEquippedWeapon(), validAvailableWeapon);
         assertFalse(validAvailableWeapon.isAvailable());
         assertEquals(validAvailableWeapon.getHolder(), character);
-        // Kills the character
-        killerEnemy.attack(character);
-        assertFalse(character.isAlive());
+        // Knocks out the character
+        knockingEnemy.attack(character);
+        assertFalse(character.isAvailableForCombat());
         // Tests that the weapon of the character is dropped
         assertNull(character.getEquippedWeapon());
         assertTrue(validAvailableWeapon.isAvailable());
         assertNull(validAvailableWeapon.getHolder());
-        // Tests that a dead character can't equip a weapon
+        // Tests that a K.O. character can't equip a weapon
         character.tryToEquip(validAvailableWeapon);
         assertNull(character.getEquippedWeapon());
     }
@@ -144,7 +144,7 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
     protected abstract void subClassWeaponTest();
 
     /**
-     * Executes the test for weapon dropping at death
+     * Executes the test for weapon dropping at knock out
      */
     @Test
     protected abstract void subClassWeaponDroppingTest();

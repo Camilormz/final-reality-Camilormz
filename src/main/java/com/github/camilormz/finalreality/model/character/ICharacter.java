@@ -44,9 +44,9 @@ public interface ICharacter {
   int getDefensePoints();
 
   /**
-   * Returns if the character is alive.
+   * Returns if the character is available for combat.
    */
-  boolean isAlive();
+  boolean isAvailableForCombat();
 
   /**
    * Attacks another character

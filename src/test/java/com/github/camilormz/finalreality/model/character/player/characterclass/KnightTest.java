@@ -76,6 +76,6 @@ public class KnightTest extends AbstractPlayerCharacterTest {
     @Override
     @Test
     protected void subClassWeaponDroppingTest() {
-        this.deathWeaponDropTest(knight, testSword);
+        this.knockOutWeaponDropTest(knight, testSword);
     }
 }
