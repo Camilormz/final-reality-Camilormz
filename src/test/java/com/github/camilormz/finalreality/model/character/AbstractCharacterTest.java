@@ -26,6 +26,7 @@ public abstract class AbstractCharacterTest {
     protected final String SWORD_NAME = "Infidel Redentor";
 
     protected BlockingQueue<ICharacter> turns;
+
     protected Axe testAxe;
     protected Bow testBow;
     protected Knife testKnife;
