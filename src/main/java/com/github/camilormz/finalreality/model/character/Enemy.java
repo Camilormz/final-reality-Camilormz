@@ -61,10 +61,10 @@ public class Enemy extends AbstractCharacter {
 
   @Override
   public void attack(ICharacter character) {
-    if (this.isAlive()) {
+    if (this.isAvailableForCombat()) {
       character.beAttackedByEnemy(this);
     }
-    // TODO: Raise flag or exception to controller if a dead enemy is trying to attack
+    // TODO: Raise flag or exception to controller if a K.O enemy is trying to attack
   }
 
   @Override
@@ -82,7 +82,7 @@ public class Enemy extends AbstractCharacter {
   }
 
   @Override
-  protected void beKilled() {
+  protected void beKnockedOut() {
     this.setHealthPoints(0);
   }
 

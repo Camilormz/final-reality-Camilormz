@@ -59,7 +59,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   public void tryToEquip(IWeapon weapon) {
     WeaponType weaponType = weapon.getType();
     IWeapon priorWeapon = this.getEquippedWeapon();
-    if (this.allowedWeapons.contains(weaponType) && weapon.isAvailable() && this.isAlive()) {
+    if (this.allowedWeapons.contains(weaponType) && weapon.isAvailable() && this.isAvailableForCombat()) {
       this.equippedWeapon = weapon;
       weapon.beHeld(this);
       if (priorWeapon != null) {
@@ -99,10 +99,10 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
 
   @Override
   public void attack(ICharacter character) {
-    if (this.isAlive()) {
+    if (this.isAvailableForCombat()) {
       character.beAttackedByPlayableCharacter(this);
     }
-    // TODO: Raise flag or exception to controller if a dead playable character is trying to attack
+    // TODO: Raise flag or exception to controller if a K.O. playable character is trying to attack
   }
 
   @Override
@@ -120,7 +120,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   }
 
   @Override
-  protected void beKilled() {
+  protected void beKnockedOut() {
     this.unEquip();
     this.setHealthPoints(0);
   }

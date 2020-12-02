@@ -58,7 +58,7 @@ Among the asumptions made in the project there are:
 - When a playable character dies, his weapon is dropped and available for another character.
 - There is no friendly fire, i.e., a playable character can't attack other playable chearacters and idem for enemies.
 - There is no damage for a character if its attacked by some other character with less damage capability than the attacked character defense points.
-- There is no action involved in the intent of equipping weapons or attacking from a dead character.
+- There is no action involved in the intent of equipping weapons or attacking from a knocked out character.
 
 **Current implementation status**
 ---------------------------------

@@ -3,6 +3,8 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.9) Refactored all *dead* references to *knock out* in order to follow the spirit that a 0 HP
+        character could be available for future combats.
 - (B.8) Improved bond playable character - weapon and improved heritage
 - (B.7) Ensured 100% coverage
 - (B.6) Code fixed in order to pass all tests (99% line and 85% branch coverage)

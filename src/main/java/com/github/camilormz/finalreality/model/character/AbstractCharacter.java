@@ -72,9 +72,9 @@ public abstract class AbstractCharacter implements ICharacter {
   protected abstract int getTurnWeight();
 
   /**
-   * Manages the character when its killed
+   * Manages the character when its knocked out
    */
-  protected abstract void beKilled();
+  protected abstract void beKnockedOut();
 
   /**
    * Manages an amount of damage done to the character
@@ -82,7 +82,7 @@ public abstract class AbstractCharacter implements ICharacter {
   protected void beDamaged(int damage) {
     int priorHealthPoints = this.getHealthPoints();
     if (damage > priorHealthPoints) {
-      this.beKilled();
+      this.beKnockedOut();
     } else {
       this.setHealthPoints(priorHealthPoints - damage);
     }
@@ -119,7 +119,7 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   @Override
-  public boolean isAlive() {
+  public boolean isAvailableForCombat() {
     return this.getHealthPoints() > 0;
   }
 
