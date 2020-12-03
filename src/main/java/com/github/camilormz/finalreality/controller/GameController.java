@@ -12,6 +12,8 @@ import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -31,6 +33,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GameController {
 
     BlockingQueue<ICharacter> turnsQueue;
+    Set<IPlayerCharacter> playerAssignedCharacters;
+    Set<Enemy> enemiesAssignedToCPU;
+    Set<IWeapon> inventory;
 
     /**
      * Game Controller constructor, it creates a new set of empty instance variables for the turns
@@ -38,6 +43,72 @@ public class GameController {
      */
     public GameController() {
         turnsQueue = new LinkedBlockingQueue<>();
+        playerAssignedCharacters = new HashSet<>();
+        enemiesAssignedToCPU = new HashSet<>();
+        inventory = new HashSet<>();
+    }
+
+    /**
+     * Returns the set that contains the playable characters assigned to the player
+     */
+    public Set<IPlayerCharacter> getPlayerAssignedCharacters() {
+        return this.playerAssignedCharacters;
+    }
+
+    /**
+     * Assigns a character to the player
+     */
+    public void assignToPlayer(@NotNull IPlayerCharacter character) {
+        this.getPlayerAssignedCharacters().add(character);
+    }
+
+    /**
+     * Removes a character from the players assigned characters set
+     */
+    public void removeFromPlayer(@NotNull IPlayerCharacter character) {
+        this.getPlayerAssignedCharacters().remove(character);
+    }
+
+    /**
+     * Returns the set that contains the enemies assigned to the CPU for using in the game
+     */
+    public Set<Enemy> getEnemiesAssigned() {
+        return this.enemiesAssignedToCPU;
+    }
+
+    /**
+     * Assigns an enemy to the CPU for using in combat
+     */
+    public void assignEnemy(@NotNull Enemy enemy) {
+        this.getEnemiesAssigned().add(enemy);
+    }
+
+    /**
+     * Removes an enemy to the CPU assigned enemies set
+     */
+    public void removeAssignedEnemy(@NotNull Enemy enemy) {
+        this.getEnemiesAssigned().remove(enemy);
+    }
+
+    /**
+     * Returns the game inventory
+     */
+    public Set<IWeapon> getInventory() {
+        return this.inventory;
+    }
+
+    /**
+     * Assigns the weapon to the inventory
+     */
+    public void assignToInventory(IWeapon weapon) {
+        this.getInventory().add(weapon);
+    }
+
+    /**
+     * Removes the weapon from the inventory
+     */
+    public void removeFromInventory(IWeapon weapon) {
+        this.getInventory().remove(weapon);
     }
 
     // ========================================================================================= //

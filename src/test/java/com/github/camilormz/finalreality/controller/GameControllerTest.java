@@ -4,17 +4,20 @@ import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.Enemy;
 import com.github.camilormz.finalreality.model.character.ICharacter;
 import com.github.camilormz.finalreality.model.character.player.CharacterClass;
+import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import com.github.camilormz.finalreality.model.character.player.characterclass.*;
+import com.github.camilormz.finalreality.model.weapon.IWeapon;
 import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class that holds everything related to the controller
@@ -41,13 +44,14 @@ public class GameControllerTest {
 
     private final String ENEMY_NAME = "Kronos";
     private final String ENEMY_NAME_2 = "Goblin";
+    private final String ENEMY_NAME_3 = "Venom";
 
     // Characters generated directly by model constructors
     private BlackMage modelBlackMage;
     private Engineer modelEngineer;
     private Knight modelKnight;
     private Thief modelThief;
-    private WhiteMage modelwhiteMage;
+    private WhiteMage modelWhiteMage;
 
     private Enemy modelEnemy;
 
@@ -65,6 +69,8 @@ public class GameControllerTest {
     private WhiteMage controllerWhiteMage;
 
     private Enemy controllerEnemy;
+    private Enemy controllerEnemy2;
+    private Enemy controllerEnemy3;
 
     private Axe controllerAxe;
     private Bow controllerBow;
@@ -95,7 +101,7 @@ public class GameControllerTest {
         modelEngineer = new Engineer(ENGINEER_NAME, DEFAULT_HEALTH_POINTS, DEFAULT_DEFENSE, turns);
         modelKnight = new Knight(KNIGHT_NAME, DEFAULT_HEALTH_POINTS, DEFAULT_DEFENSE, turns);
         modelThief = new Thief(THIEF_NAME, DEFAULT_HEALTH_POINTS, DEFAULT_DEFENSE, turns);
-        modelwhiteMage = new WhiteMage(WHITE_MAGE_NAME, DEFAULT_HEALTH_POINTS,
+        modelWhiteMage = new WhiteMage(WHITE_MAGE_NAME, DEFAULT_HEALTH_POINTS,
                                        DEFAULT_DEFENSE, turns);
 
         modelEnemy = new Enemy(ENEMY_NAME, DEFAULT_ENEMY_WEIGHT, DEFAULT_HEALTH_POINTS,
@@ -122,6 +128,12 @@ public class GameControllerTest {
         controllerEnemy = controller.createEnemy(ENEMY_NAME, DEFAULT_ENEMY_WEIGHT,
                                                  DEFAULT_HEALTH_POINTS, DEFAULT_DEFENSE,
                                                  DEFAULT_ENEMY_DAMAGE);
+        controllerEnemy2 = controller.createEnemy(ENEMY_NAME_2, DEFAULT_ENEMY_WEIGHT,
+                                                  DEFAULT_HEALTH_POINTS, DEFAULT_DEFENSE,
+                                                  DEFAULT_ENEMY_DAMAGE);
+        controllerEnemy3 = controller.createEnemy(ENEMY_NAME_3, DEFAULT_ENEMY_WEIGHT,
+                                                  DEFAULT_HEALTH_POINTS, DEFAULT_DEFENSE,
+                                                  DEFAULT_ENEMY_DAMAGE);
 
         controllerAxe = controller.createAxe(AXE_NAME,
                                              DEFAULT_WEAPON_DAMAGE, DEFAULT_WEAPON_WEIGHT);
@@ -145,7 +157,7 @@ public class GameControllerTest {
         assertEquals(controllerEngineer, modelEngineer);
         assertEquals(controllerKnight, modelKnight);
         assertEquals(controllerThief, modelThief);
-        assertEquals(controllerWhiteMage, modelwhiteMage);
+        assertEquals(controllerWhiteMage, modelWhiteMage);
 
         assertEquals(controllerEnemy, modelEnemy);
 
@@ -181,5 +193,74 @@ public class GameControllerTest {
         assertNull(controller.getWeaponHolder(controllerKnife));
 
         assertEquals(controller.getMagicDamage(controllerStaff), DEFAULT_MAGIC_DAMAGE);
+    }
+
+    /**
+     * Test for playable character assignation to the player to play
+     */
+    @Test
+    void playerAssignationTest() {
+        Set<IPlayerCharacter> playerAssignedCharacters =
+                controller.getPlayerAssignedCharacters();
+        assertEquals(playerAssignedCharacters.size(), 0);
+        controller.assignToPlayer(controllerKnight);
+        assertEquals(playerAssignedCharacters.size(), 1);
+        controller.assignToPlayer(controllerBlackMage);
+        controller.assignToPlayer(modelBlackMage);
+        assertEquals(playerAssignedCharacters.size(), 2);
+        assertTrue(playerAssignedCharacters.contains(controllerKnight));
+        assertTrue(playerAssignedCharacters.contains(controllerBlackMage));
+        assertFalse(playerAssignedCharacters.contains(controllerEngineer));
+        controller.removeFromPlayer(controllerKnight);
+        controller.removeFromPlayer(controllerEngineer);
+        assertTrue(playerAssignedCharacters.contains(controllerBlackMage));
+        assertFalse(playerAssignedCharacters.contains(controllerKnight));
+        assertFalse(playerAssignedCharacters.contains(controllerEngineer));
+        assertEquals(playerAssignedCharacters.size(), 1);
+    }
+
+    /**
+     * Test for enemies assignation to the CPU (enemy player)
+     */
+    @Test
+    void enemyAssignationTest() {
+        Set<Enemy> cpuEnemiesAssigned = controller.getEnemiesAssigned();
+        assertEquals(cpuEnemiesAssigned.size(), 0);
+        controller.assignEnemy(controllerEnemy);
+        assertEquals(cpuEnemiesAssigned.size(), 1);
+        controller.assignEnemy(controllerEnemy2);
+        controller.assignEnemy(modelEnemy);
+        assertEquals(cpuEnemiesAssigned.size(), 2);
+        assertTrue(cpuEnemiesAssigned.contains(controllerEnemy));
+        assertTrue(cpuEnemiesAssigned.contains(controllerEnemy2));
+        assertFalse(cpuEnemiesAssigned.contains(controllerEnemy3));
+        controller.removeAssignedEnemy(controllerEnemy);
+        controller.removeAssignedEnemy(controllerEnemy3);
+        assertTrue(cpuEnemiesAssigned.contains(controllerEnemy2));
+        assertFalse(cpuEnemiesAssigned.contains(controllerEnemy));
+        assertFalse(cpuEnemiesAssigned.contains(controllerEnemy3));
+        assertEquals(cpuEnemiesAssigned.size(), 1);
+    }
+
+    /**
+     * Test for inventory assignation (weapons)
+     */
+    @Test void inventoryTest() {
+        Set<IWeapon> inventory = controller.getInventory();
+        assertEquals(inventory.size(), 0);
+        controller.assignToInventory(controllerSword);
+        assertEquals(inventory.size(), 1);
+        controller.assignToInventory(controllerStaff);
+        controller.assignToInventory(modelSword);
+        assertEquals(inventory.size(), 2);
+        assertTrue(inventory.contains(controllerSword));
+        assertTrue(inventory.contains(controllerStaff));
+        assertFalse(inventory.contains(controllerAxe));
+        controller.removeFromInventory(controllerSword);
+        controller.removeFromInventory(controllerAxe);
+        assertTrue(inventory.contains(controllerStaff));
+        assertFalse(inventory.contains(controllerSword));
+        assertFalse(inventory.contains(controllerAxe));
+        assertEquals(inventory.size(), 1);
     }
 }
