@@ -25,7 +25,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * "sections" in the following order:
  *
  *  0. Constructor
- *  1. Game state variables
+ *  1. Game state methods
  *  2. Element creator methods
  *  3. Getters
  *

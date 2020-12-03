@@ -12,7 +12,6 @@ import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -200,19 +199,25 @@ public class GameControllerTest {
      */
     @Test
     void playerAssignationTest() {
+        // The assigned characters set starts empty
         Set<IPlayerCharacter> playerAssignedCharacters =
                 controller.getPlayerAssignedCharacters();
         assertEquals(playerAssignedCharacters.size(), 0);
+        // Assigns a character
         controller.assignToPlayer(controllerKnight);
         assertEquals(playerAssignedCharacters.size(), 1);
+        // Assigns a second character and a character already assigned
         controller.assignToPlayer(controllerBlackMage);
         controller.assignToPlayer(modelBlackMage);
         assertEquals(playerAssignedCharacters.size(), 2);
+        // Tests that the expected characters are in the set
         assertTrue(playerAssignedCharacters.contains(controllerKnight));
         assertTrue(playerAssignedCharacters.contains(controllerBlackMage));
         assertFalse(playerAssignedCharacters.contains(controllerEngineer));
+        // Remove a character and tries to remove one that's already not in the set
         controller.removeFromPlayer(controllerKnight);
         controller.removeFromPlayer(controllerEngineer);
+        // Tests that the expected characters are in the set
         assertTrue(playerAssignedCharacters.contains(controllerBlackMage));
         assertFalse(playerAssignedCharacters.contains(controllerKnight));
         assertFalse(playerAssignedCharacters.contains(controllerEngineer));
@@ -224,18 +229,24 @@ public class GameControllerTest {
      */
     @Test
     void enemyAssignationTest() {
+        // The assigned enemy set starts empty
         Set<Enemy> cpuEnemiesAssigned = controller.getEnemiesAssigned();
         assertEquals(cpuEnemiesAssigned.size(), 0);
+        // Assigns an enemy
         controller.assignEnemy(controllerEnemy);
         assertEquals(cpuEnemiesAssigned.size(), 1);
+        // Assigns a second enemy and an enemy already assigned
         controller.assignEnemy(controllerEnemy2);
         controller.assignEnemy(modelEnemy);
         assertEquals(cpuEnemiesAssigned.size(), 2);
+        // Tests that the expected enemies are in the set
         assertTrue(cpuEnemiesAssigned.contains(controllerEnemy));
         assertTrue(cpuEnemiesAssigned.contains(controllerEnemy2));
         assertFalse(cpuEnemiesAssigned.contains(controllerEnemy3));
+        // Remove an enemy and tries to remove one that's already not in the set
         controller.removeAssignedEnemy(controllerEnemy);
         controller.removeAssignedEnemy(controllerEnemy3);
+        // Tests that the expected enemies are in the set
         assertTrue(cpuEnemiesAssigned.contains(controllerEnemy2));
         assertFalse(cpuEnemiesAssigned.contains(controllerEnemy));
         assertFalse(cpuEnemiesAssigned.contains(controllerEnemy3));
@@ -247,18 +258,24 @@ public class GameControllerTest {
      */
     @Test
     void inventoryTest() {
+        // The inventory starts empty
         Set<IWeapon> inventory = controller.getInventory();
         assertEquals(inventory.size(), 0);
+        // Assigns a weapon to the inventory
         controller.assignToInventory(controllerSword);
         assertEquals(inventory.size(), 1);
+        // Assigns a second weapon and a weapon already assigned
         controller.assignToInventory(controllerStaff);
         controller.assignToInventory(modelSword);
         assertEquals(inventory.size(), 2);
+        // Tests that the expected weapons are in the inventory
         assertTrue(inventory.contains(controllerSword));
         assertTrue(inventory.contains(controllerStaff));
         assertFalse(inventory.contains(controllerAxe));
+        // Remove a weapon and tries to remove one that's already not in the inventory
         controller.removeFromInventory(controllerSword);
         controller.removeFromInventory(controllerAxe);
+        // Tests that the expected weapons are in the inventory
         assertTrue(inventory.contains(controllerStaff));
         assertFalse(inventory.contains(controllerSword));
         assertFalse(inventory.contains(controllerAxe));
@@ -267,22 +284,28 @@ public class GameControllerTest {
 
     /**
      * Tests that the controller con successfully equip and un-equip a playable character with a
-     * weapon
+     * weapon, for a complete test on equipment dynamics
+     * @see com.github.camilormz.finalreality.model.character.player.AbstractPlayerCharacterTest
      */
     @Test
     void controllerEquipmentTest() {
+        // Tests that there is no equipment performed at start
         assertNull(controller.getPlayableCharacterEquippedWeapon(controllerKnight));
         assertNull(controller.getWeaponHolder(controllerSword));
         assertNull(controller.getWeaponHolder(controllerAxe));
         assertNull(controller.getWeaponHolder(controllerStaff));
+        // Tests that a knight can equip a sword successfully
         assertTrue(controller.tryToEquipWeapon(controllerKnight, controllerSword));
         assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
                      controllerSword);
         assertEquals(controller.getWeaponHolder(controllerSword), controllerKnight);
+        // Tests that the knight can change its weapon to an axe
         assertTrue(controller.tryToEquipWeapon(controllerKnight, controllerAxe));
         assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
                      controllerAxe);
         assertEquals(controller.getWeaponHolder(controllerAxe), controllerKnight);
+        // Tests that a thief can equip the dropped sword and the knight can't equip the already
+        // taken sword
         assertTrue(controller.tryToEquipWeapon(controllerThief, controllerSword));
         assertFalse(controller.tryToEquipWeapon(controllerKnight, controllerSword));
         assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
@@ -291,11 +314,13 @@ public class GameControllerTest {
                      controllerSword);
         assertEquals(controller.getWeaponHolder(controllerAxe), controllerKnight);
         assertEquals(controller.getWeaponHolder(controllerSword), controllerThief);
+        // Tests that the knight can't equip an Staff
         assertFalse(controller.tryToEquipWeapon(controllerKnight, controllerStaff));
         assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
                      controllerAxe);
         assertEquals(controller.getWeaponHolder(controllerAxe), controllerKnight);
         assertNull(controller.getWeaponHolder(controllerStaff));
+        // Tests knight weapon un-equipment
         controller.unEquipWeapon(controllerKnight);
         assertNull(controller.getPlayableCharacterEquippedWeapon(controllerKnight));
         assertNull(controller.getWeaponHolder(controllerAxe));
@@ -304,6 +329,8 @@ public class GameControllerTest {
 
     /**
      * Tests that the controller can perform a successfully attack in both sides
+     * For a complete combat dynamic test
+     * @see com.github.camilormz.finalreality.model.character.AbstractCharacterTest
      */
     @Test
     void controllerAttackTest() {
