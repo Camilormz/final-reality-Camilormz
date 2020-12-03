@@ -127,8 +127,7 @@ public class GameController {
      */
     public boolean tryToEquipWeapon(IPlayerCharacter character, IWeapon weapon) {
         character.tryToEquip(weapon);
-        return character.getEquippedWeapon().equals(weapon)
-            && weapon.getHolder().equals(character);
+        return weapon.equals(character.getEquippedWeapon());
     }
 
     /**
