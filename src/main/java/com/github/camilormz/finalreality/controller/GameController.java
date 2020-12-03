@@ -25,8 +25,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * "sections" in the following order:
  *
  *  0. Constructor
- *  1. Creator methods
- *  2. Getters
+ *  1. Game state variables
+ *  2. Element creator methods
+ *  3. Getters
  *
  * @author Camilo Ramírez Canales.
  */
@@ -47,6 +48,13 @@ public class GameController {
         enemiesAssignedToCPU = new HashSet<>();
         inventory = new HashSet<>();
     }
+
+    // ========================================================================================= //
+    //                                                                                           //
+    // --------------------------- 1. Section for game state methods --------------------------- //
+    //                                                                                           //
+    // ========================================================================================= //
+
 
     /**
      * Returns the set that contains the playable characters assigned to the player
@@ -111,9 +119,35 @@ public class GameController {
         this.getInventory().remove(weapon);
     }
 
+
+    /**
+     * Tries to equip a playable character with a weapon, it's not possible if the weapon type is
+     * not compatible with the character class or if the weapon is already equipped, this is done
+     * by calling the model methods, returns True if the equipment is successfully, False if not
+     */
+    public boolean tryToEquipWeapon(IPlayerCharacter character, IWeapon weapon) {
+        character.tryToEquip(weapon);
+        return character.getEquippedWeapon().equals(weapon)
+            && weapon.getHolder().equals(character);
+    }
+
+    /**
+     * Un-equips the equipped weapon of the character if it had already one
+     */
+    public void unEquipWeapon(IPlayerCharacter character) {
+        character.unEquip();
+    }
+
+    /**
+     * Performs an attack between two characters using model methods
+     */
+    public void performAttack(ICharacter attacker, ICharacter adversary) {
+        attacker.attack(adversary);
+    }
+
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 1. Section for creator methods ------------------------------ //
+    // --------------------------- 2. Section for creator methods ------------------------------ //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -220,7 +254,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // ------------------------------ 2. Section for getters ----------------------------------- //
+    // ------------------------------ 3. Section for getters ----------------------------------- //
     //                                                                                           //
     // ========================================================================================= //
 

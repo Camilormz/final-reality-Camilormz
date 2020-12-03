@@ -3,6 +3,9 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.12) Added the ability to attack and equip weapons from the controller
+- (B.11) Added an inventory and sets for assigned playable characters o the player and assigned
+         enemies to the CPU to play
 - (B.10) Added all necessary getters on the controller
 - (B.9) Created game controller, there is only model object creation implemented in it
 - (RC.1) Refactored all *dead* references to *knock out* in order to follow the spirit that a 0 HP

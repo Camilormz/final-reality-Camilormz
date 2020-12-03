@@ -245,7 +245,8 @@ public class GameControllerTest {
     /**
      * Test for inventory assignation (weapons)
      */
-    @Test void inventoryTest() {
+    @Test
+    void inventoryTest() {
         Set<IWeapon> inventory = controller.getInventory();
         assertEquals(inventory.size(), 0);
         controller.assignToInventory(controllerSword);
@@ -262,5 +263,59 @@ public class GameControllerTest {
         assertFalse(inventory.contains(controllerSword));
         assertFalse(inventory.contains(controllerAxe));
         assertEquals(inventory.size(), 1);
+    }
+
+    /**
+     * Tests that the controller con successfully equip and un-equip a playable character with a
+     * weapon
+     */
+    @Test
+    void controllerEquipmentTest() {
+        assertNull(controller.getPlayableCharacterEquippedWeapon(controllerKnight));
+        assertNull(controller.getWeaponHolder(controllerSword));
+        assertNull(controller.getWeaponHolder(controllerAxe));
+        assertNull(controller.getWeaponHolder(controllerStaff));
+        assertTrue(controller.tryToEquipWeapon(controllerKnight, controllerSword));
+        assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
+                     controllerSword);
+        assertEquals(controller.getWeaponHolder(controllerSword), controllerKnight);
+        assertTrue(controller.tryToEquipWeapon(controllerKnight, controllerAxe));
+        assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
+                     controllerAxe);
+        assertEquals(controller.getWeaponHolder(controllerAxe), controllerKnight);
+        assertTrue(controller.tryToEquipWeapon(controllerThief, controllerSword));
+        assertFalse(controller.tryToEquipWeapon(controllerKnight, controllerSword));
+        assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
+                     controllerAxe);
+        assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerThief),
+                     controllerSword);
+        assertEquals(controller.getWeaponHolder(controllerAxe), controllerKnight);
+        assertEquals(controller.getWeaponHolder(controllerSword), controllerThief);
+        assertFalse(controller.tryToEquipWeapon(controllerKnight, controllerStaff));
+        assertEquals(controller.getPlayableCharacterEquippedWeapon(controllerKnight),
+                     controllerAxe);
+        assertEquals(controller.getWeaponHolder(controllerAxe), controllerKnight);
+        assertNull(controller.getWeaponHolder(controllerStaff));
+        controller.unEquipWeapon(controllerKnight);
+        assertNull(controller.getPlayableCharacterEquippedWeapon(controllerKnight));
+        assertNull(controller.getWeaponHolder(controllerAxe));
+        assertEquals(controller.getWeaponHolder(controllerSword), controllerThief);
+    }
+
+    /**
+     * Tests that the controller can perform a successfully attack in both sides
+     */
+    @Test
+    void controllerAttackTest() {
+        assertEquals(controller.getCharacterHealthPoints(controllerKnight), DEFAULT_HEALTH_POINTS);
+        assertEquals(controller.getCharacterHealthPoints(controllerEnemy), DEFAULT_HEALTH_POINTS);
+        controller.tryToEquipWeapon(controllerKnight, controllerSword);
+        controller.performAttack(controllerKnight, controllerEnemy);
+        controller.performAttack(controllerEnemy, controllerKnight);
+        controller.performAttack(controllerEnemy, controllerKnight);
+        assertEquals(controller.getCharacterHealthPoints(controllerKnight),
+              DEFAULT_HEALTH_POINTS - 2*(DEFAULT_ENEMY_DAMAGE - DEFAULT_DEFENSE));
+        assertEquals(controller.getCharacterHealthPoints(controllerEnemy),
+              DEFAULT_HEALTH_POINTS - (DEFAULT_WEAPON_DAMAGE - DEFAULT_DEFENSE));
     }
 }
