@@ -3,6 +3,7 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.13) Added the checks for character combat availability in the controller and winner checks
 - (B.12) Added the ability to attack and equip weapons from the controller
 - (B.11) Added an inventory and sets for assigned playable characters o the player and assigned
          enemies to the CPU to play

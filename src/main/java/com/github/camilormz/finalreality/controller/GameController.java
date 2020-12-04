@@ -26,17 +26,25 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  *  0. Constructor
  *  1. Game state methods
- *  2. Element creator methods
- *  3. Getters
+ *  2. Combat availability and winner checks
+ *  3. Element creator methods
+ *  4. Getters
  *
  * @author Camilo Ramírez Canales.
  */
 public class GameController {
 
-    BlockingQueue<ICharacter> turnsQueue;
-    Set<IPlayerCharacter> playerAssignedCharacters;
-    Set<Enemy> enemiesAssignedToCPU;
-    Set<IWeapon> inventory;
+    private final BlockingQueue<ICharacter> turnsQueue;
+    private final Set<IPlayerCharacter> playerAssignedCharacters;
+    private final Set<Enemy> enemiesAssignedToCPU;
+    private final Set<IWeapon> inventory;
+
+    private String winner;
+
+    public static final String WINNER_NOBODY = "Nobody";
+    public static final String WINNER_PLAYER = "Player";
+    public static final String WINNER_CPU = "CPU";
+    public static final String WINNER_TIE = "Tie";
 
     /**
      * Game Controller constructor, it creates a new set of empty instance variables for the turns
@@ -47,6 +55,7 @@ public class GameController {
         playerAssignedCharacters = new HashSet<>();
         enemiesAssignedToCPU = new HashSet<>();
         inventory = new HashSet<>();
+        winner = WINNER_NOBODY;
     }
 
     // ========================================================================================= //
@@ -146,13 +155,80 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 2. Section for creator methods ------------------------------ //
+    // ------------------ 2. Section for combat availability and winner checks ----------------- //
+    //                                                                                           //
+    // ========================================================================================= //
+
+    /**
+     * Checks if the character is available for combat
+     */
+    public boolean checkCombatAvailability(ICharacter character) {
+        return character.isAvailableForCombat();
+    }
+
+    /**
+     * Checks if there is any character available for combat in the given set
+     */
+    public boolean isAnyAvailableForCombat(Set<? extends ICharacter> assignedSet) {
+        for (ICharacter character : assignedSet) {
+            if (checkCombatAvailability(character)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Counts the amount of characters in the set that are available for combat
+     */
+    public int countAvailableForCombat(Set<? extends ICharacter> assignedSet) {
+        int counter = 0;
+        for (ICharacter character : assignedSet) {
+            if (checkCombatAvailability(character)) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    /**
+     * Checks the current winner and updates the associated instance value
+     */
+    public void updateWinner() {
+        boolean isAnyPlayerCharacterAvailable =
+                isAnyAvailableForCombat(this.playerAssignedCharacters);
+        boolean isAnyEnemyAvailable = isAnyAvailableForCombat(this.enemiesAssignedToCPU);
+        if (isAnyPlayerCharacterAvailable) {
+            if (isAnyEnemyAvailable) {
+                this.winner = WINNER_NOBODY;
+            } else {
+                this.winner = WINNER_PLAYER;
+            }
+        } else {
+            if (isAnyEnemyAvailable) {
+                this.winner = WINNER_CPU;
+            } else {
+                this.winner = WINNER_TIE;
+            }
+        }
+    }
+
+    /**
+     * Gets the current checked winner
+     * It is highly recommendable to call checkWinner() before calling this method
+     */
+    public String getWinner() {
+        return this.winner;
+    }
+
+    // ========================================================================================= //
+    //                                                                                           //
+    // --------------------------- 3. Section for creator methods ------------------------------ //
     //                                                                                           //
     // ========================================================================================= //
 
     /**
      * Creates a black mage calling its model constructor
-     *
      * @see BlackMage
      */
     public BlackMage createBlackMage(@NotNull String name, int healthPoints, final int defense) {
@@ -161,7 +237,6 @@ public class GameController {
 
     /**
      * Creates an engineer calling its model constructor
-     *
      * @see Engineer
      */
     public Engineer createEngineer(@NotNull String name, int healthPoints, final int defense) {
@@ -170,7 +245,6 @@ public class GameController {
 
     /**
      * Creates a knight calling its model constructor
-     *
      * @see Knight
      */
     public Knight createKnight(@NotNull String name, int healthPoints, final int defense) {
@@ -179,7 +253,6 @@ public class GameController {
 
     /**
      * Creates a thief calling its model constructor
-     *
      * @see Thief
      */
     public Thief createThief(@NotNull String name, int healthPoints, final int defense) {
@@ -188,7 +261,6 @@ public class GameController {
 
     /**
      * Creates a white mage calling its model constructor
-     *
      * @see WhiteMage
      */
     public WhiteMage createWhiteMage(@NotNull String name, int healthPoints, final int defense) {
@@ -197,7 +269,6 @@ public class GameController {
 
     /**
      * Creates an enemy calling its model constructor
-     *
      * @see Enemy
      */
     public Enemy createEnemy(@NotNull String name, final int weight, int healthPoints,
@@ -207,7 +278,6 @@ public class GameController {
 
     /**
      * Creates an axe calling its model constructor
-     *
      * @see Axe
      */
     public Axe createAxe(@NotNull String name, final int damage, final int weight) {
@@ -216,7 +286,6 @@ public class GameController {
 
     /**
      * Creates a bow calling its model constructor
-     *
      * @see Bow
      */
     public Bow createBow(@NotNull String name, final int damage, final int weight) {
@@ -225,7 +294,6 @@ public class GameController {
 
     /**
      * Creates a knife calling its model constructor
-     *
      * @see Knife
      */
     public Knife createKnife(@NotNull String name, final int damage, final int weight) {
@@ -234,7 +302,6 @@ public class GameController {
 
     /**
      * Creates an staff calling its model constructor
-     *
      * @see Staff
      */
     public Staff createStaff(@NotNull String name, final int damage,
@@ -244,7 +311,6 @@ public class GameController {
 
     /**
      * Creates an sword calling its model constructor
-     *
      * @see Sword
      */
     public Sword createSword(@NotNull String name, final int damage, final int weight) {
@@ -253,7 +319,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // ------------------------------ 3. Section for getters ----------------------------------- //
+    // ------------------------------ 4. Section for getters ----------------------------------- //
     //                                                                                           //
     // ========================================================================================= //
 
