@@ -1,9 +1,12 @@
 package com.github.camilormz.finalreality.model.character;
 
+import java.beans.PropertyChangeListener;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import java.beans.PropertyChangeSupport;
 
 import com.github.camilormz.finalreality.model.character.player.IPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +25,8 @@ public abstract class AbstractCharacter implements ICharacter {
   private int healthPoints;
   private final int defense;
   private ScheduledExecutorService scheduledExecutor;
+
+  private final PropertyChangeSupport addToQueueEvent = new PropertyChangeSupport(this);
 
   /**
    * Creates a new (abstract) character.
@@ -63,6 +68,8 @@ public abstract class AbstractCharacter implements ICharacter {
   private void addToQueue() {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
+    String addToQueueEventName = String.format("Character enqueued: %d", this.hashCode());
+    addToQueueEvent.firePropertyChange(addToQueueEventName, null, this);
   }
 
   /**
@@ -132,4 +139,10 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public abstract void beAttackedByEnemy(Enemy enemy);
 
+  /**
+   * Adds a handler for the enqueuing event
+   */
+  public void addListener(PropertyChangeListener handler) {
+    addToQueueEvent.addPropertyChangeListener(handler);
+  }
 }

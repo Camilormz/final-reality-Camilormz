@@ -1,5 +1,6 @@
 package com.github.camilormz.finalreality.controller;
 
+import com.github.camilormz.finalreality.controller.handlers.CharacterEnqueuedHandler;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.Enemy;
 import com.github.camilormz.finalreality.model.character.ICharacter;
@@ -12,6 +13,7 @@ import com.github.camilormz.finalreality.model.weapon.WeaponType;
 import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -40,6 +42,9 @@ public class GameController {
     private final Set<IPlayerCharacter> playerAssignedCharacters;
     private final Set<Enemy> enemiesAssignedToCPU;
     private final Set<IWeapon> inventory;
+
+    private final PropertyChangeListener characterEnqueuedHandler =
+            new CharacterEnqueuedHandler(this);
 
     private String winner;
     private ICharacter currentTurnCharacter;
@@ -98,10 +103,10 @@ public class GameController {
     /**
      * Performs an action on queue update, currently it starts the next character turn
      */
-    private void onQueueUpdate() {
-        ICharacter nextCharacter = peekNextTurnCharacter();
-        if (nextCharacter != null) {
-            turnStart(nextCharacter);
+    public void onQueueEnqueuing() {
+        ICharacter nextCharacter = peekWaitTurnQueueHead();
+        if (nextCharacter != null && currentTurnCharacter == null) {
+            turnStart();
         }
     }
 
@@ -130,26 +135,28 @@ public class GameController {
     // ========================================================================================= //
 
     /**
-     * Starts the character turn
+     * Starts the next turn for wait turn queue head
      */
-    private void turnStart(@NotNull ICharacter character) {
-        currentTurnCharacter = character;
-        onCharacterTurnStart(character);
+    public void turnStart() {
+        currentTurnCharacter = peekWaitTurnQueueHead();
+        onCharacterTurnStart(currentTurnCharacter);
     }
 
     /**
      * Ends the character turn
      */
-    private void turnEnd(@NotNull ICharacter character) {
-        currentTurnCharacter = null;
-        removeNextTurnCharacter();
-        onCharacterTurnEnd(character);
+    public void turnEnd() {
+        if (currentTurnCharacter != null) {
+            onCharacterTurnEnd(currentTurnCharacter);
+            currentTurnCharacter = null;
+            removeWaitTurnQueueHead();
+        }
     }
 
     /**
      * Returns the character whose turn is currently happening
      */
-    private ICharacter getCurrentTurnCharacter() {
+    public ICharacter getCurrentTurnCharacter() {
         return this.currentTurnCharacter;
     }
 
@@ -161,16 +168,16 @@ public class GameController {
     }
 
     /**
-     * Returns the next turn character according to the turns queue
+     * Returns the head of the turns queue
      */
-    public ICharacter peekNextTurnCharacter() {
+    public ICharacter peekWaitTurnQueueHead() {
         return turnsQueue.peek();
     }
 
     /**
-     * Removes the next turn character according to the turns queue
+     * Removes the head of the turns queue
      */
-    public void removeNextTurnCharacter() {
+    private void removeWaitTurnQueueHead() {
         turnsQueue.poll();
     }
 
@@ -357,7 +364,9 @@ public class GameController {
      * @see BlackMage
      */
     public BlackMage createBlackMage(@NotNull String name, int healthPoints, final int defense) {
-        return new BlackMage(name, healthPoints, defense, turnsQueue);
+        BlackMage blackMage = new BlackMage(name, healthPoints, defense, turnsQueue);
+        blackMage.addListener(characterEnqueuedHandler);
+        return blackMage;
     }
 
     /**
@@ -365,7 +374,9 @@ public class GameController {
      * @see Engineer
      */
     public Engineer createEngineer(@NotNull String name, int healthPoints, final int defense) {
-        return new Engineer(name, healthPoints, defense, turnsQueue);
+        Engineer engineer = new Engineer(name, healthPoints, defense, turnsQueue);
+        engineer.addListener(characterEnqueuedHandler);
+        return engineer;
     }
 
     /**
@@ -373,7 +384,9 @@ public class GameController {
      * @see Knight
      */
     public Knight createKnight(@NotNull String name, int healthPoints, final int defense) {
-        return new Knight(name, healthPoints, defense, turnsQueue);
+        Knight knight = new Knight(name, healthPoints, defense, turnsQueue);
+        knight.addListener(characterEnqueuedHandler);
+        return knight;
     }
 
     /**
@@ -381,7 +394,9 @@ public class GameController {
      * @see Thief
      */
     public Thief createThief(@NotNull String name, int healthPoints, final int defense) {
-        return new Thief(name, healthPoints, defense, turnsQueue);
+        Thief thief = new Thief(name, healthPoints, defense, turnsQueue);
+        thief.addListener(characterEnqueuedHandler);
+        return thief;
     }
 
     /**
@@ -389,7 +404,9 @@ public class GameController {
      * @see WhiteMage
      */
     public WhiteMage createWhiteMage(@NotNull String name, int healthPoints, final int defense) {
-        return new WhiteMage(name, healthPoints, defense, turnsQueue);
+        WhiteMage whiteMage = new WhiteMage(name, healthPoints, defense, turnsQueue);
+        whiteMage.addListener(characterEnqueuedHandler);
+        return whiteMage;
     }
 
     /**
@@ -398,7 +415,9 @@ public class GameController {
      */
     public Enemy createEnemy(@NotNull String name, final int weight, int healthPoints,
                              final int defense, final int damage) {
-        return new Enemy(name, weight, healthPoints, defense, damage, turnsQueue);
+        Enemy enemy = new Enemy(name, weight, healthPoints, defense, damage, turnsQueue);
+        enemy.addListener(characterEnqueuedHandler);
+        return enemy;
     }
 
     /**

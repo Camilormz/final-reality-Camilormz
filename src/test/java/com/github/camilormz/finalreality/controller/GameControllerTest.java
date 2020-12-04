@@ -450,28 +450,45 @@ public class GameControllerTest {
     void enqueueingTest() {
         // The queue starts empty
         assertTrue(controller.isTurnsQueueEmpty());
-        assertNull(controller.peekNextTurnCharacter());
-        // At character removal trial it stands empty
-        controller.removeNextTurnCharacter();
-        assertNull(controller.peekNextTurnCharacter());
+        assertNull(controller.peekWaitTurnQueueHead());
+        assertNull(controller.getCurrentTurnCharacter());
+        // At attempt of turn end nothing changes
+        controller.turnEnd();
+        assertNull(controller.peekWaitTurnQueueHead());
         // Adds an engineer and tests that it is the first character in the queue
         controller.waitEnqueueForTurn(controllerEngineer);
         threadWaitEpsilon();
         assertFalse(controller.isTurnsQueueEmpty());
-        assertEquals(controller.peekNextTurnCharacter(), controllerEngineer);
+        assertEquals(controller.getCurrentTurnCharacter(), controllerEngineer);
+        assertEquals(controller.peekWaitTurnQueueHead(), controllerEngineer);
         // Adds a knight and tests that the engineer stills being the first character in queue
         controller.waitEnqueueForTurn(controllerKnight);
         threadWaitEpsilon();
         assertFalse(controller.isTurnsQueueEmpty());
-        assertEquals(controller.peekNextTurnCharacter(), controllerEngineer);
-        // Dequeue the first character (engineer) and checks that the new first element is knight
-        controller.removeNextTurnCharacter();
+        assertEquals(controller.peekWaitTurnQueueHead(), controllerEngineer);
+        // Ends turn of the first character (engineer) and checks that the new first element is
+        // knight and it's the current turn of nobody
+        System.out.println(controller.getCurrentTurnCharacter());
+        controller.turnEnd();
+        System.out.println(controller.getCurrentTurnCharacter());
         assertFalse(controller.isTurnsQueueEmpty());
-        assertEquals(controller.peekNextTurnCharacter(), controllerKnight);
+        assertNull(controller.getCurrentTurnCharacter());
+        assertEquals(controller.peekWaitTurnQueueHead(), controllerKnight);
+        // Starts the turn of knight
+        controller.turnStart();
+        assertEquals(controller.getCurrentTurnCharacter(), controllerKnight);
         // Dequeue the knight and checks that the queue is left empty
-        controller.removeNextTurnCharacter();
+        controller.turnEnd();
         assertTrue(controller.isTurnsQueueEmpty());
-        assertNull(controller.peekNextTurnCharacter());
+        assertNull(controller.peekWaitTurnQueueHead());
+    }
+
+    /**
+     * Turn dynamics test
+     */
+    @Test
+    public void turnsTest() {
+
     }
 
     /**
