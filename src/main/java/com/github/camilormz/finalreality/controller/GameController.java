@@ -25,10 +25,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * "sections" in the following order:
  *
  *  0. Constructor
- *  1. Game state methods
- *  2. Combat availability and winner checks
- *  3. Element creator methods
- *  4. Getters
+ *  1. Triggered methods (executed by observers)
+ *  2. Turns related methods
+ *  3. Game state methods (inventory, assigned characters to player and CPU)
+ *  4. Combat availability and winner checks
+ *  5. Element creator methods
+ *  6. Getters
  *
  * @author Camilo Ramírez Canales.
  */
@@ -40,6 +42,7 @@ public class GameController {
     private final Set<IWeapon> inventory;
 
     private String winner;
+    private ICharacter currentTurnCharacter;
 
     public static final String WINNER_NOBODY = "Nobody";
     public static final String WINNER_PLAYER = "Player";
@@ -55,12 +58,134 @@ public class GameController {
         playerAssignedCharacters = new HashSet<>();
         enemiesAssignedToCPU = new HashSet<>();
         inventory = new HashSet<>();
+
+        currentTurnCharacter = null;
         winner = WINNER_NOBODY;
     }
 
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 1. Section for game state methods --------------------------- //
+    // ------------------ 1. Section for methods executed by observers ------------------------- //
+    //                                                                                           //
+    // ========================================================================================= //
+
+    /**
+     * Performs a routine on player winning, currently it does no action
+     */
+    private void onPlayerWinning() {}
+
+    /**
+     * Performs a routine on player loosing, currently it does no action
+     */
+    private void onPlayerLosing() {}
+
+    /**
+     * Performs a routine on player tie, currently it's not possible to reach this state in the
+     * game according to its dynamics, it does no action
+     */
+    private void onPlayerTying() {}
+
+    /**
+     * Performs a routine on character's turn start, currently it does no action
+     */
+    private void onCharacterTurnStart(ICharacter character) {}
+
+    /**
+     * Performs a routine on character's turn end, currently it does no action
+     */
+    private void onCharacterTurnEnd(ICharacter character) {}
+
+    /**
+     * Performs an action on queue update, currently it starts the next character turn
+     */
+    private void onQueueUpdate() {
+        ICharacter nextCharacter = peekNextTurnCharacter();
+        if (nextCharacter != null) {
+            turnStart(nextCharacter);
+        }
+    }
+
+    /**
+     * Performs an action on character knocking out, currently it checks for any winner
+     */
+    private void onCharacterKnockOut() {
+        updateWinner();
+        switch (getWinner()) {
+            case WINNER_PLAYER:
+                onPlayerWinning();
+                break;
+            case WINNER_CPU:
+                onPlayerLosing();
+                break;
+            case WINNER_TIE:
+                onPlayerTying();
+                break;
+        }
+    }
+
+    // ========================================================================================= //
+    //                                                                                           //
+    // --------------------------- 2. Section for turns related methods --- -------------------- //
+    //                                                                                           //
+    // ========================================================================================= //
+
+    /**
+     * Starts the character turn
+     */
+    private void turnStart(@NotNull ICharacter character) {
+        currentTurnCharacter = character;
+        onCharacterTurnStart(character);
+    }
+
+    /**
+     * Ends the character turn
+     */
+    private void turnEnd(@NotNull ICharacter character) {
+        currentTurnCharacter = null;
+        removeNextTurnCharacter();
+        onCharacterTurnEnd(character);
+    }
+
+    /**
+     * Returns the character whose turn is currently happening
+     */
+    private ICharacter getCurrentTurnCharacter() {
+        return this.currentTurnCharacter;
+    }
+
+    /**
+     * Checks if the turns queue is empty or not
+     */
+    public boolean isTurnsQueueEmpty() {
+        return turnsQueue.isEmpty();
+    }
+
+    /**
+     * Returns the next turn character according to the turns queue
+     */
+    public ICharacter peekNextTurnCharacter() {
+        return turnsQueue.peek();
+    }
+
+    /**
+     * Removes the next turn character according to the turns queue
+     */
+    public void removeNextTurnCharacter() {
+        turnsQueue.poll();
+    }
+
+    /**
+     * Starts the timer of the character according to its turn weight to enqueue it on the turns
+     * queue, for more details on the turn weight
+     * @see com.github.camilormz.finalreality.model.character.AbstractCharacter
+     */
+    public void waitEnqueueForTurn(ICharacter character) {
+        character.waitTurn();
+    }
+
+    // ========================================================================================= //
+    //                                                                                           //
+    // --------------------------- 3. Section for game state methods --------------------------- //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -155,7 +280,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // ------------------ 2. Section for combat availability and winner checks ----------------- //
+    // ------------------ 4. Section for combat availability and winner checks ----------------- //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -223,7 +348,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 3. Section for creator methods ------------------------------ //
+    // --------------------------- 5. Section for creator methods ------------------------------ //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -319,7 +444,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // ------------------------------ 4. Section for getters ----------------------------------- //
+    // ------------------------------ 6. Section for getters ----------------------------------- //
     //                                                                                           //
     // ========================================================================================= //
 

@@ -96,6 +96,9 @@ public class GameControllerTest {
     private final String WINNER_CPU = GameController.WINNER_CPU;
     private final String WINNER_TIE = GameController.WINNER_TIE;
 
+    // Milliseconds to wait in the enqueuing test at 0 expected time
+    private final long epsilonWaitTurnTest = 50;
+
     /**
      * Initializes every variable necessary to do the tests, e.g., characters, weapons,
      * the controller, the turns queue among others
@@ -437,5 +440,48 @@ public class GameControllerTest {
         controller.assignToPlayer(controllerEngineer);
         controller.updateWinner();
         assertEquals(controller.getWinner(), WINNER_PLAYER);
+    }
+
+    /**
+     * Test for enqueuing manager controller methods, this test uses unequipped characters to make
+     * the test faster.
+     */
+    @Test
+    void enqueueingTest() {
+        // The queue starts empty
+        assertTrue(controller.isTurnsQueueEmpty());
+        assertNull(controller.peekNextTurnCharacter());
+        // At character removal trial it stands empty
+        controller.removeNextTurnCharacter();
+        assertNull(controller.peekNextTurnCharacter());
+        // Adds an engineer and tests that it is the first character in the queue
+        controller.waitEnqueueForTurn(controllerEngineer);
+        threadWaitEpsilon();
+        assertFalse(controller.isTurnsQueueEmpty());
+        assertEquals(controller.peekNextTurnCharacter(), controllerEngineer);
+        // Adds a knight and tests that the engineer stills being the first character in queue
+        controller.waitEnqueueForTurn(controllerKnight);
+        threadWaitEpsilon();
+        assertFalse(controller.isTurnsQueueEmpty());
+        assertEquals(controller.peekNextTurnCharacter(), controllerEngineer);
+        // Dequeue the first character (engineer) and checks that the new first element is knight
+        controller.removeNextTurnCharacter();
+        assertFalse(controller.isTurnsQueueEmpty());
+        assertEquals(controller.peekNextTurnCharacter(), controllerKnight);
+        // Dequeue the knight and checks that the queue is left empty
+        controller.removeNextTurnCharacter();
+        assertTrue(controller.isTurnsQueueEmpty());
+        assertNull(controller.peekNextTurnCharacter());
+    }
+
+    /**
+     * Waits an epsilon time (epsilonWaitTurnTest) before continuing the execution
+     */
+    private void threadWaitEpsilon() {
+        try {
+            Thread.sleep(epsilonWaitTurnTest);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
