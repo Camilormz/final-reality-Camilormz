@@ -27,6 +27,12 @@ public abstract class AbstractCharacter implements ICharacter {
   private ScheduledExecutorService scheduledExecutor;
 
   private final PropertyChangeSupport addToQueueEvent = new PropertyChangeSupport(this);
+  protected final PropertyChangeSupport knockOutEvent = new PropertyChangeSupport(this);
+
+  private final String addToQueueEventName = String.format(
+                                             "Character enqueued: %d", this.hashCode());
+  protected final String knockOutEventName = String.format(
+                                             "Character knocked out: %d", this.hashCode());
 
   /**
    * Creates a new (abstract) character.
@@ -68,7 +74,6 @@ public abstract class AbstractCharacter implements ICharacter {
   private void addToQueue() {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
-    String addToQueueEventName = String.format("Character enqueued: %d", this.hashCode());
     addToQueueEvent.firePropertyChange(addToQueueEventName, null, this);
   }
 
@@ -142,7 +147,14 @@ public abstract class AbstractCharacter implements ICharacter {
   /**
    * Adds a handler for the enqueuing event
    */
-  public void addListener(PropertyChangeListener handler) {
+  public void addEnqueuingListener(PropertyChangeListener handler) {
     addToQueueEvent.addPropertyChangeListener(handler);
+  }
+
+  /**
+   * Adds a handler for knock out events
+   */
+  public void addKnockOutListener(PropertyChangeListener handler) {
+    knockOutEvent.addPropertyChangeListener(handler);
   }
 }

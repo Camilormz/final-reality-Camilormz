@@ -1,6 +1,7 @@
 package com.github.camilormz.finalreality.controller;
 
 import com.github.camilormz.finalreality.controller.handlers.CharacterEnqueuedHandler;
+import com.github.camilormz.finalreality.controller.handlers.CharacterKnockOutHandler;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.Enemy;
 import com.github.camilormz.finalreality.model.character.ICharacter;
@@ -34,6 +35,18 @@ import java.util.concurrent.LinkedBlockingQueue;
  *  5. Element creator methods
  *  6. Getters
  *
+ * A game controller is equal to another when they share the same references to all its instance
+ * variables (except handlers; these variables are turnsQueue, inventory, enemiesAssignedToCPU,
+ * playerAssignedCharacters, winner and currentTurnCharacter). As this class has only its default
+ * constructor and the instance variables are created at construction (not passed as parameters) it
+ * is impossible for different instances of GameController have the same reference for their
+ * instance variables.
+ *
+ * The previous paragraph justifies that there is not necessity to override equals and hashCode of
+ * the Object class as that implementation of these methods fits perfectly for the equivalence of
+ * GameControllers as stated in the previous paragraph. However there exists a test fot the correct
+ * GameController initialization
+ *
  * @author Camilo Ramírez Canales.
  */
 public class GameController {
@@ -45,6 +58,8 @@ public class GameController {
 
     private final PropertyChangeListener characterEnqueuedHandler =
             new CharacterEnqueuedHandler(this);
+    private final PropertyChangeListener characterKnockOutHandler =
+            new CharacterKnockOutHandler(this);
 
     private String winner;
     private ICharacter currentTurnCharacter;
@@ -85,12 +100,6 @@ public class GameController {
     private void onPlayerLosing() {}
 
     /**
-     * Performs a routine on player tie, currently it's not possible to reach this state in the
-     * game according to its dynamics, it does no action
-     */
-    private void onPlayerTying() {}
-
-    /**
      * Performs a routine on character's turn start, currently it does no action
      */
     private void onCharacterTurnStart(ICharacter character) {}
@@ -104,8 +113,7 @@ public class GameController {
      * Performs an action on queue update, currently it starts the next character turn
      */
     public void onQueueEnqueuing() {
-        ICharacter nextCharacter = peekWaitTurnQueueHead();
-        if (nextCharacter != null && currentTurnCharacter == null) {
+        if (currentTurnCharacter == null) {
             turnStart();
         }
     }
@@ -113,18 +121,12 @@ public class GameController {
     /**
      * Performs an action on character knocking out, currently it checks for any winner
      */
-    private void onCharacterKnockOut() {
+    public void onCharacterKnockOut() {
         updateWinner();
-        switch (getWinner()) {
-            case WINNER_PLAYER:
-                onPlayerWinning();
-                break;
-            case WINNER_CPU:
-                onPlayerLosing();
-                break;
-            case WINNER_TIE:
-                onPlayerTying();
-                break;
+        if (getWinner().equals(WINNER_PLAYER)) {
+            onPlayerWinning();
+        } else if (getWinner().equals(WINNER_CPU)) {
+            onPlayerLosing();
         }
     }
 
@@ -135,7 +137,7 @@ public class GameController {
     // ========================================================================================= //
 
     /**
-     * Starts the next turn for wait turn queue head
+     * Starts the next turn for wait turn queue head character
      */
     public void turnStart() {
         currentTurnCharacter = peekWaitTurnQueueHead();
@@ -365,7 +367,8 @@ public class GameController {
      */
     public BlackMage createBlackMage(@NotNull String name, int healthPoints, final int defense) {
         BlackMage blackMage = new BlackMage(name, healthPoints, defense, turnsQueue);
-        blackMage.addListener(characterEnqueuedHandler);
+        blackMage.addEnqueuingListener(characterEnqueuedHandler);
+        blackMage.addKnockOutListener(characterKnockOutHandler);
         return blackMage;
     }
 
@@ -375,7 +378,8 @@ public class GameController {
      */
     public Engineer createEngineer(@NotNull String name, int healthPoints, final int defense) {
         Engineer engineer = new Engineer(name, healthPoints, defense, turnsQueue);
-        engineer.addListener(characterEnqueuedHandler);
+        engineer.addEnqueuingListener(characterEnqueuedHandler);
+        engineer.addKnockOutListener(characterKnockOutHandler);
         return engineer;
     }
 
@@ -385,7 +389,8 @@ public class GameController {
      */
     public Knight createKnight(@NotNull String name, int healthPoints, final int defense) {
         Knight knight = new Knight(name, healthPoints, defense, turnsQueue);
-        knight.addListener(characterEnqueuedHandler);
+        knight.addEnqueuingListener(characterEnqueuedHandler);
+        knight.addKnockOutListener(characterKnockOutHandler);
         return knight;
     }
 
@@ -395,7 +400,8 @@ public class GameController {
      */
     public Thief createThief(@NotNull String name, int healthPoints, final int defense) {
         Thief thief = new Thief(name, healthPoints, defense, turnsQueue);
-        thief.addListener(characterEnqueuedHandler);
+        thief.addEnqueuingListener(characterEnqueuedHandler);
+        thief.addKnockOutListener(characterKnockOutHandler);
         return thief;
     }
 
@@ -405,7 +411,8 @@ public class GameController {
      */
     public WhiteMage createWhiteMage(@NotNull String name, int healthPoints, final int defense) {
         WhiteMage whiteMage = new WhiteMage(name, healthPoints, defense, turnsQueue);
-        whiteMage.addListener(characterEnqueuedHandler);
+        whiteMage.addEnqueuingListener(characterEnqueuedHandler);
+        whiteMage.addKnockOutListener(characterKnockOutHandler);
         return whiteMage;
     }
 
@@ -416,7 +423,8 @@ public class GameController {
     public Enemy createEnemy(@NotNull String name, final int weight, int healthPoints,
                              final int defense, final int damage) {
         Enemy enemy = new Enemy(name, weight, healthPoints, defense, damage, turnsQueue);
-        enemy.addListener(characterEnqueuedHandler);
+        enemy.addEnqueuingListener(characterEnqueuedHandler);
+        enemy.addKnockOutListener(characterKnockOutHandler);
         return enemy;
     }
 

@@ -123,6 +123,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
   protected void beKnockedOut() {
     this.unEquip();
     this.setHealthPoints(0);
+    knockOutEvent.firePropertyChange(knockOutEventName, null, this);
   }
 
   @Override

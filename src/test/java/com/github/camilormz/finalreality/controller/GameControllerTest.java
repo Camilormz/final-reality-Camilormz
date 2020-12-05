@@ -171,6 +171,20 @@ public class GameControllerTest {
     }
 
     /**
+     * Tests that the controller inits as expected
+     */
+    @Test
+    void controllerConstructionTest() {
+        GameController newController = new GameController();
+        assertNull(newController.getCurrentTurnCharacter());
+        assertEquals(newController.getWinner(), WINNER_NOBODY);
+        assertEquals(newController.getInventory().size(), 0);
+        assertEquals(newController.getPlayerAssignedCharacters().size(), 0);
+        assertEquals(newController.getEnemiesAssigned().size(), 0);
+        assertTrue(newController.isTurnsQueueEmpty());
+    }
+
+    /**
      * Tests that the controller can create the model elements (playable characters, enemies and
      * weapons) as exactly as their respective constructor does
      */
@@ -444,7 +458,7 @@ public class GameControllerTest {
 
     /**
      * Test for enqueuing manager controller methods, this test uses unequipped characters to make
-     * the test faster.
+     * the test faster, this test also checks that the queue listener works as expected
      */
     @Test
     void enqueueingTest() {
@@ -468,9 +482,7 @@ public class GameControllerTest {
         assertEquals(controller.peekWaitTurnQueueHead(), controllerEngineer);
         // Ends turn of the first character (engineer) and checks that the new first element is
         // knight and it's the current turn of nobody
-        System.out.println(controller.getCurrentTurnCharacter());
         controller.turnEnd();
-        System.out.println(controller.getCurrentTurnCharacter());
         assertFalse(controller.isTurnsQueueEmpty());
         assertNull(controller.getCurrentTurnCharacter());
         assertEquals(controller.peekWaitTurnQueueHead(), controllerKnight);
@@ -484,11 +496,38 @@ public class GameControllerTest {
     }
 
     /**
-     * Turn dynamics test
+     * Checks that the knock out listener sets the winner as player at all enemies knock out
      */
     @Test
-    public void turnsTest() {
+    public void playerWinnerListenerTest() {
+        controller.assignToPlayer(controllerKnight);
+        controller.assignEnemy(controllerEnemy);
+        controller.performAttack(controllerPoweredBlackMage, controllerEnemy);
+        assertEquals(controller.getWinner(), WINNER_PLAYER);
+    }
 
+    /**
+     * Checks that the knock out listener sets the winner as cpu at all player characters knock out
+     */
+    @Test
+    public void playerLooserListenerTest() {
+        controller.assignToPlayer(controllerKnight);
+        controller.assignEnemy(controllerEnemy);
+        controller.performAttack(controllerPoweredEnemy, controllerKnight);
+        assertEquals(controller.getWinner(), WINNER_CPU);
+    }
+
+    /**
+     * Checks that the knock out listener in an K.O. event in where there are still remaining
+     * characters in both sides, does not declare a winner
+     */
+    @Test
+    public void noWinnerKnockOutListenerTest() {
+        controller.assignToPlayer(controllerKnight);
+        controller.assignToPlayer(controllerEngineer);
+        controller.assignEnemy(controllerEnemy);
+        controller.performAttack(controllerPoweredEnemy, controllerKnight);
+        assertEquals(controller.getWinner(), WINNER_NOBODY);
     }
 
     /**

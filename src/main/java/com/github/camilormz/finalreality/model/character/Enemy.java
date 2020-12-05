@@ -84,6 +84,7 @@ public class Enemy extends AbstractCharacter {
   @Override
   protected void beKnockedOut() {
     this.setHealthPoints(0);
+    knockOutEvent.firePropertyChange(knockOutEventName, null, this);
   }
 
   @Override

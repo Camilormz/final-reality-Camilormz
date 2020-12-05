@@ -3,6 +3,7 @@ ChangeLog
 
 Version 3.0
 -----------
+- (RC.2) Added an observer for character knock outs to check winner at K.O.s
 - (B.14) Added an observer for turns management at new character enqueuing
 - (B.13) Added the checks for character combat availability in the controller and winner checks
 - (B.12) Added the ability to attack and equip weapons from the controller
