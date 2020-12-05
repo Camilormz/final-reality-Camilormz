@@ -3,8 +3,16 @@ ChangeLog
 
 Version 3.0
 -----------
-- (B.9) Refactored all *dead* references to *knock out* in order to follow the spirit that a 0 HP
-        character could be available for future combats.
+- (RC.2) Added an observer for character knock outs to check winner at K.O.s
+- (B.14) Added an observer for turns management at new character enqueuing
+- (B.13) Added the checks for character combat availability in the controller and winner checks
+- (B.12) Added the ability to attack and equip weapons from the controller
+- (B.11) Added an inventory and sets for assigned playable characters o the player and assigned
+         enemies to the CPU to play
+- (B.10) Added all necessary getters on the controller
+- (B.9) Created game controller, there is only model object creation implemented in it
+- (RC.1) Refactored all *dead* references to *knock out* in order to follow the spirit that a 0 HP
+         character could be available for future combats.
 - (B.8) Improved bond playable character - weapon and improved heritage
 - (B.7) Ensured 100% coverage
 - (B.6) Code fixed in order to pass all tests (99% line and 85% branch coverage)

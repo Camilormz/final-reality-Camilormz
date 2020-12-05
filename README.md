@@ -65,9 +65,12 @@ Among the asumptions made in the project there are:
 
 **Current implementation status**
 ---------------------------------
-The current implementation status of the project is that only the backbone of the models of characters
-and weapons are implemented, this following the model-view-controller architectural pattern. More
-detailed information is available at the [changelog](ChangeLog.md).
+The current implementation status of the project is that the model of characters and weapons are
+implemented, this following the model-view-controller architectural patter. As part of the model,
+there is implemented the combat dynamics (as exception for magical combat) and weapon equipment at
+model level. There is also a controller fully implemented that manages the game state and works as
+the bridge between the user (GUI not implemented) and the model. More detailed information is
+available at the [changelog](ChangeLog.md).
 
 **Installation and execution**
 ------------------------------
