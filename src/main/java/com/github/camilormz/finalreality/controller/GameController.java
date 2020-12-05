@@ -44,7 +44,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * The previous paragraph justifies that there is not necessity to override equals and hashCode of
  * the Object class as that implementation of these methods fits perfectly for the equivalence of
- * GameControllers as stated in the previous paragraph. However there exists a test fot the correct
+ * GameControllers as stated in the previous paragraph. Anyways there exists a test fot the correct
  * GameController initialization
  *
  * @author Camilo Ramírez Canales.
