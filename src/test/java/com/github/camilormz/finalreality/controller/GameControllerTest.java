@@ -12,6 +12,7 @@ import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -163,7 +164,8 @@ public class GameControllerTest {
                                                  DEFAULT_WEAPON_WEIGHT, DEFAULT_MAGIC_DAMAGE);
         controllerPoweredStaff = controller.createStaff(STAFF_NAME,
                                                 DEFAULT_WEAPON_DAMAGE*100,
-                                                        DEFAULT_MAGIC_DAMAGE, DEFAULT_MAGIC_DAMAGE);
+                                                        DEFAULT_WEAPON_WEIGHT,
+                                                        DEFAULT_MAGIC_DAMAGE);
         controllerSword = controller.createSword(SWORD_NAME,
                                                  DEFAULT_WEAPON_DAMAGE, DEFAULT_WEAPON_WEIGHT);
 
@@ -238,7 +240,7 @@ public class GameControllerTest {
     @Test
     void playerAssignationTest() {
         // The assigned characters set starts empty
-        Set<IPlayerCharacter> playerAssignedCharacters =
+        LinkedList<IPlayerCharacter> playerAssignedCharacters =
                 controller.getPlayerAssignedCharacters();
         assertEquals(playerAssignedCharacters.size(), 0);
         // Assigns a character
@@ -268,7 +270,7 @@ public class GameControllerTest {
     @Test
     void enemyAssignationTest() {
         // The assigned enemy set starts empty
-        Set<Enemy> cpuEnemiesAssigned = controller.getEnemiesAssigned();
+        LinkedList<Enemy> cpuEnemiesAssigned = controller.getEnemiesAssigned();
         assertEquals(cpuEnemiesAssigned.size(), 0);
         // Assigns an enemy
         controller.assignEnemy(controllerEnemy);
@@ -297,7 +299,7 @@ public class GameControllerTest {
     @Test
     void inventoryTest() {
         // The inventory starts empty
-        Set<IWeapon> inventory = controller.getInventory();
+        LinkedList<IWeapon> inventory = controller.getInventory();
         assertEquals(inventory.size(), 0);
         // Assigns a weapon to the inventory
         controller.assignToInventory(controllerSword);
@@ -391,8 +393,9 @@ public class GameControllerTest {
     @Test
     void availabilityTest() {
         // Get assigned character sets
-        Set<IPlayerCharacter> playerAssignedCharacters = controller.getPlayerAssignedCharacters();
-        Set<Enemy> cpuEnemiesAssigned = controller.getEnemiesAssigned();
+        LinkedList<IPlayerCharacter> playerAssignedCharacters =
+                controller.getPlayerAssignedCharacters();
+        LinkedList<Enemy> cpuEnemiesAssigned = controller.getEnemiesAssigned();
         // Checks that the is no currently a winner
         assertEquals(controller.getWinner(), WINNER_NOBODY);
         // Checks that every character is ready to combat
@@ -528,6 +531,73 @@ public class GameControllerTest {
         controller.assignEnemy(controllerEnemy);
         controller.performAttack(controllerPoweredEnemy, controllerKnight);
         assertEquals(controller.getWinner(), WINNER_NOBODY);
+    }
+
+    /**
+     * Test for controller initializer, it checks that the desired amount of playable characters
+     * enemies are assigned at the controller initialization
+     */
+    @Test
+    public void initControllerTest() {
+        controller.initController();
+        LinkedList<IPlayerCharacter> assignedToPlayer = controller.getPlayerAssignedCharacters();
+        LinkedList<Enemy> assignedEnemies = controller.getEnemiesAssigned();
+        assertTrue(assignedEnemies.size() >= 1);
+        assertTrue(assignedEnemies.size() <= controller.getMaxEnemies());
+        assertEquals(assignedToPlayer.size(), controller.getAmountPlayableCharacters());
+    }
+
+    /**
+     * Test for game state machine, it test that the game flows as expected
+     */
+    @Test
+    public void playTest() {
+        assertTrue(controller.isAtInitPhase());
+        assertFalse(controller.isAtPickingPhase());
+        assertFalse(controller.isAtEquipmentPhase());
+        assertFalse(controller.isAtAttackPhase());
+        assertFalse(controller.isAtEnqueuingPhase());
+        // Initializes the controller
+        controller.initController();
+        assertFalse(controller.isAtInitPhase());
+        // Ensures that an attack cannot be performed outside an attacking phase
+        assertFalse(controller.executeAttack(0));
+        assertTrue(controller.isAtPickingPhase());
+        // Waits until there is a character on the queue
+        while(controller.getCurrentTurnCharacter() == null);
+        // Starts the turn
+        controller.turnStart();
+        System.out.println(controller.getCurrentTurnCharacter());
+        assertTrue(controller.isAtEquipmentPhase());
+        // Simulates an equipment procedure done by a player
+        controller.equipTurnCharacter(controller.getInventory().get(0));
+        controller.unEquipTurnCharacter();
+        controller.equipTurnCharacter(controller.getInventory().get(2));
+        controller.equipTurnCharacter(controller.getInventory().get(0));
+        // Finish the equipment procedure
+        controller.finishEquipmentProcedure();
+        assertTrue(controller.isAtAttackPhase());
+        //Perform an successful attack
+        controller.executeAttack(0);
+        assertTrue(controller.isAtEnqueuingPhase());
+        // Ends the turn
+        controller.turnEnd();
+        // Check if the phase is at the picking one again
+        assertTrue(controller.isAtPickingPhase());
+        // Continues the execution in order to test with an enemy (the sixth one is the enemy)
+        for (int i=1; i<5; i++) {
+            while(controller.getCurrentTurnCharacter() == null);
+            controller.turnStart();
+            controller.equipTurnCharacter(controller.getInventory().get(i));
+            controller.finishEquipmentProcedure();
+            controller.executeAttack(0);
+            controller.turnEnd();
+        }
+        // Starts the turn of an enemy
+        while(controller.getCurrentTurnCharacter() == null);
+        controller.turnStart();
+        controller.executeAttack(0);
+        controller.turnEnd();
     }
 
     /**

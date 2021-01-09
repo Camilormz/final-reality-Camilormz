@@ -2,6 +2,8 @@ package com.github.camilormz.finalreality.controller;
 
 import com.github.camilormz.finalreality.controller.handlers.CharacterEnqueuedHandler;
 import com.github.camilormz.finalreality.controller.handlers.CharacterKnockOutHandler;
+import com.github.camilormz.finalreality.controller.phases.Phase;
+import com.github.camilormz.finalreality.controller.phases.detailedphases.InitPhase;
 import com.github.camilormz.finalreality.model.character.CharacterDomain;
 import com.github.camilormz.finalreality.model.character.Enemy;
 import com.github.camilormz.finalreality.model.character.ICharacter;
@@ -15,8 +17,7 @@ import com.github.camilormz.finalreality.model.weapon.types.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -30,10 +31,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  *  0. Constructor
  *  1. Triggered methods (executed by observers)
  *  2. Turns related methods
- *  3. Game state methods (inventory, assigned characters to player and CPU)
- *  4. Combat availability and winner checks
- *  5. Element creator methods
- *  6. Getters
+ *  3. Game phase related methods (state machines)
+ *  4. Game state methods (inventory, assigned characters to player and CPU)
+ *  5. Combat availability and winner checks
+ *  6. Element creator methods
+ *  7. Getters
  *
  * A game controller is equal to another when they share the same references to all its instance
  * variables (except handlers; these variables are turnsQueue, inventory, enemiesAssignedToCPU,
@@ -52,9 +54,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GameController {
 
     private final BlockingQueue<ICharacter> turnsQueue;
-    private final Set<IPlayerCharacter> playerAssignedCharacters;
-    private final Set<Enemy> enemiesAssignedToCPU;
-    private final Set<IWeapon> inventory;
+    private final LinkedList<IPlayerCharacter> playerAssignedCharacters;
+    private final LinkedList<Enemy> enemiesAssignedToCPU;
+    private final LinkedList<IWeapon> inventory;
 
     private final PropertyChangeListener characterEnqueuedHandler =
             new CharacterEnqueuedHandler(this);
@@ -62,7 +64,11 @@ public class GameController {
             new CharacterKnockOutHandler(this);
 
     private String winner;
+    public Phase gamePhase;
     private ICharacter currentTurnCharacter;
+
+    private final int AMOUNT_PLAYABLE_CHARACTERS = 5;
+    private final int MAX_ENEMIES = 5;
 
     public static final String WINNER_NOBODY = "Nobody";
     public static final String WINNER_PLAYER = "Player";
@@ -75,12 +81,14 @@ public class GameController {
      */
     public GameController() {
         turnsQueue = new LinkedBlockingQueue<>();
-        playerAssignedCharacters = new HashSet<>();
-        enemiesAssignedToCPU = new HashSet<>();
-        inventory = new HashSet<>();
+        playerAssignedCharacters = new LinkedList<>();
+        enemiesAssignedToCPU = new LinkedList<>();
+        inventory = new LinkedList<>();
 
         currentTurnCharacter = null;
         winner = WINNER_NOBODY;
+
+        this.setPhase(new InitPhase());
     }
 
     // ========================================================================================= //
@@ -132,7 +140,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 2. Section for turns related methods --- -------------------- //
+    // --------------------------- 2. Section for turns related methods ------------------------ //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -141,6 +149,7 @@ public class GameController {
      */
     public void turnStart() {
         currentTurnCharacter = peekWaitTurnQueueHead();
+        this.gamePhase.turnStart();
         onCharacterTurnStart(currentTurnCharacter);
     }
 
@@ -150,8 +159,10 @@ public class GameController {
     public void turnEnd() {
         if (currentTurnCharacter != null) {
             onCharacterTurnEnd(currentTurnCharacter);
+            this.gamePhase.turnEnd();
             currentTurnCharacter = null;
             removeWaitTurnQueueHead();
+            this.startPickingPhase();
         }
     }
 
@@ -188,21 +199,114 @@ public class GameController {
      * queue, for more details on the turn weight
      * @see com.github.camilormz.finalreality.model.character.AbstractCharacter
      */
-    public void waitEnqueueForTurn(ICharacter character) {
+    public void waitEnqueueForTurn(@NotNull ICharacter character) {
         character.waitTurn();
     }
 
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 3. Section for game state methods --------------------------- //
+    // --------------------------- 3. Section for phase related methods ------------------------ //
     //                                                                                           //
     // ========================================================================================= //
 
+    /**
+     * Sets the phase of the controller
+     */
+    public void setPhase(Phase phase) {
+        this.gamePhase = phase;
+        this.gamePhase.setController(this);
+    }
+
+    /**
+     * Initializes the controller assigning the enemies and players specified in InitPhase
+     * @see InitPhase
+     */
+    public void initController() {
+        this.gamePhase.initController();
+    }
+
+    /**
+     * Equips the character of the current turn with a weapon
+     */
+    public void equipTurnCharacter(IWeapon weapon) {
+        this.gamePhase.equipTurnCharacter(weapon);
+    }
+
+    /**
+     * Un-equips any weapon that the character could have
+     */
+    public void unEquipTurnCharacter() {
+        this.gamePhase.unEquipTurnCharacter();
+    }
+
+    /**
+     * Finish the equipment procedure, i.e., the equipment phase for the character of the current
+     * turn
+     */
+    public void finishEquipmentProcedure() {
+        this.gamePhase.finishEquipmentProcedure();
+    }
+
+    /**
+     * Given the list index of the adversary, this method executes an attack from the character of
+     * the current turn
+     */
+    public boolean executeAttack(int adversarialIndex) {
+        return this.gamePhase.executeAttack(adversarialIndex);
+    }
+
+    /**
+     * Starts the picking phase
+     */
+    public void startPickingPhase() {
+       this.gamePhase.startPickingPhase();
+    }
+
+    /**
+     * Returns true if the current phase is InitPhase
+     */
+    public boolean isAtInitPhase() {
+        return this.gamePhase.isAtInitPhase();
+    }
+
+    /**
+     * Returns true if the current phase is PickingPhase
+     */
+    public boolean isAtPickingPhase() {
+        return this.gamePhase.isAtPickingPhase();
+    }
+
+    /**
+     * Returns true if the current phase is EquipmentPhase
+     */
+    public boolean isAtEquipmentPhase() {
+        return this.gamePhase.isAtEquipmentPhase();
+    }
+
+    /**
+     * Returns true if the current phase is AttackPhase
+     */
+    public boolean isAtAttackPhase() {
+        return this.gamePhase.isAtAttackPhase();
+    }
+
+    /**
+     * Returns true if the current phase is EnqueuingPhase
+     */
+    public boolean isAtEnqueuingPhase() {
+        return this.gamePhase.isAtEnqueuingPhase();
+    }
+
+    // ========================================================================================= //
+    //                                                                                           //
+    // --------------------------- 4. Section for game state methods --------------------------- //
+    //                                                                                           //
+    // ========================================================================================= //
 
     /**
      * Returns the set that contains the playable characters assigned to the player
      */
-    public Set<IPlayerCharacter> getPlayerAssignedCharacters() {
+    public LinkedList<IPlayerCharacter> getPlayerAssignedCharacters() {
         return this.playerAssignedCharacters;
     }
 
@@ -210,7 +314,10 @@ public class GameController {
      * Assigns a character to the player
      */
     public void assignToPlayer(@NotNull IPlayerCharacter character) {
-        this.getPlayerAssignedCharacters().add(character);
+        LinkedList<IPlayerCharacter> assignedToPlayerList = this.getPlayerAssignedCharacters();
+        if (!assignedToPlayerList.contains(character)) {
+            assignedToPlayerList.add(character);
+        }
     }
 
     /**
@@ -223,7 +330,7 @@ public class GameController {
     /**
      * Returns the set that contains the enemies assigned to the CPU for using in the game
      */
-    public Set<Enemy> getEnemiesAssigned() {
+    public LinkedList<Enemy> getEnemiesAssigned() {
         return this.enemiesAssignedToCPU;
     }
 
@@ -231,7 +338,10 @@ public class GameController {
      * Assigns an enemy to the CPU for using in combat
      */
     public void assignEnemy(@NotNull Enemy enemy) {
-        this.getEnemiesAssigned().add(enemy);
+        LinkedList<Enemy> assignedEnemiesList = this.getEnemiesAssigned();
+        if (!assignedEnemiesList.contains(enemy)) {
+            assignedEnemiesList.add(enemy);
+        }
     }
 
     /**
@@ -244,7 +354,7 @@ public class GameController {
     /**
      * Returns the game inventory
      */
-    public Set<IWeapon> getInventory() {
+    public LinkedList<IWeapon> getInventory() {
         return this.inventory;
     }
 
@@ -252,7 +362,10 @@ public class GameController {
      * Assigns the weapon to the inventory
      */
     public void assignToInventory(IWeapon weapon) {
-        this.getInventory().add(weapon);
+        LinkedList<IWeapon> currentInventory = this.getInventory();
+        if (!currentInventory.contains(weapon)) {
+            currentInventory.add(weapon);
+        }
     }
 
     /**
@@ -287,9 +400,23 @@ public class GameController {
         attacker.attack(adversary);
     }
 
+    /**
+     * Gets the amount of playable characters fixed for this controller
+     */
+    public int getAmountPlayableCharacters() {
+        return this.AMOUNT_PLAYABLE_CHARACTERS;
+    }
+
+    /**
+     * Gets the maximum possible amount of enemies allowed in this controller
+     */
+    public int getMaxEnemies() {
+        return this.MAX_ENEMIES;
+    }
+
     // ========================================================================================= //
     //                                                                                           //
-    // ------------------ 4. Section for combat availability and winner checks ----------------- //
+    // ------------------ 5. Section for combat availability and winner checks ----------------- //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -303,7 +430,7 @@ public class GameController {
     /**
      * Checks if there is any character available for combat in the given set
      */
-    public boolean isAnyAvailableForCombat(Set<? extends ICharacter> assignedSet) {
+    public boolean isAnyAvailableForCombat(LinkedList<? extends ICharacter> assignedSet) {
         for (ICharacter character : assignedSet) {
             if (checkCombatAvailability(character)) {
                 return true;
@@ -315,7 +442,7 @@ public class GameController {
     /**
      * Counts the amount of characters in the set that are available for combat
      */
-    public int countAvailableForCombat(Set<? extends ICharacter> assignedSet) {
+    public int countAvailableForCombat(LinkedList<? extends ICharacter> assignedSet) {
         int counter = 0;
         for (ICharacter character : assignedSet) {
             if (checkCombatAvailability(character)) {
@@ -357,7 +484,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // --------------------------- 5. Section for creator methods ------------------------------ //
+    // --------------------------- 6. Section for creator methods ------------------------------ //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -471,7 +598,7 @@ public class GameController {
 
     // ========================================================================================= //
     //                                                                                           //
-    // ------------------------------ 6. Section for getters ----------------------------------- //
+    // ------------------------------ 7. Section for getters ----------------------------------- //
     //                                                                                           //
     // ========================================================================================= //
 
@@ -577,5 +704,4 @@ public class GameController {
     public int getMagicDamage(@NotNull IMagicalWeapon weapon) {
         return weapon.getMagicDamage();
     }
-
 }
