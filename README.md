@@ -63,16 +63,8 @@ Among the asumptions made in the project there are:
 - There is no damage for a character if its attacked by some other character with less damage capability than the attacked character defense points.
 - There is no action involved in the intent of equipping weapons or attacking from a knocked out character.
 
-**Current implementation status**
----------------------------------
-The current implementation status of the project is that the model of characters and weapons are
-implemented, this following the model-view-controller architectural patter. As part of the model,
-there is implemented the combat dynamics (as exception for magical combat) and weapon equipment at
-model level. There is also a controller fully implemented that manages the game state and works as
-the bridge between the user (GUI not implemented) and the model. More detailed information is
-available at the [changelog](ChangeLog.md).
-
 **Installation and execution**
 ------------------------------
 In the current state, there are no executables. To install the source code and its tests, this project
-can be cloned from this repository, and the tests can be run on JUnit 5.
+can be cloned from this repository, and the tests can be run on JUnit 5. The is a runnable app, but it
+must be launched from Gradle or an IDE like IntelliJ at the gui package.
