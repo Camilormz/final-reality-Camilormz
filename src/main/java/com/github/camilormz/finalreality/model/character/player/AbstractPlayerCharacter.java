@@ -34,6 +34,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
    *     the character's name
    * @param healthPoints
    *     the character's health points
+   * @param defense
+   *     the character's defense points
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
    * @param characterClass

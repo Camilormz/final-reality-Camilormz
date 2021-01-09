@@ -567,7 +567,8 @@ public class GameControllerTest {
         while(controller.getCurrentTurnCharacter() == null);
         // Starts the turn
         controller.turnStart();
-        System.out.println(controller.getCurrentTurnCharacter());
+        assertFalse(controller.isCurrentTurnCharacterEquipped());
+        assertFalse(controller.isCurrentCharacterEnemy());
         assertTrue(controller.isAtEquipmentPhase());
         // Simulates an equipment procedure done by a player
         controller.equipTurnCharacter(controller.getInventory().get(0));
@@ -598,6 +599,17 @@ public class GameControllerTest {
         controller.turnStart();
         controller.executeAttack(0);
         controller.turnEnd();
+    }
+
+    /**
+     * String of assignation list test
+     */
+    @Test
+    public void stringTest() {
+        controller.initController();
+        LinkedList<IPlayerCharacter> pcList = controller.getPlayerAssignedCharacters();
+        LinkedList<String> pcStringList = controller.getAssignedCharacterString();
+        assertEquals(pcStringList.get(0), controller.getCharacterString(pcList.get(0)));
     }
 
     /**

@@ -36,6 +36,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  *  5. Combat availability and winner checks
  *  6. Element creator methods
  *  7. Getters
+ *  8. GUI auxiliary methods
  *
  * A game controller is equal to another when they share the same references to all its instance
  * variables (except handlers; these variables are turnsQueue, inventory, enemiesAssignedToCPU,
@@ -703,5 +704,145 @@ public class GameController {
      */
     public int getMagicDamage(@NotNull IMagicalWeapon weapon) {
         return weapon.getMagicDamage();
+    }
+
+    /**
+     * Check if the current turn character is equipped or not
+     */
+    public boolean isCurrentTurnCharacterEquipped() {
+        ICharacter currentCharacter = this.getCurrentTurnCharacter();
+        if (currentCharacter.getCharacterDomain() == CharacterDomain.PLAYABLE) {
+            IPlayerCharacter character = (IPlayerCharacter) currentCharacter;
+            return character.getEquippedWeapon() != null;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns true if it's the turn of any character
+     */
+    public boolean isAnyCharacterInTurn() {
+        return this.getCurrentTurnCharacter() != null;
+    }
+
+    /**
+     * Try to equip the weapon on the given index to the current turn character
+     */
+    public void tryToEquipCurrentByIndex(int index) {
+        this.equipTurnCharacter(this.getInventory().get(index));
+    }
+
+    /**
+     * Returns if the current turn character is a playable one
+     */
+    public boolean isCurrentCharacterEnemy() {
+        ICharacter currentCharacter = this.getCurrentTurnCharacter();
+        if (currentCharacter != null) {
+            return this.getCurrentTurnCharacter().getCharacterDomain() == CharacterDomain.ENEMY;
+        } else {
+            return false;
+        }
+    }
+
+    // ========================================================================================= //
+    //                                                                                           //
+    // ----------------------- 8. Section for GUI auxiliary methods ---------------------------- //
+    //                                                                                           //
+    // ========================================================================================= //
+
+    private String getHolderString(IPlayerCharacter character) {
+        if (character == null) {
+            return "No holder";
+        }
+        return String.format("Holder: %s \"%s\"",
+                this.getPlayableCharacterClass(character).getDescription(),
+                this.getCharacterName(character));
+    }
+
+    private String getEquippedString(IWeapon weapon) {
+        if (weapon == null) {
+            return "No equipped weapon";
+        }
+        return String.format("Weapon: %s \"%s\"",
+                this.getWeaponType(weapon).getDescription(), this.getWeaponName(weapon));
+    }
+
+    private String getEnemyString(@NotNull Enemy enemy) {
+        return String.format("Enemy \"%s\": HP %d, Defense %d, Weight %d, Damage %d",
+                this.getCharacterName(enemy), this.getCharacterHealthPoints(enemy),
+                this.getCharacterDefense(enemy), this.getEnemyWeight(enemy),
+                this.getEnemyDamage(enemy));
+    }
+
+    private String getPCString(IPlayerCharacter character) {
+        return String.format("%s: \"%s\": HP %d, Defense %d (%s)",
+                this.getPlayableCharacterClass(character).getDescription(),
+                this.getCharacterName(character), this.getCharacterHealthPoints(character),
+                this.getCharacterDefense(character),
+                this.getEquippedString(this.getPlayableCharacterEquippedWeapon(character)));
+    }
+
+    private String getWeaponString(IWeapon weapon) {
+        return String.format("%s: \"%s\": Weight %d, Damage %d (%s)",
+                this.getWeaponType(weapon).getDescription(), this.getWeaponName(weapon),
+                this.getWeaponWeight(weapon), this.getWeaponDamage(weapon),
+                this.getHolderString(this.getWeaponHolder(weapon)));
+    }
+
+    /**
+     * Returns the string that describes the character in the argument
+     */
+    public String getCharacterString(@NotNull ICharacter character) {
+        if (character.getCharacterDomain() == CharacterDomain.PLAYABLE) {
+            return this.getPCString((IPlayerCharacter) character);
+        } else {
+            return this.getEnemyString((Enemy) character);
+        }
+    }
+
+    /**
+     * Returns the string that describes the current turn character
+     */
+    public String getCurrentTurnCharacterString() {
+        ICharacter currentCharacter = this.getCurrentTurnCharacter();
+        if (currentCharacter == null) {
+            return "Waiting for characters recovering... (no active turn)";
+        } else {
+            return this.getCharacterString(currentCharacter);
+        }
+    }
+
+    /**
+     * Returns a string list describing the playable characters
+     */
+    public LinkedList<String> getAssignedCharacterString() {
+        LinkedList<String> assignedCharacterString = new LinkedList<>();
+        for (IPlayerCharacter character : this.getPlayerAssignedCharacters()) {
+            assignedCharacterString.add(this.getPCString(character));
+        }
+        return assignedCharacterString;
+    }
+
+    /**
+     * Returns a string list describing the assigned enemies
+     */
+    public LinkedList<String> getEnemiesString() {
+        LinkedList<String> assignedEnemiesString = new LinkedList<>();
+        for (Enemy enemy : this.getEnemiesAssigned()) {
+            assignedEnemiesString.add(this.getEnemyString(enemy));
+        }
+        return assignedEnemiesString;
+    }
+
+    /**
+     * Returns a string list describing the inventory
+     */
+    public LinkedList<String> getInventoryString() {
+        LinkedList<String> inventoryString = new LinkedList<>();
+        for (IWeapon weapon : this.getInventory()) {
+            inventoryString.add(this.getWeaponString(weapon));
+        }
+        return inventoryString;
     }
 }

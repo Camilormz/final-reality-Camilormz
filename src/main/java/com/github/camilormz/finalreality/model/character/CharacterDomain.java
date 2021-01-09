@@ -11,5 +11,21 @@ package com.github.camilormz.finalreality.model.character;
  */
 
 public enum CharacterDomain {
-    PLAYABLE, ENEMY
+    PLAYABLE("Playable Character"), ENEMY("Enemy");
+
+    private final String field_description;
+
+    /**
+     * Enum constructor, requires a string description
+     */
+    CharacterDomain(String description)  {
+        this.field_description = description;
+    }
+
+    /**
+     * Returns the string description of the enum
+     */
+    public String getDescription() {
+        return this.field_description;
+    }
 }
