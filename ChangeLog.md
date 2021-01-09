@@ -3,6 +3,7 @@ ChangeLog
 
 Version 3.0
 -----------
+- (B.15) Added a state pattern based phase system to manage the game flow
 - (RC.2) Added an observer for character knock outs to check winner at K.O.s
 - (B.14) Added an observer for turns management at new character enqueuing
 - (B.13) Added the checks for character combat availability in the controller and winner checks
